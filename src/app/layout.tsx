@@ -92,7 +92,15 @@ export default async function RootLayout({
 
   return (
     <html lang="es-CO" className={`${archivo.variable} ${plexMono.variable}`}>
-      <body className="min-h-screen antialiased">
+      {/*
+        Varias extensiones del navegador (ColorZilla, Grammarly, gestores de
+        contraseñas…) añaden atributos al <body> antes de que React hidrate, y
+        eso dispara un aviso de discrepancia que no viene de nuestro código.
+        `suppressHydrationWarning` solo silencia los atributos de ESTE elemento,
+        no los de sus hijos, así que no puede ocultar un error real dentro de
+        los componentes.
+      */}
+      <body className="min-h-screen antialiased" suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(datosNegocio) }}
