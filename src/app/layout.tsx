@@ -66,7 +66,8 @@ export const viewport: Viewport = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  modal,
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   const categorias = await getCategorias();
 
   // Datos estructurados del negocio: le dicen a Google y a los asistentes de IA
@@ -104,6 +105,8 @@ export default async function RootLayout({
         </a>
         <EncabezadoSitio categorias={categorias} />
         <main id="contenido">{children}</main>
+        {/* Vista previa del producto: solo se llena al navegar desde el catálogo */}
+        {modal}
         <PieSitio categorias={categorias} />
         {/* Espacio para que la barra fija no tape el final del pie */}
         <div aria-hidden className="h-20" />

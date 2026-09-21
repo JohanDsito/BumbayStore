@@ -9,6 +9,12 @@ type Props = {
   prioridad?: boolean;
   sizes?: string;
   className?: string;
+  /**
+   * Clases que definen la proporción del marco. Por defecto cuadrado; la
+   * vista previa lo limita en alto para que el botón de compra no quede
+   * fuera de pantalla en celular.
+   */
+  aspecto?: string;
 };
 
 /**
@@ -25,12 +31,13 @@ export function ImagenProducto({
   prioridad = false,
   sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 380px",
   className = "",
+  aspecto = "aspect-square",
 }: Props) {
   const url = imagenUrl(imagen);
 
   return (
     <div
-      className={`relative aspect-square overflow-hidden bg-carbon-50 ${className}`}
+      className={`relative overflow-hidden bg-carbon-50 ${aspecto} ${className}`}
     >
       {url ? (
         <Image
