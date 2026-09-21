@@ -7,6 +7,7 @@ import {
   getProductos,
   getCategoria,
   getRelacionados,
+  getVariantes,
 } from "@/lib/products";
 import { imagenUrl } from "@/lib/supabase";
 import { site } from "@/lib/site-config";
@@ -15,6 +16,7 @@ import { enlaceConsulta } from "@/lib/whatsapp";
 import { ImagenProducto } from "@/components/product-image";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { TarjetaProducto } from "@/components/product-card";
+import { SelectorColor } from "@/components/color-selector";
 import { IconoWhatsApp } from "@/components/icons";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -66,9 +68,10 @@ export default async function FichaProducto({ params }: Props) {
   const producto = await getProducto(slug);
   if (!producto) notFound();
 
-  const [categoria, relacionados] = await Promise.all([
+  const [categoria, relacionados, variantes] = await Promise.all([
     getCategoria(producto.categoriaSlug),
     getRelacionados(producto, 4),
+    getVariantes(producto),
   ]);
 
   const imagen = imagenUrl(producto.imagen);
@@ -89,6 +92,7 @@ export default async function FichaProducto({ params }: Props) {
     description: producto.fichaTecnica ?? producto.nombre,
     ...(imagen ? { image: [imagen] } : {}),
     ...(producto.marca ? { brand: { "@type": "Brand", name: producto.marca } } : {}),
+    ...(producto.color ? { color: producto.color } : {}),
     ...(categoria ? { category: categoria.nombre } : {}),
     ...(producto.especificaciones.length > 0
       ? {
@@ -262,6 +266,8 @@ export default async function FichaProducto({ params }: Props) {
                 )}
               </div>
             </div>
+
+            <SelectorColor variantes={variantes} slugActual={producto.slug} />
 
             <div className="mt-5 space-y-3">
               <AgregarAlPedido producto={producto} tamano="grande" />

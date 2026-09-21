@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { getProducto, getCategoria } from "@/lib/products";
+import { getProducto, getCategoria, getVariantes } from "@/lib/products";
 import { VistaPrevia } from "@/components/quick-view";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -18,7 +18,12 @@ export default async function VistaPreviaProducto({ params }: Props) {
   const producto = await getProducto(slug);
   if (!producto) notFound();
 
-  const categoria = await getCategoria(producto.categoriaSlug);
+  const [categoria, variantes] = await Promise.all([
+    getCategoria(producto.categoriaSlug),
+    getVariantes(producto),
+  ]);
 
-  return <VistaPrevia producto={producto} categoria={categoria} />;
+  return (
+    <VistaPrevia producto={producto} categoria={categoria} variantes={variantes} />
+  );
 }

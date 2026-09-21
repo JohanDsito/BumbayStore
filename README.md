@@ -60,6 +60,8 @@ Toma el Excel que ya tienes y déjalo con estas columnas
 | `nombre` | sí | Aparece como título y en el resultado de Google. |
 | `categoria` | sí | Texto normal; el slug se genera solo. |
 | `marca` | no | |
+| `color` | no | `Azul`, `Amarillo`… Déjala vacía si la herramienta va en un solo color. |
+| `grupo` | no | Enlaza las versiones de color entre sí. Si la dejas vacía se deduce del SKU. |
 | `precio_unitario` | sí | `289000` o `$ 289.000`, ambos sirven. |
 | `precio_mayor` | no | Si se deja vacío, el producto no muestra badge de mayoreo. |
 | `imagen` | no | Nombre exacto del archivo. Ej: `BT-TAL-2001.webp` |
@@ -71,6 +73,40 @@ Toma el Excel que ya tienes y déjalo con estas columnas
 | `destacado` | no | `si` / `no`. Los `si` salen en el carrusel de la portada. |
 
 Guarda como **CSV UTF-8** en `datos/productos.csv`.
+
+#### Versiones de color
+
+Una herramienta que se vende en varios colores va como **una fila por color**,
+cada una con su propio SKU y su propia foto. Lo que las une es la columna
+`grupo`:
+
+| sku | nombre | color | grupo |
+|---|---|---|---|
+| `BT-TAL-2001-AZ` | Taladro percutor 20V Azul | `Azul` | `BT-TAL-2001` |
+| `BT-TAL-2001-AM` | Taladro percutor 20V Amarillo | `Amarillo` | `BT-TAL-2001` |
+
+Así cada color tiene su propia página indexable en Google, y la ficha muestra
+un selector para saltar entre ellos. Si dejas `grupo` vacío, el importador lo
+deduce quitando el último segmento del SKU, que es justo lo que se necesita en
+el ejemplo de arriba.
+
+### 2b. Preparar las fotos de una ronda
+
+Si tus fotos vienen organizadas por rondas desde Drive (una carpeta por
+producto, y dentro `mercado libre/` con las versiones finales, a veces
+separadas en `azul/` y `amarillo/`), hay un script que hace el trabajo sucio:
+
+```bash
+node scripts/preparar-ronda.mjs "datos/ronda 10" --simular
+```
+
+Recorre las carpetas, ignora el material en bruto, detecta las versiones de
+color y te dice qué encontró sin tocar nada. Sin `--simular` copia la foto
+principal de cada versión a `datos/fotos/` con un nombre predecible y escribe
+`datos/productos.borrador.csv` con `color` y `grupo` ya resueltos.
+
+El borrador sale con SKU provisionales y precios vacíos a propósito: esas
+columnas las completas tú en Excel antes de importar.
 
 ### 3. Revisar antes de escribir
 

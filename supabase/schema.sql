@@ -30,6 +30,12 @@ create table if not exists public.productos (
   categoria_slug   text not null references public.categorias(slug) on update cascade,
   marca            text,
 
+  -- Versiones de color: dos filas con el mismo `grupo` y distinto `color`
+  -- son la misma herramienta en colores diferentes. Cada una conserva su
+  -- propio SKU, su URL y su foto.
+  color            text,
+  grupo            text,
+
   -- Precios en pesos colombianos, sin decimales.
   precio_unitario  integer not null check (precio_unitario >= 0),
   precio_mayor     integer check (precio_mayor is null or precio_mayor >= 0),
@@ -63,6 +69,8 @@ comment on table public.productos is 'Catálogo. El slug es la URL: /producto/{s
 -- Índices para las consultas que realmente hace el sitio.
 create index if not exists productos_categoria_idx
   on public.productos (categoria_slug) where activo;
+create index if not exists productos_grupo_idx
+  on public.productos (grupo) where activo and grupo is not null;
 create index if not exists productos_destacado_idx
   on public.productos (destacado) where activo and destacado;
 create index if not exists productos_busqueda_idx

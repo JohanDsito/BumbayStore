@@ -17,6 +17,17 @@ export type Product = {
   slug: string;
   categoriaSlug: string;
   marca: string | null;
+  /**
+   * Color de esta versión ("Azul", "Amarillo"). null si la herramienta se
+   * vende en un solo color.
+   */
+  color: string | null;
+  /**
+   * Agrupa las versiones de color de una misma herramienta. Dos productos con
+   * el mismo `grupo` son el mismo modelo en distinto color, y la ficha muestra
+   * un selector para saltar entre ellos.
+   */
+  grupo: string | null;
   /** Precio unitario (COP, sin decimales). */
   precioUnitario: number;
   /** Precio al por mayor. null = no aplica mayoreo a este producto. */

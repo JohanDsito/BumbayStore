@@ -6,8 +6,14 @@
  * Añade --simular para revisar qué haría sin escribir nada en la base.
  *
  * Columnas esperadas (el orden no importa, los nombres sí):
- *   sku, nombre, categoria, marca, precio_unitario, precio_mayor, imagen,
- *   ficha_tecnica, especificaciones, modo_uso, beneficios, faq, destacado
+ *   sku, nombre, categoria, marca, color, grupo, precio_unitario, precio_mayor,
+ *   imagen, ficha_tecnica, especificaciones, modo_uso, beneficios, faq, destacado
+ *
+ * Versiones de color: dos filas con el mismo `grupo` y distinto `color` son la
+ * misma herramienta en colores diferentes; la ficha muestra un selector para
+ * saltar entre ellas. Si pones `color` y dejas `grupo` vacío, el grupo se
+ * deduce quitando el último segmento del SKU
+ * (BT-TAL-2001-AZ y BT-TAL-2001-AM comparten el grupo BT-TAL-2001).
  *
  * Formato de las columnas compuestas:
  *   especificaciones -> "Voltaje: 20V máx | Torque: 45 N·m"
@@ -142,7 +148,9 @@ console.log(`Leídas ${filas.length} filas de ${RUTA}\n`);
 const productos = [];
 const categorias = new Map();
 const errores = [];
+const avisos = [];
 const slugsVistos = new Set();
+const skusVistos = new Set();
 
 filas.forEach((f, i) => {
   const linea = i + 2; // +1 por la cabecera, +1 porque Excel cuenta desde 1
@@ -153,6 +161,9 @@ filas.forEach((f, i) => {
   const precioMayor = aEntero(f.precio_mayor);
 
   if (!sku) return errores.push(`Fila ${linea}: falta el SKU`);
+  if (skusVistos.has(sku))
+    return errores.push(`Fila ${linea}: el SKU "${sku}" está repetido`);
+  skusVistos.add(sku);
   if (!nombre) return errores.push(`Fila ${linea} (${sku}): falta el nombre`);
   if (!categoria) return errores.push(`Fila ${linea} (${sku}): falta la categoría`);
   if (!precioUnitario)
@@ -161,6 +172,21 @@ filas.forEach((f, i) => {
     return errores.push(
       `Fila ${linea} (${sku}): el precio al mayor (${precioMayor}) es mayor que el unitario (${precioUnitario})`,
     );
+
+  // Versión de color. Sin `grupo` explícito lo deducimos del SKU.
+  const color = f.color?.trim() || null;
+  let grupo = f.grupo?.trim() || null;
+  if (color && !grupo) {
+    const partes = sku.split("-");
+    if (partes.length > 1) {
+      grupo = partes.slice(0, -1).join("-");
+    } else {
+      avisos.push(
+        `Fila ${linea} (${sku}): tiene color "${color}" pero no se pudo deducir el grupo del SKU. ` +
+          `Sin grupo no se enlazará con sus otras versiones de color.`,
+      );
+    }
+  }
 
   const categoriaSlug = slugify(categoria);
   if (!categorias.has(categoriaSlug)) {
@@ -183,6 +209,8 @@ filas.forEach((f, i) => {
     slug,
     categoria_slug: categoriaSlug,
     marca: f.marca?.trim() || null,
+    color,
+    grupo,
     precio_unitario: precioUnitario,
     precio_mayor: precioMayor,
     imagen: f.imagen?.trim() || null,
@@ -201,6 +229,28 @@ if (errores.length) {
   errores.forEach((e) => console.error("  · " + e));
   console.error("\nCorrige el CSV y vuelve a ejecutar. No se escribió nada.");
   process.exit(1);
+}
+
+if (avisos.length) {
+  console.log(`Avisos (${avisos.length}):`);
+  avisos.forEach((a) => console.log("  · " + a));
+  console.log("");
+}
+
+// Un grupo con una sola fila casi siempre es un color mal escrito.
+const porGrupo = new Map();
+for (const p of productos) {
+  if (!p.grupo) continue;
+  porGrupo.set(p.grupo, (porGrupo.get(p.grupo) ?? 0) + 1);
+}
+const huerfanos = [...porGrupo.entries()].filter(([, n]) => n === 1);
+if (huerfanos.length) {
+  console.log(`Grupos de color con una sola versión (${huerfanos.length}):`);
+  huerfanos.forEach(([g]) => {
+    const p = productos.find((x) => x.grupo === g);
+    console.log(`  · ${p.sku} (grupo ${g}, color ${p.color}) — revisa si le falta su pareja`);
+  });
+  console.log("");
 }
 
 console.log(`Productos válidos:  ${productos.length}`);

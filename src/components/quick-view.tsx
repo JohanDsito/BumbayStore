@@ -16,11 +16,14 @@ import {
   IconoFlecha,
   IconoCarrito,
 } from "@/components/icons";
+import { SelectorColor } from "@/components/color-selector";
 import type { Product, Category } from "@/lib/types";
 
 type Props = {
   producto: Product;
   categoria: Category | null;
+  /** Versiones de color de la misma herramienta. Vacío si no tiene. */
+  variantes: Product[];
 };
 
 /**
@@ -35,7 +38,7 @@ type Props = {
  * completas, modo de uso, preguntas frecuentes— vive en la ficha, y hay un
  * enlace visible hacia ella.
  */
-export function VistaPrevia({ producto, categoria }: Props) {
+export function VistaPrevia({ producto, categoria, variantes }: Props) {
   const router = useRouter();
   const { abrir, unidades } = useCarrito();
   const [copiado, setCopiado] = useState(false);
@@ -185,6 +188,13 @@ export function VistaPrevia({ producto, categoria }: Props) {
                 </span>
               </div>
             )}
+
+            <SelectorColor
+              variantes={variantes}
+              slugActual={producto.slug}
+              tamano="compacto"
+              navegacion="previa"
+            />
 
             <div className="mt-5">
               <AgregarAlPedido producto={producto} tamano="grande" />

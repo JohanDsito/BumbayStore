@@ -22,6 +22,8 @@ function aProducto(fila: Record<string, unknown>): Product {
     slug: String(fila.slug ?? ""),
     categoriaSlug: String(fila.categoria_slug ?? ""),
     marca: (fila.marca as string) ?? null,
+    color: (fila.color as string) ?? null,
+    grupo: (fila.grupo as string) ?? null,
     precioUnitario: Number(fila.precio_unitario ?? 0),
     precioMayor:
       fila.precio_mayor === null || fila.precio_mayor === undefined
@@ -157,18 +159,43 @@ export async function buscarProductos(consulta: string): Promise<Product[]> {
     .map((x) => x.producto);
 }
 
+/**
+ * Versiones de color de la misma herramienta, incluida la actual, en orden
+ * alfabético para que el selector no cambie de posición entre fichas.
+ * Devuelve lista vacía si el producto no tiene variantes.
+ */
+export async function getVariantes(producto: Product): Promise<Product[]> {
+  if (!producto.grupo) return [];
+  const productos = await getProductos();
+  const hermanos = productos.filter((p) => p.grupo === producto.grupo);
+  return hermanos.length > 1
+    ? hermanos.sort((a, b) => (a.color ?? "").localeCompare(b.color ?? "", "es"))
+    : [];
+}
+
 /** Otros productos de la misma categoría, para la ficha de producto. */
 export async function getRelacionados(
   producto: Product,
   limite = 4,
 ): Promise<Product[]> {
   const productos = await getProductos();
+  // Las otras versiones de color no son "relacionados": ya salen en el
+  // selector de la ficha, y repetirlas abajo se ve redundante.
+  const esHermano = (p: Product) =>
+    producto.grupo !== null && p.grupo === producto.grupo;
+
   const mismaCategoria = productos.filter(
-    (p) => p.categoriaSlug === producto.categoriaSlug && p.slug !== producto.slug,
+    (p) =>
+      p.categoriaSlug === producto.categoriaSlug &&
+      p.slug !== producto.slug &&
+      !esHermano(p),
   );
   if (mismaCategoria.length >= limite) return mismaCategoria.slice(0, limite);
   const resto = productos.filter(
-    (p) => p.categoriaSlug !== producto.categoriaSlug && p.slug !== producto.slug,
+    (p) =>
+      p.categoriaSlug !== producto.categoriaSlug &&
+      p.slug !== producto.slug &&
+      !esHermano(p),
   );
   return [...mismaCategoria, ...resto].slice(0, limite);
 }

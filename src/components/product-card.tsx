@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ImagenProducto } from "@/components/product-image";
 import { AgregarAlPedido } from "@/components/add-to-cart";
+import { EtiquetaColor } from "@/components/color-selector";
 import { precio, ahorroPorcentaje } from "@/lib/format";
 import type { Product } from "@/lib/types";
 
@@ -38,9 +39,12 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
       </div>
 
       <div className="esquinas-tecnicas flex flex-1 flex-col p-3.5 sm:p-4">
-        <span className="font-mono text-[10px] tracking-[0.16em] text-carbon-500">
-          {producto.sku}
-        </span>
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-mono text-[10px] tracking-[0.16em] text-carbon-500">
+            {producto.sku}
+          </span>
+          {producto.color && <EtiquetaColor color={producto.color} />}
+        </div>
 
         <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-carbon-100 sm:text-sm">
           {/* El enlace cubre toda la tarjeta salvo el botón, que va por encima. */}
