@@ -45,5 +45,9 @@ next-env.d.ts
 .env*.local
 
 # datos reales del catalogo (no versionar)
-datos/productos.csv
+# Las rondas de fotos que vienen de Drive pesan mucho y no son codigo:
+# viven solo en tu maquina y su destino final es el Storage de Supabase.
+datos/ronda*/
 datos/fotos/
+datos/productos.csv
+datos/productos.borrador.csv
