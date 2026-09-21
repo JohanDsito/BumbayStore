@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Bumbay Tools — sistema de diseño
+   Concepto: catálogo técnico de taller. Chrome oscuro industrial,
+   producto sobre panel claro, datos técnicos en monoespaciada.
+   ============================================================ */
+
+@theme {
+  /* Neutros: del negro de la herramienta al blanco de la ficha técnica */
+  --color-carbon-950: #0a0a0b;
+  --color-carbon-900: #0f0f11;
+  --color-carbon-850: #141417;
+  --color-carbon-800: #1a1a1f;
+  --color-carbon-750: #232329;
+  --color-carbon-700: #2e2e36;
+  --color-carbon-600: #454551;
+  --color-carbon-500: #6b6b78;
+  --color-carbon-400: #8e8e9c;
+  --color-carbon-300: #b4b4bf;
+  --color-carbon-200: #d6d6dd;
+  --color-carbon-100: #ebebef;
+  --color-carbon-50: #f6f6f8;
+
+  /* Naranja técnico: el acento de la marca */
+  --color-naranja-600: #d94a00;
+  --color-naranja-500: #ff5b04;
+  --color-naranja-400: #ff7a2f;
+  --color-naranja-300: #ff9c63;
+
+  /* Semánticos */
+  --color-disponible: #35d07f;
+  --color-alerta: #ffc53d;
+
+  --font-display: var(--font-archivo), "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-archivo), "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius-panel: 0.125rem;
+
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+  --shadow-flotante: 0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7);
+
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-aparecer: aparecer 0.5s var(--ease-salida) both;
+  --animate-subir: subir 0.32s var(--ease-salida) both;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes deslizar-marquesina {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ------------------------------------------------------------
+   Base
+   ------------------------------------------------------------ */
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-carbon-950);
+    color: var(--color-carbon-100);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv05" 1;
+    /* Retícula de papel milimetrado, apenas perceptible: da textura
+       de plano técnico sin competir con el producto. */
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.022) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.022) 1px, transparent 1px);
+    background-size: 72px 72px;
+    background-attachment: fixed;
+  }
+
+  /* Cifras siempre tabulares: los precios de una grilla quedan alineados
+     en columna, como en una lista de precios de verdad. */
+  .font-mono,
+  [class*="font-mono"] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background-color: var(--color-naranja-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-naranja-500);
+    outline-offset: 2px;
+  }
+
+  /* Tipografía de encabezados: condensada y apretada, como señalética */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------
+   Utilidades propias
+   ------------------------------------------------------------ */
+
+@layer utilities {
+  /* Cinta de precaución. La firma visual del sitio: aparece bajo el
+     header y sobre la barra del pedido. */
+  .cinta-precaucion {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-naranja-500) 0 8px,
+      transparent 8px 16px
+    );
+  }
+
+  /* Marcas de esquina tipo dibujo técnico */
+  .esquinas-tecnicas {
+    position: relative;
+  }
+  .esquinas-tecnicas::before,
+  .esquinas-tecnicas::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-carbon-600);
+    transition: border-color 0.25s var(--ease-salida);
+    pointer-events: none;
+  }
+  .esquinas-tecnicas::before {
+    top: 0;
+    left: 0;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+  .esquinas-tecnicas::after {
+    bottom: 0;
+    right: 0;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+  .group:hover .esquinas-tecnicas::before,
+  .group:hover .esquinas-tecnicas::after {
+    border-color: var(--color-naranja-500);
+  }
+
+  /* Oculta la barra de scroll en los carruseles horizontales */
+  .sin-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .sin-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Escalonado de entrada para las grillas */
+  .escalonar > * {
+    animation: var(--animate-aparecer);
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+
+  .marquesina {
+    animation: deslizar-marquesina 40s linear infinite;
+  }
+
+  .texto-equilibrado {
+    text-wrap: balance;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

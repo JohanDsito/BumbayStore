@@ -1,0 +1,24 @@
+/** Formatea un valor en pesos colombianos sin decimales: 189000 -> "$189.000". */
+export function precio(valor: number): string {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(valor);
+}
+
+/** Convierte un texto libre en un slug apto para URL. */
+export function slugify(texto: string): string {
+  return texto
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/** Porcentaje de ahorro del precio al mayor frente al unitario. */
+export function ahorroPorcentaje(unitario: number, mayor: number): number {
+  if (unitario <= 0 || mayor >= unitario) return 0;
+  return Math.round(((unitario - mayor) / unitario) * 100);
+}
