@@ -140,6 +140,30 @@ necesario.
 
 ---
 
+## Departamentos y municipios
+
+El campo de ciudad del pedido autocompleta sobre la division politico-
+administrativa oficial (**Divipola** del DANE): 33 departamentos y 1.122
+municipios.
+
+La lista vive en `src/data/municipios.ts` como archivo del proyecto, no como
+llamada a una API. Son 20 KB, la division cambia cada varios anos, y asi el
+formulario no depende de que un servicio externo responda.
+
+Para actualizarla cuando cambie:
+
+```bash
+curl "https://www.datos.gov.co/resource/gdxc-w37w.json?\$limit=1500" -o divipola.json
+```
+
+y regenerar el archivo con los nombres capitalizados. El encabezado de
+`src/data/municipios.ts` documenta la fuente y la fecha de descarga.
+
+El campo exige que la ciudad salga de esa lista: asi llega siempre escrita
+igual y los pedidos se pueden agrupar por zona para cotizar el envio.
+
+---
+
 ## Publicar en Vercel
 
 1. Sube el repo a GitHub.

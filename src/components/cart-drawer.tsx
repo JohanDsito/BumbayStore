@@ -5,6 +5,7 @@ import { useCarrito } from "@/lib/cart-context";
 import { precio } from "@/lib/format";
 import { enlacePedido } from "@/lib/whatsapp";
 import { imagenUrl } from "@/lib/supabase";
+import { CampoCiudad, esCiudadValida } from "@/components/city-field";
 import {
   IconoCerrar,
   IconoMas,
@@ -62,7 +63,9 @@ export function PanelPedido() {
   // vez de deshabilitar el botón: un botón inerte no explica qué falta.
   const alEnviar = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const faltaNombre = nombre.trim().length < 2;
-    const faltaCiudad = ciudad.trim().length < 2;
+    // La ciudad tiene que salir de la lista del DANE: así llega siempre
+    // escrita igual y se puede agrupar por zona para cotizar el envío.
+    const faltaCiudad = !esCiudadValida(ciudad);
     if (!faltaNombre && !faltaCiudad) return;
 
     e.preventDefault();
@@ -223,17 +226,14 @@ export function PanelPedido() {
                   error={errores.nombre ? "Escribe tu nombre" : null}
                 />
 
-                <Campo
+                <CampoCiudad
                   id="pedido-ciudad"
-                  etiqueta="Ciudad o municipio"
                   valor={ciudad}
                   alCambiar={(v) => {
                     fijarCiudad(v);
                     if (errores.ciudad) setErrores((x) => ({ ...x, ciudad: false }));
                   }}
-                  marcador="Ej: Ipiales, Nariño"
-                  autoComplete="address-level2"
-                  error={errores.ciudad ? "Dinos a dónde enviamos" : null}
+                  error={errores.ciudad ? "Elige tu municipio de la lista" : null}
                 />
 
                 <div>
