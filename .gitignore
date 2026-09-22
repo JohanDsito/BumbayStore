@@ -51,3 +51,6 @@ datos/ronda*/
 datos/fotos/
 datos/productos.csv
 datos/productos.borrador.csv
+
+# scripts temporales de depuracion
+_*.mjs
