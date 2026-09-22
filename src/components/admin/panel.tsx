@@ -23,6 +23,8 @@ export function PanelAdmin() {
   // definitivo: fijarlo dentro del efecto provocaría un render en cascada.
   const [cargando, setCargando] = useState(Boolean(sb));
   const [pestana, setPestana] = useState<Pestana>("productos");
+  // null mientras se comprueba; false si la cuenta entró pero no tiene permiso.
+  const [esAdmin, setEsAdmin] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!sb) return;
@@ -34,6 +36,18 @@ export function PanelAdmin() {
     const { data: sub } = sb.auth.onAuthStateChange((_evento, s) => setSesion(s));
     return () => sub.subscription.unsubscribe();
   }, [sb]);
+
+  // Estar autenticado no basta: el permiso lo da la tabla `admins`. Se
+  // pregunta a la base en vez de suponerlo, y así el panel puede avisar en
+  // lugar de dejar que los guardados fallen en silencio.
+  useEffect(() => {
+    if (!sb || !sesion) {
+      return;
+    }
+    sb.rpc("es_admin").then(({ data, error }) => {
+      setEsAdmin(error ? false : Boolean(data));
+    });
+  }, [sb, sesion]);
 
   if (!sb) {
     return (
@@ -49,6 +63,33 @@ export function PanelAdmin() {
   }
 
   if (!sesion) return <FormularioAcceso />;
+
+  if (esAdmin === null) {
+    return (
+      <p className="py-20 text-center font-mono text-xs text-carbon-500">
+        Comprobando permisos…
+      </p>
+    );
+  }
+
+  if (!esAdmin) {
+    return (
+      <Aviso titulo="Esta cuenta no tiene permisos">
+        <span className="font-mono text-carbon-100">{sesion.user.email}</span> entró
+        correctamente, pero no está en la lista de administradores, así que no
+        puede ver ni modificar nada. Añádela desde el SQL Editor de Supabase
+        con la instrucción que hay al final de{" "}
+        <code className="font-mono text-marca-400">supabase/schema.sql</code>.
+        <button
+          type="button"
+          onClick={() => sb.auth.signOut()}
+          className="mt-4 block w-full border border-carbon-700 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+        >
+          Salir
+        </button>
+      </Aviso>
+    );
+  }
 
   return (
     <div>

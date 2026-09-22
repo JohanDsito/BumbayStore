@@ -171,7 +171,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
     }
     setGuardando(true);
 
-    const { error } = await sb
+    const { data, error } = await sb
       .from("productos")
       .update({
         nombre: b.nombre.trim(),
@@ -187,7 +187,8 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
         beneficios: textoALista(b.beneficios),
         faq: textoAFaq(b.faq),
       })
-      .eq("id", fila.id);
+      .eq("id", fila.id)
+      .select("id");
 
     if (error) {
       setMensaje(error.message);
@@ -195,10 +196,18 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
       return;
     }
 
+    // Sin permiso, la base no devuelve error: simplemente no modifica ninguna
+    // fila. Hay que mirar el resultado para no decir "Guardado" en falso.
+    if (!data || data.length === 0) {
+      setMensaje("No se guardó: esta cuenta no tiene permisos de escritura.");
+      setGuardando(false);
+      return;
+    }
+
     // El catálogo está prerenderizado: sin esto el cambio no se vería hasta
     // la próxima reconstrucción del sitio.
-    const { data } = await sb.auth.getSession();
-    const token = data.session?.access_token;
+    const { data: sesion } = await sb.auth.getSession();
+    const token = sesion.session?.access_token;
     if (token) {
       await fetch("/api/revalidar", {
         method: "POST",
