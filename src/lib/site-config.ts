@@ -6,8 +6,9 @@ export const site = {
   nombre: "Bumbay Tools",
   nombreLargo: "Bumbay Tools — Herramientas inalámbricas",
   descripcion:
-    "Importador y distribuidor de herramientas inalámbricas profesionales. Taladros, pulidoras, combos y herramienta manual con precio al por mayor.",
-  ciudad: "Bogotá",
+    "Importador y distribuidor de herramientas inalámbricas profesionales de 128V. Taladros, pulidoras, llaves de impacto, combos y herramienta manual a precio de distribuidor, con envío a toda Colombia.",
+  /** Ciudad de operación. Sale del mismo sitio que la dirección del pie. */
+  ciudad: process.env.NEXT_PUBLIC_CIUDAD ?? "Pasto",
   pais: "Colombia",
   /** Se configura en Vercel como NEXT_PUBLIC_SITE_URL. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://bumbaytools.com",
@@ -27,6 +28,3 @@ export const site = {
   },
   moneda: "COP",
 } as const;
-
-/** Texto del badge de mayoreo en las tarjetas. */
-export const LABEL_MAYOR = "Precio al mayor";

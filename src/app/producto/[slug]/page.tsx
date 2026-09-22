@@ -11,7 +11,7 @@ import {
 } from "@/lib/products";
 import { imagenUrl } from "@/lib/supabase";
 import { site } from "@/lib/site-config";
-import { precio, ahorroPorcentaje } from "@/lib/format";
+import { precio } from "@/lib/format";
 import { enlaceConsulta } from "@/lib/whatsapp";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
@@ -37,9 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Descripción corta y con el dato que importa: qué es y cuánto cuesta.
   const descripcion = producto.fichaTecnica
-    ? `${producto.fichaTecnica.slice(0, 150).trim()}… Desde ${precio(
-        producto.precioMayor ?? producto.precioUnitario,
-      )} al por mayor. Envíos a toda Colombia.`
+    ? `${producto.fichaTecnica.slice(0, 150).trim()}… ${precio(
+        producto.precioUnitario,
+      )}. Envíos a toda Colombia.`
     : `${producto.nombre} — ${precio(producto.precioUnitario)}. ${site.nombre}, ${site.ciudad}.`;
 
   return {
@@ -84,13 +84,6 @@ export default async function FichaProducto({ params }: Props) {
         : [];
 
   const imagen = imagenUrl(producto.imagen ?? galeria[0] ?? null);
-  const ahorro =
-    producto.precioMayor !== null
-      ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
-      : 0;
-  // Un "−0%" resta credibilidad; sin ahorro real no se anuncia mayoreo.
-  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
-
   // --- Datos estructurados -------------------------------------------------
   // Esto es lo que permite que Google muestre foto y precio en el resultado,
   // y que un asistente de IA sepa qué vendes y a cuánto.
@@ -218,11 +211,6 @@ export default async function FichaProducto({ params }: Props) {
                 nombre={producto.nombre}
                 sku={producto.sku}
               />
-              {hayMayoreo && (
-                <span className="pointer-events-none absolute left-0 top-4 z-10 bg-marca-500 py-1.5 pl-3 pr-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
-                  Precio al mayor −{ahorro}%
-                </span>
-              )}
             </div>
           </div>
 
@@ -251,33 +239,17 @@ export default async function FichaProducto({ params }: Props) {
               </span>
             </div>
 
-            {/* Precios: ambos a la vista, que es lo que decide la compra */}
-            <div className="mt-5 border border-carbon-800 bg-carbon-900">
-              <div className="flex flex-wrap items-stretch divide-carbon-800 sm:divide-x">
-                <div className="flex-1 p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-                    Precio unidad
-                  </p>
-                  <p className="mt-1.5 font-mono text-3xl font-extrabold leading-none text-carbon-50">
-                    {precio(producto.precioUnitario)}
-                  </p>
-                </div>
-
-                {producto.precioMayor !== null && (
-                  <div className="flex-1 border-t border-carbon-800 bg-marca-500/[0.06] p-5 sm:border-t-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">
-                      Precio al por mayor
-                    </p>
-                    <p className="mt-1.5 font-mono text-3xl font-extrabold leading-none text-marca-400">
-                      {precio(producto.precioMayor)}
-                    </p>
-                    <p className="mt-2 text-[11px] leading-relaxed text-carbon-400">
-                      Ahorras {precio(producto.precioUnitario - producto.precioMayor)} por
-                      unidad. Consúltanos la cantidad mínima.
-                    </p>
-                  </div>
-                )}
-              </div>
+            {/* Precio único: Bumbay maneja una sola tarifa para todos. */}
+            <div className="mt-5 border border-carbon-800 bg-carbon-900 p-5">
+              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+                Precio
+              </p>
+              <p className="mt-1.5 font-mono text-4xl font-extrabold leading-none text-carbon-50">
+                {precio(producto.precioUnitario)}
+              </p>
+              <p className="mt-2.5 text-[12px] leading-relaxed text-carbon-400">
+                Precio de distribuidor, igual para todos. Envíos a toda Colombia.
+              </p>
             </div>
 
             <SelectorColor variantes={variantes} slugActual={producto.slug} />

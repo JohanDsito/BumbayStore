@@ -25,15 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const productos = await getProductosPorCategoria(slug);
   const desde = productos.length
-    ? Math.min(...productos.map((p) => p.precioMayor ?? p.precioUnitario))
+    ? Math.min(...productos.map((p) => p.precioUnitario))
     : 0;
 
   const descripcion =
     categoria.descripcion ??
-    `${categoria.nombre} al por mayor en ${site.ciudad}. ${productos.length} referencias disponibles.`;
+    `${categoria.nombre} a precio de distribuidor en ${site.ciudad}. ${productos.length} referencias disponibles.`;
 
   return {
-    title: `${categoria.nombre} al por mayor`,
+    title: `${categoria.nombre} — precio de distribuidor`,
     description: desde
       ? `${descripcion} Desde ${precio(desde)}. Envíos a toda Colombia.`
       : descripcion,

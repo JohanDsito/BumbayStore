@@ -25,10 +25,6 @@ function aProducto(fila: Record<string, unknown>): Product {
     color: (fila.color as string) ?? null,
     grupo: (fila.grupo as string) ?? null,
     precioUnitario: Number(fila.precio_unitario ?? 0),
-    precioMayor:
-      fila.precio_mayor === null || fila.precio_mayor === undefined
-        ? null
-        : Number(fila.precio_mayor),
     imagen: (fila.imagen as string) ?? null,
     imagenMini: (fila.imagen_mini as string) ?? null,
     imagenes: (fila.imagenes as string[]) ?? [],

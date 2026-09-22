@@ -23,19 +23,12 @@ export function useCarrito() {
       (s, l) => s + l.precioUnitario * l.cantidad,
       0,
     );
-    // Cuánto costaría el pedido si todo se cobrara al precio de mayorista.
-    const totalMayor = estado.lineas.reduce(
-      (s, l) => s + (l.precioMayor ?? l.precioUnitario) * l.cantidad,
-      0,
-    );
-
     return {
       lineas: estado.lineas as CartLine[],
       comentario: estado.comentario,
       abierto: estado.abierto,
       unidades,
       total,
-      totalMayor,
       cantidadDe: (slug: string) =>
         estado.lineas.find((l) => l.slug === slug)?.cantidad ?? 0,
       agregar: (producto: Product, cantidad?: number) =>

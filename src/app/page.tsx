@@ -122,7 +122,7 @@ function Portico({
               <IconoFlecha className="h-4 w-4" />
             </a>
             <a
-              href={enlaceGeneral("Hola, quisiera la lista de precios al por mayor.")}
+              href={enlaceGeneral("Hola, quisiera la lista de precios de Bumbay Tools.")}
               target="_blank"
               rel="noopener noreferrer"
               className="flex h-12 items-center justify-center gap-2 border border-carbon-700 px-7 text-sm font-semibold tracking-tight text-carbon-100 transition-colors hover:border-disponible hover:text-disponible"
@@ -179,9 +179,9 @@ function BloqueMayorista() {
             ¿Tienes ferretería o taller?
           </h2>
           <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-carbon-400">
-            Cada producto del catálogo muestra su precio al por mayor. Escríbenos
-            con las cantidades que necesitas y te armamos la cotización con
-            precio de distribuidor, despacho a toda Colombia y respaldo de
+            Manejamos un solo precio, de distribuidor, igual para todos: el que
+            ves en el catálogo. Arma tu pedido y escríbenos con las cantidades
+            que necesitas para coordinar despacho a toda Colombia y respaldo de
             garantía.
           </p>
         </div>

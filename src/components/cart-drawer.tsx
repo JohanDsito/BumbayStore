@@ -20,7 +20,6 @@ export function PanelPedido() {
     lineas,
     comentario,
     total,
-    totalMayor,
     unidades,
     abierto,
     cerrar,
@@ -52,7 +51,6 @@ export function PanelPedido() {
 
   if (!abierto) return null;
 
-  const ahorroPosible = total - totalMayor;
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true" aria-label="Tu pedido">
@@ -204,25 +202,6 @@ export function PanelPedido() {
             </div>
 
             <footer className="shrink-0 border-t border-carbon-800 bg-carbon-900 p-4">
-              {ahorroPosible > 0 && (
-                <div className="mb-3 flex items-start gap-2.5 border border-marca-500/30 bg-marca-500/[0.07] p-3">
-                  <span aria-hidden className="mt-px font-mono text-sm text-marca-400">
-                    ▲
-                  </span>
-                  <p className="text-[12px] leading-relaxed text-carbon-300">
-                    A precio al mayor este pedido sería{" "}
-                    <span className="font-mono font-semibold text-marca-400">
-                      {precio(totalMayor)}
-                    </span>
-                    . Consulta por WhatsApp si aplicas: podrías ahorrar{" "}
-                    <span className="font-mono font-semibold text-carbon-100">
-                      {precio(ahorroPosible)}
-                    </span>
-                    .
-                  </p>
-                </div>
-              )}
-
               <div className="mb-3 flex items-end justify-between">
                 <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-carbon-500">
                   Total

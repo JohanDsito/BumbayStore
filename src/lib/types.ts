@@ -28,10 +28,11 @@ export type Product = {
    * un selector para saltar entre ellos.
    */
   grupo: string | null;
-  /** Precio unitario (COP, sin decimales). */
+  /**
+   * Precio de venta (COP, sin decimales). Es el único precio: Bumbay maneja
+   * una sola tarifa, ya a nivel mayorista, igual para todos.
+   */
   precioUnitario: number;
-  /** Precio al por mayor. null = no aplica mayoreo a este producto. */
-  precioMayor: number | null;
   /** Ruta de la imagen principal en el bucket de Supabase. */
   imagen: string | null;
   /**
@@ -63,7 +64,6 @@ export type CartLine = {
   sku: string;
   nombre: string;
   precioUnitario: number;
-  precioMayor: number | null;
   imagen: string | null;
   cantidad: number;
 };

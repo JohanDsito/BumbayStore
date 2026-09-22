@@ -19,8 +19,6 @@ export function enlacePedido(
     return `• ${l.cantidad} x ${l.nombre}\n  ${l.sku} — ${precio(l.precioUnitario)} c/u = ${importe}`;
   });
 
-  const hayMayor = lineas.some((l) => l.precioMayor !== null);
-
   const partes = [
     `*Nuevo pedido — ${site.nombre}*`,
     "",
@@ -29,10 +27,6 @@ export function enlacePedido(
     `*Total: ${precio(total)}*`,
     `${lineas.length} ${lineas.length === 1 ? "producto" : "productos"} · ${sumaUnidades(lineas)} ${sumaUnidades(lineas) === 1 ? "unidad" : "unidades"}`,
   ];
-
-  if (hayMayor) {
-    partes.push("", "_Quisiera saber si aplico a precio al por mayor._");
-  }
 
   if (comentario.trim()) {
     partes.push("", `*Comentarios:*`, comentario.trim());

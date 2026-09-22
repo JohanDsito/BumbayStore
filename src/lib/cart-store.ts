@@ -115,7 +115,6 @@ export function agregar(producto: Product, cantidad = 1) {
           sku: producto.sku,
           nombre: producto.nombre,
           precioUnitario: producto.precioUnitario,
-          precioMayor: producto.precioMayor,
           imagen: producto.imagen,
           cantidad,
         },

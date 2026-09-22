@@ -4,11 +4,16 @@
  *   node --env-file=.env.local scripts/importar-productos.mjs datos/productos.csv
  *
  * Añade --simular para revisar qué haría sin escribir nada en la base.
+ * Añade --limpiar para borrar además los productos que ya no estén en el CSV
+ * (útil al renombrar un SKU: el upsert crea la fila nueva pero deja la vieja).
  *
  * Columnas esperadas (el orden no importa, los nombres sí):
- *   sku, nombre, categoria, marca, color, grupo, precio_unitario, precio_mayor,
- *   imagen, imagen_mini, ficha_tecnica, especificaciones, modo_uso, beneficios,
- *   faq, destacado
+ *   sku, nombre, categoria, marca, color, grupo, precio_unitario, imagen,
+ *   imagen_mini, imagenes, ficha_tecnica, especificaciones, modo_uso,
+ *   beneficios, faq, destacado
+ *
+ * Bumbay maneja un solo precio, ya a nivel de distribuidor: no hay columna de
+ * precio al por mayor.
  *
  * Versiones de color: dos filas con el mismo `grupo` y distinto `color` son la
  * misma herramienta en colores diferentes; la ficha muestra un selector para
@@ -28,6 +33,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const RUTA = process.argv[2] ?? "datos/productos.csv";
 const SIMULAR = process.argv.includes("--simular");
+const LIMPIAR = process.argv.includes("--limpiar");
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const LLAVE = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -159,7 +165,6 @@ filas.forEach((f, i) => {
   const nombre = f.nombre?.trim();
   const categoria = f.categoria?.trim();
   const precioUnitario = aEntero(f.precio_unitario);
-  const precioMayor = aEntero(f.precio_mayor);
 
   if (!sku) return errores.push(`Fila ${linea}: falta el SKU`);
   if (skusVistos.has(sku))
@@ -169,10 +174,6 @@ filas.forEach((f, i) => {
   if (!categoria) return errores.push(`Fila ${linea} (${sku}): falta la categoría`);
   if (!precioUnitario)
     return errores.push(`Fila ${linea} (${sku}): precio_unitario inválido o en cero`);
-  if (precioMayor && precioMayor > precioUnitario)
-    return errores.push(
-      `Fila ${linea} (${sku}): el precio al mayor (${precioMayor}) es mayor que el unitario (${precioUnitario})`,
-    );
 
   // Versión de color. Sin `grupo` explícito lo deducimos del SKU.
   const color = f.color?.trim() || null;
@@ -213,7 +214,6 @@ filas.forEach((f, i) => {
     color,
     grupo,
     precio_unitario: precioUnitario,
-    precio_mayor: precioMayor,
     imagen: f.imagen?.trim() || null,
     imagen_mini: f.imagen_mini?.trim() || null,
     imagenes: aLista(f.imagenes),
@@ -260,7 +260,6 @@ console.log(`Productos válidos:  ${productos.length}`);
 console.log(`Categorías nuevas:  ${categorias.size}`);
 console.log(`Destacados:         ${productos.filter((p) => p.destacado).length}`);
 console.log(`Sin imagen:         ${productos.filter((p) => !p.imagen).length}`);
-console.log(`Con precio mayor:   ${productos.filter((p) => p.precio_mayor).length}\n`);
 
 if (SIMULAR) {
   console.log("Modo simulación. Ejemplo del primer producto:\n");
@@ -305,6 +304,28 @@ A la tabla le falta una columna. Vuelve a ejecutar supabase/schema.sql
     process.exit(1);
   }
   console.log(`  ${Math.min(i + LOTE, productos.length)} / ${productos.length}`);
+}
+
+// Filas que quedaron en la base y ya no estan en el CSV. Aparecen sobre todo
+// al renombrar un SKU: el upsert inserta la nueva y la anterior se queda
+// publicada sin que nadie lo note.
+const vigentes = new Set(productos.map((p) => p.sku));
+const { data: enBase } = await sb.from("productos").select("sku, nombre");
+const sobrantes = (enBase ?? []).filter((p) => !vigentes.has(p.sku));
+
+if (sobrantes.length > 0) {
+  console.log(`
+Hay ${sobrantes.length} productos en la base que no estan en el CSV:`);
+  sobrantes.forEach((p) => console.log(`  - ${p.sku} | ${p.nombre}`));
+  if (LIMPIAR) {
+    const { error } = await sb
+      .from("productos")
+      .delete()
+      .in("sku", sobrantes.map((p) => p.sku));
+    console.log(error ? `  Error al borrarlos: ${error.message}` : "  Eliminados.");
+  } else {
+    console.log("  Siguen publicados. Vuelve a ejecutar con --limpiar para borrarlos.");
+  }
 }
 
 console.log("\nListo. El catálogo quedó cargado en Supabase.");

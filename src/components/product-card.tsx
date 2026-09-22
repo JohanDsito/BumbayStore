@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ImagenProducto } from "@/components/product-image";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { EtiquetaColor } from "@/components/color-selector";
-import { precio, ahorroPorcentaje } from "@/lib/format";
+import { precio } from "@/lib/format";
 import type { Product } from "@/lib/types";
 
 type Props = {
@@ -13,14 +13,6 @@ type Props = {
 };
 
 export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Props) {
-  // Sin ahorro real no hay nada que anunciar: un badge que diga "−0%" resta
-  // credibilidad en vez de sumarla.
-  const ahorro =
-    producto.precioMayor !== null
-      ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
-      : 0;
-  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
-
   return (
     <article
       style={{ "--i": indice } as React.CSSProperties}
@@ -34,11 +26,6 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
           prioridad={prioridad}
         />
 
-        {hayMayoreo && (
-          <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
-            Mayor −{ahorro}%
-          </span>
-        )}
       </div>
 
       <div className="esquinas-tecnicas flex flex-1 flex-col p-3.5 sm:p-4">
@@ -57,28 +44,10 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
         </h3>
 
         <div className="mt-auto pt-3.5">
-          {/* En celular los dos precios se apilan: puestos en una sola fila no
-              caben en una tarjeta de media pantalla y desbordan el layout. */}
-          <div className="flex flex-col gap-1.5 sm:flex-row sm:items-end sm:justify-between sm:gap-2">
-            <div className="min-w-0">
-              <span className="block font-mono text-base font-semibold leading-none text-carbon-50 sm:text-lg">
-                {precio(producto.precioUnitario)}
-              </span>
-              <span className="mt-1 block text-[10px] uppercase tracking-[0.12em] text-carbon-500">
-                Unidad
-              </span>
-            </div>
-
-            {producto.precioMayor !== null && (
-              <div className="min-w-0 sm:text-right">
-                <span className="block font-mono text-sm font-semibold leading-none text-marca-400">
-                  {precio(producto.precioMayor)}
-                </span>
-                <span className="mt-1 block text-[10px] uppercase tracking-[0.12em] text-carbon-500">
-                  Al mayor
-                </span>
-              </div>
-            )}
+          <div className="min-w-0">
+            <span className="block font-mono text-lg font-semibold leading-none text-carbon-50">
+              {precio(producto.precioUnitario)}
+            </span>
           </div>
 
           <div className="relative z-10 mt-3.5">

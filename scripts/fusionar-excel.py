@@ -54,32 +54,44 @@ EQUIVALENCIAS = {
     "ROSCADORA-(AZ)": "BT-013",
 }
 
-# Nombre en la hoja PRECIOS -> SKU provisional. Los rótulos no coinciden con
-# los del Excel de producto, así que se emparejan aparte.
-PRECIOS_A_SKU = {
-    "PULIDORA NORMAL amarilla": "BT-011-AM",
-    "PULIDORA NORMAL azul": "BT-011-AZ",
-    "PULIDORA NORMAL negra con gris": "BT-011-GR",
-    "NIVEL 16L amarillo con tripode y metro": "BT-008-AM",
-    "NIVEL 16L azul con tripode y metro": "BT-008-AZ",
-    # De las llaves de 350 y 800 solo hay un juego de fotos, así que la
-    # versión amarilla es la que se publica; la azul espera fotos propias.
-    "LLAVE IMPACTO 350 N.M AMARILLA (1/2)": "BT-006",
-    "LLAVE IMPACTO 800 N.M AMARILLA (1/2)": "BT-007",
-    "LLAVE IMPACTO 1350 N.M AMARILLA (3/4)": "BT-004-AM",
-    "LLAVE IMPACTO 1350 N.M AZUL (3/4)": "BT-004-AZ",
-    "LLAVE IMPACTO 2100 N.M AMARILLA (3/4)": "BT-005-AM",
-    "LLAVE IMPACTO 2100 N.M AZUL (3/4)": "BT-005-AZ",
-    "QUINTICOMBO AMARILLO": "BT-012-AM",
-    "QUINTICOMBO AZUL": "BT-012-AZ",
-    "PISTOLA PARA PINTAR AMARILLA": "BT-010",
-    "PISTOLA DE CLAVOS INALAMBRICA": "BT-009",
-    "CAJA DE HERRAMIENTA MANUAL": "BT-001",
-    "HIDROLAVADORA PRO": "BT-003",
-    "ROSCADORA INALAMBRICA azul": "BT-013",
-    "BRUSSLESH 40N.M": "BT-014",
+# Precio de venta por SKU, en MILES de pesos (200 -> $200.000).
+#
+# Bumbay maneja una sola tarifa, ya a nivel de distribuidor, igual para todos:
+# no hay un segundo precio "al por mayor". Esta lista reemplaza a la hoja
+# PRECIOS del Excel, que traía dos columnas y quedó obsoleta.
+PRECIOS_MILES = {
+    "PULI-(A)": 200,
+    "PULI-(AZ)": 200,
+    "PULI-(N-GRIS)": 200,
+    "NIVEL-16L-(A)": 270,
+    "NIVEL-16L-(AZ)": 270,
+    "LLAVE-350-(A)": 215,
+    "LLAVE-350-(AZ)": 215,
+    "LLAVE-800-(A)": 300,
+    "LLAVE-800-(AZ)": 300,
+    "LLAVE-1350-(A)": 410,
+    "LLAVE-1350-(AZ)": 410,
+    "LLAVE-2100-(A)": 550,
+    "LLAVE-2100-(AZ)": 550,
+    "COMBO-5-(A)": 700,
+    "COMBO-5-(AZ)": 700,
+    "TAL-BRUSH-40-(A)": 185,
+    "TAL-BRUSH-40-(AZ)": 185,
+    "PISTOLA-PINT-(A)": 165,
+    "PISTOLA-CLAV-(AZ)": 500,
+    "CAJA-HERRAMIENTA": 330,
+    "HIDRO-NEG/NAR": 200,
+    "ROSCADORA-(AZ)": 600,
+    # Sin fotos todavía: quedan listados para cuando lleguen.
+    "ADAP-SIERRA": None,
+    "COMBO-PULI-SIERRA": 250,
 }
 
+# SKU provisional del borrador de fotos -> SKU real, para los productos que no
+# aparecen en la hoja Proforma del Excel.
+SKU_SUELTOS = {
+    "BT-003": "HIDRO-NEG/NAR",
+}
 
 # ---------------------------------------------------------------------------
 # Lectura del .xlsx
@@ -228,16 +240,6 @@ def main():
 
     hojas = leer_xlsx(ruta_excel)
     proforma = hojas.get("Proforma Invoice", [])
-    hoja_precios = hojas.get("PRECIOS", [])
-
-    # --- Precios ---
-    precios = {}
-    for fila in hoja_precios:
-        nombre = fila.get(3, "")
-        sku = PRECIOS_A_SKU.get(nombre)
-        if not sku:
-            continue
-        precios[sku] = (a_entero(fila.get(5)), a_entero(fila.get(6)))
 
     # --- Contenido de producto ---
     contenido = {}
@@ -265,20 +267,22 @@ def main():
 
     sin_precio, sin_contenido = [], []
     for fila in filas:
-        sku = fila["sku"]
-        c = contenido.get(sku)
-        p = precios.get(sku)
+        provisional = fila["sku"]
+        c = contenido.get(provisional)
 
-        if p and p[0]:
-            fila["precio_unitario"] = str(p[0])
-            fila["precio_mayor"] = str(p[1]) if p[1] else ""
+        # El SKU real manda sobre el provisional del borrador de fotos.
+        real = c["sku_real"] if c else SKU_SUELTOS.get(provisional, provisional)
+        fila["sku"] = real
+
+        miles = PRECIOS_MILES.get(real)
+        if miles:
+            fila["precio_unitario"] = str(miles * 1000)
         else:
-            sin_precio.append(f'{sku}  {fila["nombre"]}')
+            sin_precio.append(f'{real}  {fila["nombre"]}')
+        # Precio único: la columna se conserva vacía por compatibilidad.
+        fila["precio_mayor"] = ""
 
         if c:
-            # El SKU real del Excel manda sobre el provisional.
-            base = c["sku_real"]
-            fila["sku"] = base
             if c["especificaciones"]:
                 fila["especificaciones"] = " | ".join(
                     f"{e}: {v}" for e, v in c["especificaciones"]
@@ -299,7 +303,7 @@ def main():
             fila["beneficios"] = " | ".join(c["beneficios"])
             fila["faq"] = " | ".join(f"{q}:: {r}" for q, r in c["faq"])
         else:
-            sin_contenido.append(f'{sku}  {fila["nombre"]}')
+            sin_contenido.append(f'{real}  {fila["nombre"]}')
 
     # El grupo de color usa el SKU real, que ahora puede haber cambiado.
     por_grupo = {}
@@ -325,7 +329,6 @@ def main():
     print(f"  con especificaciones:  {sum(1 for f in publicables if f['especificaciones'])}")
     print(f"  con modo de uso:       {sum(1 for f in publicables if f['modo_uso'])}")
     print(f"  con preguntas frec.:   {sum(1 for f in publicables if f['faq'])}")
-    print(f"  con precio al mayor:   {sum(1 for f in publicables if f['precio_mayor'])}")
 
     if sin_precio:
         print(f"\nSIN PRECIO — quedan fuera del catálogo ({len(sin_precio)}):")

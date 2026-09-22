@@ -16,9 +16,3 @@ export function slugify(texto: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
-/** Porcentaje de ahorro del precio al mayor frente al unitario. */
-export function ahorroPorcentaje(unitario: number, mayor: number): number {
-  if (unitario <= 0 || mayor >= unitario) return 0;
-  return Math.round(((unitario - mayor) / unitario) * 100);
-}

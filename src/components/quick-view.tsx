@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCarrito } from "@/lib/cart-context";
 import { ImagenProducto } from "@/components/product-image";
 import { AgregarAlPedido } from "@/components/add-to-cart";
-import { precio, ahorroPorcentaje } from "@/lib/format";
+import { precio } from "@/lib/format";
 import { enlaceConsulta } from "@/lib/whatsapp";
 import { site } from "@/lib/site-config";
 import {
@@ -74,13 +74,6 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
     }
   };
 
-  const ahorro =
-    producto.precioMayor !== null
-      ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
-      : 0;
-  // Un "−0%" resta credibilidad; sin ahorro real no se anuncia mayoreo.
-  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
-
   return (
     <div
       className="fixed inset-0 z-[45] flex items-end justify-center sm:items-center sm:p-6"
@@ -146,11 +139,6 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               prioridad
               sizes="(max-width: 640px) 100vw, 400px"
             />
-            {hayMayoreo && (
-              <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
-                Mayor −{ahorro}%
-              </span>
-            )}
           </div>
 
           {/* --- Información --- */}
@@ -176,20 +164,10 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
                 {precio(producto.precioUnitario)}
               </span>
               <span className="mt-1.5 block text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-                Precio unidad
+                Precio
               </span>
             </div>
 
-            {producto.precioMayor !== null && (
-              <div className="mt-3 border-l-2 border-marca-500 bg-marca-500/[0.08] px-3 py-2.5">
-                <span className="font-mono text-lg font-bold leading-none text-marca-400">
-                  {precio(producto.precioMayor)}
-                </span>
-                <span className="ml-2 text-[11px] uppercase tracking-[0.1em] text-marca-300">
-                  al mayor
-                </span>
-              </div>
-            )}
 
             <SelectorColor
               variantes={variantes}
