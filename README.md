@@ -164,6 +164,49 @@ igual y los pedidos se pueden agrupar por zona para cotizar el envio.
 
 ---
 
+## Panel de administración
+
+En `/admin`. Está fuera del índice de Google y bloqueado en `robots.txt`.
+
+### Crear tu usuario
+
+1. Panel de Supabase → **Authentication** → **Users** → **Add user**
+2. Correo y contraseña, y marca *Auto Confirm User*
+3. Entra en `tudominio.com/admin` con esos datos
+
+No hay registro público: el único usuario es el que creas ahí a mano.
+
+### Qué se puede hacer
+
+| Sección | Para qué |
+|---|---|
+| **Productos** | Precio, foto de portada, marcar agotado o destacado, y editar ficha técnica, especificaciones, modo de uso, beneficios y preguntas frecuentes. |
+| **Pedidos** | Cada pedido que alguien inició, aunque nunca te haya escrito. Con nombre, ciudad, productos y total, más las ciudades que más piden. |
+| **Búsquedas** | Lo que la gente busca. Lo importante es la columna de las que **no** encontraron nada: es demanda medida. |
+
+Los campos largos usan el mismo formato del CSV, para no tener dos
+convenciones que recordar:
+
+- especificaciones → `Voltaje: 128V | Motor: Brushless`
+- beneficios → `Uno | Dos | Tres`
+- preguntas → `¿Pregunta?:: Respuesta | ¿Otra?:: Otra`
+
+### Por qué los cambios tardan unos segundos
+
+El catálogo se prerenderiza para que Google reciba el HTML completo, así que
+un cambio en la base no se ve solo. Al guardar, el panel pide a Next que
+regenere las páginas afectadas (`/api/revalidar`), y la siguiente visita ya
+trae lo nuevo. Se conserva el SEO sin renunciar a editar en vivo.
+
+### Agotado no es despublicar
+
+Un producto agotado sigue publicado y sigue indexado: aparece en el catálogo
+en gris, con su precio tachado y sin botón de compra, e invita a escribir por
+WhatsApp para que avisen cuando vuelva. Quitarlo y reponerlo cada semana
+destruiría su posicionamiento, que cuesta meses construir.
+
+---
+
 ## Publicar en Vercel
 
 1. Sube el repo a GitHub.

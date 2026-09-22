@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { buscarProductos, getCategorias } from "@/lib/products";
 import { GrillaProductos } from "@/components/product-grid";
+import { RegistrarBusqueda } from "@/components/search-logger";
 import { enlaceGeneral } from "@/lib/whatsapp";
 import { IconoWhatsApp } from "@/components/icons";
 
@@ -25,6 +26,9 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+      {consulta && (
+        <RegistrarBusqueda consulta={consulta} resultados={resultados.length} />
+      )}
       <header className="border-b border-carbon-800 py-8">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
           Búsqueda

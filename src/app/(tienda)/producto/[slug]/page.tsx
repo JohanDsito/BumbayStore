@@ -116,7 +116,9 @@ export default async function FichaProducto({ params }: Props) {
       url: `${site.url}/producto/${producto.slug}`,
       priceCurrency: site.moneda,
       price: producto.precioUnitario,
-      availability: "https://schema.org/InStock",
+      availability: producto.agotado
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: { "@type": "Organization", name: site.nombre },
     },
@@ -233,9 +235,18 @@ export default async function FichaProducto({ params }: Props) {
             </h1>
 
             <div className="mt-6 flex items-center gap-2">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-disponible" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-disponible">
-                Disponible
+              <span
+                aria-hidden
+                className={`h-1.5 w-1.5 rounded-full ${
+                  producto.agotado ? "bg-carbon-500" : "bg-disponible"
+                }`}
+              />
+              <span
+                className={`font-mono text-[11px] uppercase tracking-[0.14em] ${
+                  producto.agotado ? "text-carbon-400" : "text-disponible"
+                }`}
+              >
+                {producto.agotado ? "Agotado por ahora" : "Disponible"}
               </span>
             </div>
 
@@ -268,7 +279,9 @@ export default async function FichaProducto({ params }: Props) {
               </a>
 
               <p className="text-center font-mono text-[10px] text-carbon-500">
-                Agrega al pedido y envíanos todo junto por WhatsApp
+                {producto.agotado
+                  ? "Escríbenos y te avisamos cuando vuelva a entrar"
+                  : "Agrega al pedido y envíanos todo junto por WhatsApp"}
               </p>
             </div>
 

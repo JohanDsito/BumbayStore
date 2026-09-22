@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // /buscar genera infinitas URLs sin valor de indexación.
-        disallow: ["/buscar"],
+        disallow: ["/buscar", "/admin", "/api"],
       },
     ],
     sitemap: `${site.url}/sitemap.xml`,

@@ -59,6 +59,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: true,
+    agotado: false,
     activo: true,
   },
   {
@@ -107,6 +108,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: true,
+    agotado: false,
     activo: true,
   },
   {
@@ -156,6 +158,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: true,
+    agotado: false,
     activo: true,
   },
   {
@@ -205,6 +208,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -255,6 +259,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: true,
+    agotado: false,
     activo: true,
   },
   {
@@ -304,6 +309,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -352,6 +358,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -400,6 +407,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -443,6 +451,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -486,6 +495,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -527,6 +537,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: true,
+    agotado: false,
     activo: true,
   },
   {
@@ -569,6 +580,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
   {
@@ -624,6 +636,7 @@ export const productosSeed: Product[] = [
       },
     ],
     destacado: false,
+    agotado: false,
     activo: true,
   },
 ];

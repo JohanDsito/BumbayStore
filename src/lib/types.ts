@@ -49,6 +49,12 @@ export type Product = {
   beneficios: string[];
   faq: Faq[];
   destacado: boolean;
+  /**
+   * Sin existencias. No es lo mismo que `activo`: un producto agotado sigue
+   * publicado e indexado —despublicarlo y republicarlo cada semana arruina su
+   * posicionamiento— pero no se puede agregar al pedido.
+   */
+  agotado: boolean;
   activo: boolean;
 };
 

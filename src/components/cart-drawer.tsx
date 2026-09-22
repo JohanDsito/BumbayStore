@@ -6,6 +6,7 @@ import { precio } from "@/lib/format";
 import { enlacePedido } from "@/lib/whatsapp";
 import { imagenUrl } from "@/lib/supabase";
 import { CampoCiudad, esCiudadValida } from "@/components/city-field";
+import { registrarPedido } from "@/lib/registro";
 import {
   IconoCerrar,
   IconoMas,
@@ -66,7 +67,13 @@ export function PanelPedido() {
     // La ciudad tiene que salir de la lista del DANE: así llega siempre
     // escrita igual y se puede agrupar por zona para cotizar el envío.
     const faltaCiudad = !esCiudadValida(ciudad);
-    if (!faltaNombre && !faltaCiudad) return;
+
+    if (!faltaNombre && !faltaCiudad) {
+      // Se guarda antes de salir hacia WhatsApp. El enlace abre otra pestaña,
+      // así que esta página sigue viva y da tiempo a que termine.
+      void registrarPedido({ nombre, ciudad, comentario, total, lineas });
+      return;
+    }
 
     e.preventDefault();
     setErrores({ nombre: faltaNombre, ciudad: faltaCiudad });

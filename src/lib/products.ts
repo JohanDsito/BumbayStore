@@ -34,6 +34,7 @@ function aProducto(fila: Record<string, unknown>): Product {
     beneficios: (fila.beneficios as string[]) ?? [],
     faq: (fila.faq as Faq[]) ?? [],
     destacado: Boolean(fila.destacado),
+    agotado: Boolean(fila.agotado),
     activo: fila.activo === undefined ? true : Boolean(fila.activo),
   };
 }
@@ -122,8 +123,11 @@ export async function getProductosPorCategoria(slug: string): Promise<Product[]>
 /** Productos marcados como destacados, para el carrusel de la portada. */
 export async function getDestacados(limite = 8): Promise<Product[]> {
   const productos = await getProductos();
-  const destacados = productos.filter((p) => p.destacado);
-  return (destacados.length > 0 ? destacados : productos).slice(0, limite);
+  // Un agotado no merece el carrusel de la portada: es el mejor espacio del
+  // sitio y se desperdicia en algo que nadie puede comprar.
+  const disponibles = productos.filter((p) => !p.agotado);
+  const destacados = disponibles.filter((p) => p.destacado);
+  return (destacados.length > 0 ? destacados : disponibles).slice(0, limite);
 }
 
 /**

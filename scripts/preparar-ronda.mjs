@@ -190,18 +190,17 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
     // Bumbay explica algo distinto del producto, así que desperdiciarlas
     // sería tirar material de venta ya hecho.
     const archivos = fotos.map((_, i) => `${base}-${i + 1}.webp`);
-    const nombreMini = `${base}-mini.webp`;
 
     fotos.forEach((f, i) => {
       const ruta = join(version.ruta, f);
       pesoOriginal += statSync(ruta).size;
       conversiones.push({ desde: ruta, hacia: join(DESTINO_FOTOS, archivos[i]) });
-    });
-
-    // El recorte de la grilla sale siempre de la portada.
-    miniaturas.push({
-      desde: join(version.ruta, fotos[0]),
-      hacia: join(DESTINO_FOTOS, nombreMini),
+      // Un recorte cuadrado por imagen, no solo de la portada: desde el panel
+      // se puede elegir cualquiera como portada, y su miniatura ya existe.
+      miniaturas.push({
+        desde: ruta,
+        hacia: join(DESTINO_FOTOS, archivos[i].replace(/\.webp$/, "-mini.webp")),
+      });
     });
 
     filas.push({
@@ -214,7 +213,7 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
       precio_unitario: "",
       precio_mayor: "",
       imagen: archivos[0],
-      imagen_mini: nombreMini,
+      imagen_mini: archivos[0].replace(/\.webp$/, "-mini.webp"),
       imagenes: archivos.join(" | "),
       ficha_tecnica: "",
       especificaciones: "",

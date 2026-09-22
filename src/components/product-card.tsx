@@ -19,12 +19,20 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
       className="group relative flex h-full min-w-0 flex-col border border-carbon-800 bg-carbon-900 transition-colors duration-300 hover:border-carbon-600"
     >
       <div className="relative">
-        <ImagenProducto
-          imagen={producto.imagenMini ?? producto.imagen}
-          nombre={producto.nombre}
-          sku={producto.sku}
-          prioridad={prioridad}
-        />
+        <div className={producto.agotado ? "opacity-45 grayscale" : undefined}>
+          <ImagenProducto
+            imagen={producto.imagenMini ?? producto.imagen}
+            nombre={producto.nombre}
+            sku={producto.sku}
+            prioridad={prioridad}
+          />
+        </div>
+
+        {producto.agotado && (
+          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-200 ring-1 ring-carbon-700">
+            Agotado
+          </span>
+        )}
 
       </div>
 
@@ -45,7 +53,11 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
 
         <div className="mt-auto pt-3.5">
           <div className="min-w-0">
-            <span className="block font-mono text-lg font-semibold leading-none text-carbon-50">
+            <span
+              className={`block font-mono text-lg font-semibold leading-none ${
+                producto.agotado ? "text-carbon-500 line-through" : "text-carbon-50"
+              }`}
+            >
               {precio(producto.precioUnitario)}
             </span>
           </div>

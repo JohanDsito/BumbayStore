@@ -135,7 +135,12 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
 
         <div className="grid flex-1 overflow-y-auto overscroll-contain sm:grid-cols-2">
           {/* --- Galería --- */}
-          <div className="border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
+          <div className="relative border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
+            {producto.agotado && (
+              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
+                Agotado
+              </span>
+            )}
             <GaleriaProducto
               imagenes={galeria}
               nombre={producto.nombre}

@@ -158,3 +158,87 @@ create policy "imagenes escritura autenticada"
   to authenticated
   using (bucket_id = 'productos')
   with check (bucket_id = 'productos');
+
+-- ============================================================================
+-- Existencias
+-- ============================================================================
+
+-- `agotado` no es lo mismo que `activo`. Un producto agotado sigue publicado y
+-- sigue indexado en Google —quitarlo y volverlo a poner cada semana destruye su
+-- posicionamiento—, pero no se puede agregar al pedido.
+alter table public.productos add column if not exists agotado boolean not null default false;
+
+-- ============================================================================
+-- Pedidos iniciados
+--
+-- Se guarda el pedido en el momento en que el cliente pulsa "Enviar por
+-- WhatsApp", antes de salir del sitio. Así quedan registrados también los que
+-- nunca llegaron al chat porque se arrepintieron en el último paso.
+-- ============================================================================
+
+create table if not exists public.pedidos (
+  id          uuid primary key default gen_random_uuid(),
+  nombre      text not null,
+  ciudad      text not null,
+  comentario  text,
+  total       integer not null,
+  unidades    integer not null,
+  -- [{sku, nombre, cantidad, precio}, ...] congelado en el momento del pedido:
+  -- si mañana cambia el precio, este registro sigue contando lo que se pidió.
+  lineas      jsonb not null,
+  creado_en   timestamptz not null default now()
+);
+
+create index if not exists pedidos_fecha_idx on public.pedidos (creado_en desc);
+
+-- ============================================================================
+-- Búsquedas sin resultados
+--
+-- Lo que la gente busca y no encuentra es demanda medida: dice qué conviene
+-- traer en la próxima importación.
+-- ============================================================================
+
+create table if not exists public.busquedas (
+  id          uuid primary key default gen_random_uuid(),
+  consulta    text not null,
+  resultados  integer not null default 0,
+  creado_en   timestamptz not null default now()
+);
+
+create index if not exists busquedas_fecha_idx on public.busquedas (creado_en desc);
+create index if not exists busquedas_vacias_idx on public.busquedas (consulta) where resultados = 0;
+
+-- ----------------------------------------------------------------------------
+-- Seguridad de las tablas nuevas
+--
+-- Cualquiera puede ESCRIBIR (un visitante anónimo registra su pedido o su
+-- búsqueda) pero solo un usuario autenticado puede LEER: son datos de negocio.
+-- Es el permiso inverso al del catálogo.
+-- ----------------------------------------------------------------------------
+
+alter table public.pedidos   enable row level security;
+alter table public.busquedas enable row level security;
+
+drop policy if exists "pedidos registro publico" on public.pedidos;
+create policy "pedidos registro publico"
+  on public.pedidos for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "pedidos lectura autenticada" on public.pedidos;
+create policy "pedidos lectura autenticada"
+  on public.pedidos for select
+  to authenticated
+  using (true);
+
+drop policy if exists "busquedas registro publico" on public.busquedas;
+create policy "busquedas registro publico"
+  on public.busquedas for insert
+  to anon, authenticated
+  with check (true);
+
+drop policy if exists "busquedas lectura autenticada" on public.busquedas;
+create policy "busquedas lectura autenticada"
+  on public.busquedas for select
+  to authenticated
+  using (true);

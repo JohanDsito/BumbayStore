@@ -24,6 +24,18 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
   // botón en reposo y el control de cantidad aparece al hidratar.
   const enPedido = cantidad > 0;
 
+  if (producto.agotado) {
+    return (
+      <div
+        className={`flex w-full items-center justify-center border border-carbon-700 bg-carbon-850 font-medium text-carbon-400 ${
+          grande ? "h-14 text-[15px]" : "h-10 text-[13px]"
+        }`}
+      >
+        Agotado
+      </div>
+    );
+  }
+
   if (!enPedido) {
     return (
       <button

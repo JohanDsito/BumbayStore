@@ -47,7 +47,9 @@ export function enlacePedido(
 /** Enlace para consultar por un producto puntual, desde su ficha. */
 export function enlaceConsulta(producto: Product): string {
   const texto = [
-    `Hola, quiero más información sobre:`,
+    producto.agotado
+      ? `Hola, quiero que me avisen cuando vuelva a entrar:`
+      : `Hola, quiero más información sobre:`,
     "",
     `*${producto.nombre}*`,
     `Código: ${producto.sku}`,
