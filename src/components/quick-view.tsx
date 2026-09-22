@@ -78,6 +78,8 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
     producto.precioMayor !== null
       ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
       : 0;
+  // Un "−0%" resta credibilidad; sin ahorro real no se anuncia mayoreo.
+  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
 
   return (
     <div
@@ -144,7 +146,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               prioridad
               sizes="(max-width: 640px) 100vw, 400px"
             />
-            {producto.precioMayor !== null && (
+            {hayMayoreo && (
               <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
                 Mayor −{ahorro}%
               </span>

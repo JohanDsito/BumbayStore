@@ -88,6 +88,8 @@ export default async function FichaProducto({ params }: Props) {
     producto.precioMayor !== null
       ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
       : 0;
+  // Un "−0%" resta credibilidad; sin ahorro real no se anuncia mayoreo.
+  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
 
   // --- Datos estructurados -------------------------------------------------
   // Esto es lo que permite que Google muestre foto y precio en el resultado,
@@ -216,7 +218,7 @@ export default async function FichaProducto({ params }: Props) {
                 nombre={producto.nombre}
                 sku={producto.sku}
               />
-              {producto.precioMayor !== null && (
+              {hayMayoreo && (
                 <span className="pointer-events-none absolute left-0 top-4 z-10 bg-marca-500 py-1.5 pl-3 pr-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
                   Precio al mayor −{ahorro}%
                 </span>

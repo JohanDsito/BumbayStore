@@ -288,7 +288,20 @@ for (let i = 0; i < productos.length; i += LOTE) {
   const lote = productos.slice(i, i + LOTE);
   const { error } = await sb.from("productos").upsert(lote, { onConflict: "sku" });
   if (error) {
-    console.error(`Error en el lote ${i / LOTE + 1}:`, error.message);
+    console.error(`
+Error en el lote ${i / LOTE + 1}: ${error.message}`);
+    // El caso típico: el esquema evolucionó y la tabla se creó con una versión
+    // anterior. Decirlo explícitamente ahorra un rato de búsqueda a ciegas.
+    if (/column|schema cache/i.test(error.message)) {
+      console.error(
+        `
+A la tabla le falta una columna. Vuelve a ejecutar supabase/schema.sql
+` +
+          `en el SQL Editor de Supabase: incluye los ALTER que añaden las columnas
+` +
+          `nuevas y se puede correr las veces que haga falta.`,
+      );
+    }
     process.exit(1);
   }
   console.log(`  ${Math.min(i + LOTE, productos.length)} / ${productos.length}`);

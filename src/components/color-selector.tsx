@@ -7,19 +7,34 @@ import type { Product } from "@/lib/types";
  */
 const MUESTRAS: Record<string, string> = {
   azul: "#2563EB",
-  amarillo: "#ECB116",
-  rojo: "#DC2626",
+  amarill: "#ECB116",
+  roj: "#DC2626",
   verde: "#16A34A",
-  negro: "#18181B",
+  negr: "#18181B",
   gris: "#71717A",
-  naranja: "#FF5B04",
-  blanco: "#F4F4F5",
-  morado: "#7C3AED",
+  naranj: "#FF5B04",
+  blanc: "#F4F4F5",
+  morad: "#7C3AED",
   celeste: "#38BDF8",
+  platead: "#A1A1AA",
+  dorad: "#D4AF37",
 };
 
+/**
+ * Busca la muestra por raíz del nombre. Las carpetas de fotos rotulan el color
+ * concordando con el producto —"pulidora amarilla" pero "taladro amarillo"—
+ * y comparar la palabra completa dejaba la mitad de los colores en gris.
+ */
 function muestra(color: string): string {
-  return MUESTRAS[color.trim().toLowerCase()] ?? "#52525B";
+  const limpio = color
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "");
+  for (const [raiz, hex] of Object.entries(MUESTRAS)) {
+    if (limpio.startsWith(raiz)) return hex;
+  }
+  return "#52525B";
 }
 
 type Props = {

@@ -135,8 +135,11 @@ function Portico({
           <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-5 border-t border-carbon-800 pt-6">
             <Dato valor={String(totalProductos)} etiqueta="Productos en catálogo" />
             <Dato valor={String(totalCategorias)} etiqueta="Categorías" />
-            <Dato valor="12" etiqueta="Meses de garantía" />
-            <Dato valor="COP" etiqueta="Precios en pesos" />
+            <Dato
+              valor={String(site.garantiaMeses)}
+              etiqueta="Meses de garantía"
+            />
+            <Dato valor={site.plataforma} etiqueta="Plataforma de batería" />
           </dl>
         </div>
       </div>

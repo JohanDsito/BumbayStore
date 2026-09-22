@@ -16,6 +16,10 @@ export const site = {
   email: process.env.NEXT_PUBLIC_EMAIL ?? "ventas@bumbaytools.com",
   direccion: process.env.NEXT_PUBLIC_DIRECCION ?? "Bogotá, Colombia",
   horario: "Lunes a sábado, 9:00 am a 6:00 pm",
+  /** Meses de garantía que se anuncian en la portada. */
+  garantiaMeses: 6,
+  /** Plataforma de batería de la línea inalámbrica. */
+  plataforma: "128V",
   redes: {
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM ?? "",
     facebook: process.env.NEXT_PUBLIC_FACEBOOK ?? "",

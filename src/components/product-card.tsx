@@ -13,10 +13,13 @@ type Props = {
 };
 
 export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Props) {
+  // Sin ahorro real no hay nada que anunciar: un badge que diga "−0%" resta
+  // credibilidad en vez de sumarla.
   const ahorro =
     producto.precioMayor !== null
       ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
       : 0;
+  const hayMayoreo = producto.precioMayor !== null && ahorro > 0;
 
   return (
     <article
@@ -31,7 +34,7 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
           prioridad={prioridad}
         />
 
-        {producto.precioMayor !== null && (
+        {hayMayoreo && (
           <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
             Mayor −{ahorro}%
           </span>
