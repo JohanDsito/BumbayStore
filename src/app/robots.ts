@@ -13,7 +13,9 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // /buscar genera infinitas URLs sin valor de indexación.
-        disallow: ["/buscar", "/admin", "/api"],
+        // /acceso es el panel: no se nombra la ruta real, que vive en una
+        // variable de entorno, solo el prefijo.
+        disallow: ["/buscar", "/acceso", "/api"],
       },
     ],
     sitemap: `${site.url}/sitemap.xml`,

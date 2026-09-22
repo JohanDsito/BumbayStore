@@ -166,7 +166,24 @@ igual y los pedidos se pueden agrupar por zona para cotizar el envio.
 
 ## Panel de administración
 
-En `/admin`. Está fuera del índice de Google y bloqueado en `robots.txt`.
+La ruta no está escrita en el código: se arma con la variable `ADMIN_RUTA`.
+
+```
+tudominio.com/acceso/<ADMIN_RUTA>
+```
+
+Cualquier otro valor devuelve el mismo 404 que una página inexistente. La
+variable **no** lleva el prefijo `NEXT_PUBLIC_`, así que se queda en el
+servidor y nunca viaja dentro del JavaScript que descarga el visitante. Para
+cambiar la dirección basta con cambiar la variable.
+
+Que quede claro qué consigue esto y qué no: **no es seguridad**. Quien acierte
+la ruta se encuentra igual con el formulario, y sin cuenta en la tabla `admins`
+no puede hacer nada. Lo que evita es el ruido de los robots que prueban
+`/admin` y `/wp-admin`, y que la dirección quede a la vista en el historial de
+un navegador compartido.
+
+Está fuera del índice de Google y `/acceso` está bloqueado en `robots.txt`.
 
 ### Crear tu usuario
 
