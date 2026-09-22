@@ -30,6 +30,7 @@ function aProducto(fila: Record<string, unknown>): Product {
         ? null
         : Number(fila.precio_mayor),
     imagen: (fila.imagen as string) ?? null,
+    imagenMini: (fila.imagen_mini as string) ?? null,
     imagenes: (fila.imagenes as string[]) ?? [],
     fichaTecnica: (fila.ficha_tecnica as string) ?? null,
     especificaciones: (fila.especificaciones as Spec[]) ?? [],

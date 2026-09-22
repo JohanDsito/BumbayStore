@@ -26,14 +26,14 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
   return (
     <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
       <header className="border-b border-carbon-800 py-8">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
           Búsqueda
         </p>
         <h1 className="mt-2.5 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl">
           {consulta ? (
             <>
               Resultados para{" "}
-              <span className="font-mono text-naranja-400">{consulta}</span>
+              <span className="font-mono text-marca-400">{consulta}</span>
             </>
           ) : (
             "¿Qué herramienta necesitas?"
@@ -81,7 +81,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
                 <li key={c.slug}>
                   <Link
                     href={`/categoria/${c.slug}`}
-                    className="block border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-naranja-500 hover:text-carbon-50"
+                    className="block border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
                   >
                     {c.nombre}
                   </Link>

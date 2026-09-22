@@ -42,12 +42,13 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
           href="/"
           className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
         >
-          <Logotipo className="h-8 w-8 text-naranja-500" />
+          <Logotipo className="h-8 w-8 text-marca-500" />
           <span className="flex flex-col leading-none">
+            {/* La A en rojo reproduce el logotipo de la marca. */}
             <span className="text-[17px] font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-lg">
-              BUMBAY
+              BUMB<span className="text-marca-500">A</span>Y
             </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-naranja-500">
+            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
               Tools
             </span>
           </span>
@@ -73,7 +74,7 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
             onClick={() => setMenuAbierto((v) => !v)}
             aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú de categorías"}
             aria-expanded={menuAbierto}
-            className="flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-naranja-400 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400 lg:hidden"
           >
             {menuAbierto ? (
               <IconoCerrar className="h-5 w-5" />
@@ -168,7 +169,7 @@ function EnlaceCategoria({
       aria-current={activo ? "page" : undefined}
       className={`relative block whitespace-nowrap px-3 py-2.5 text-[12.5px] font-medium tracking-tight transition-colors ${
         activo
-          ? "text-naranja-400"
+          ? "text-marca-400"
           : "text-carbon-400 hover:text-carbon-100"
       }`}
     >
@@ -176,7 +177,7 @@ function EnlaceCategoria({
       {activo && (
         <span
           aria-hidden
-          className="absolute inset-x-3 bottom-0 h-[2px] bg-naranja-500"
+          className="absolute inset-x-3 bottom-0 h-[2px] bg-marca-500"
         />
       )}
     </Link>

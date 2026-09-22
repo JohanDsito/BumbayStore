@@ -78,7 +78,7 @@ export function SelectorColor({
               {activo ? (
                 <span
                   aria-current="true"
-                  className={`flex items-center gap-2 border-2 border-naranja-500 bg-naranja-500/10 pl-2 pr-3 font-medium text-carbon-50 ${
+                  className={`flex items-center gap-2 border-2 border-marca-500 bg-marca-500/10 pl-2 pr-3 font-medium text-carbon-50 ${
                     compacto ? "h-9 text-[12px]" : "h-11 text-[13px]"
                   }`}
                 >

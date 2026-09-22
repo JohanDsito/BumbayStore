@@ -17,11 +17,16 @@
  *       mercado libre/
  *         foto1.webp              <- sin carpeta de color: producto de un solo color
  *
- * Hace dos cosas:
+ * Hace tres cosas:
  *
- *   1. Copia la foto principal de cada versión a datos/fotos/, renombrada de
- *      forma predecible.
- *   2. Escribe datos/productos.borrador.csv con una fila por versión, ya con
+ *   1. Convierte la imagen principal de cada versión a .webp. Las piezas de
+ *      marca pesan 1-2 MB en PNG; en webp bajan a una fracción, y la
+ *      velocidad de carga es un factor de posicionamiento.
+ *   2. Genera además un recorte cuadrado para la grilla. Las piezas vienen en
+ *      proporciones muy distintas y llevan titulares y sellos que a tamaño de
+ *      miniatura son ruido; el recorte busca la zona con más detalle, que en
+ *      estas piezas es siempre la herramienta.
+ *   3. Escribe datos/productos.borrador.csv con una fila por versión, ya con
  *      color y grupo resueltos.
  *
  * El CSV sale a medias a propósito: los SKU son provisionales y los precios
@@ -33,11 +38,11 @@ import {
   readdirSync,
   statSync,
   mkdirSync,
-  copyFileSync,
   writeFileSync,
   existsSync,
 } from "node:fs";
 import { join, extname } from "node:path";
+import sharp from "sharp";
 
 const RAIZ = process.argv[2] ?? "datos/ronda 10";
 const SIMULAR = process.argv.includes("--simular");
@@ -45,8 +50,16 @@ const DESTINO_FOTOS = "datos/fotos";
 const DESTINO_CSV = "datos/productos.borrador.csv";
 
 const EXTENSIONES = [".webp", ".jpg", ".jpeg", ".png", ".avif"];
-/** Carpeta donde viven las fotos ya editadas. */
-const CARPETA_FINALES = "mercado libre";
+/** Lado mayor en la ficha, y lado del recorte cuadrado de la grilla. */
+const LADO_FICHA = 1400;
+const LADO_MINI = 800;
+const CALIDAD = 82;
+/**
+ * Carpetas donde pueden vivir las piezas ya editadas. Se acepta más de un
+ * nombre porque en la práctica no siempre se rotulan igual, y descartar un
+ * producto entero por el nombre de una carpeta sería absurdo.
+ */
+const CARPETAS_FINALES = ["mercado libre", "fondo blanco", "finales", "editadas"];
 
 const ABREV_COLOR = { azul: "AZ", amarillo: "AM", rojo: "RJ", verde: "VD", negro: "NG" };
 
@@ -82,9 +95,15 @@ const imagenes = (ruta) => {
   }
 };
 
-/** Encuentra la carpeta de fotos finales sin importar mayúsculas ni tildes. */
-const buscarCarpeta = (ruta, nombre) =>
-  carpetas(ruta).find((c) => slugify(c) === slugify(nombre)) ?? null;
+/** Busca la carpeta de piezas finales, sin importar mayúsculas ni tildes. */
+const buscarCarpetaFinales = (ruta) => {
+  const dentro = carpetas(ruta);
+  for (const candidata of CARPETAS_FINALES) {
+    const hallada = dentro.find((c) => slugify(c) === slugify(candidata));
+    if (hallada) return hallada;
+  }
+  return null;
+};
 
 /** Escapa un valor para CSV. */
 const celda = (v) => {
@@ -113,18 +132,20 @@ console.log(`Revisando "${RAIZ}" — ${productos.length} carpetas de producto\n`
 
 const filas = [];
 const avisos = [];
-const copias = [];
+const conversiones = [];   // toda la secuencia, para la galería
+const miniaturas = [];     // una por versión, el recorte de la grilla
+let pesoOriginal = 0;
 let indice = 0;
 
 for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
   const rutaProducto = join(RAIZ, producto);
   const slugProducto = slugify(producto);
 
-  const finales = buscarCarpeta(rutaProducto, CARPETA_FINALES);
+  const finales = buscarCarpetaFinales(rutaProducto);
   if (!finales) {
     avisos.push(
-      `"${producto}": no tiene carpeta "${CARPETA_FINALES}". Se omite; ` +
-        `las fotos sin editar no se publican.`,
+      `"${producto}": no encontré ninguna carpeta de piezas finales ` +
+        `(${CARPETAS_FINALES.join(", ")}). Se omite; las fotos en bruto no se publican.`,
     );
     continue;
   }
@@ -151,8 +172,6 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
 
   for (const version of conFotos) {
     const fotos = imagenes(version.ruta);
-    const principal = fotos[0];
-    const ext = extname(principal).toLowerCase();
 
     const colorLimpio = version.color
       ? version.color.trim().charAt(0).toUpperCase() +
@@ -164,25 +183,26 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
       : null;
 
     const sku = sufijo ? `${skuBase}-${sufijo}` : skuBase;
-    const nombreArchivo = colorLimpio
-      ? `${slugProducto}-${slugify(colorLimpio)}${ext}`
-      : `${slugProducto}${ext}`;
+    const base = colorLimpio
+      ? `${slugProducto}-${slugify(colorLimpio)}`
+      : slugProducto;
+    // La secuencia completa alimenta la galería de la ficha. Cada pieza de
+    // Bumbay explica algo distinto del producto, así que desperdiciarlas
+    // sería tirar material de venta ya hecho.
+    const archivos = fotos.map((_, i) => `${base}-${i + 1}.webp`);
+    const nombreMini = `${base}-mini.webp`;
 
-    const tam = statSync(join(version.ruta, principal)).size;
-    if (tam > 500 * 1024) {
-      avisos.push(
-        `"${producto}"${colorLimpio ? ` (${colorLimpio})` : ""}: la foto pesa ` +
-          `${Math.round(tam / 1024)} KB. Conviértela a .webp antes de publicar.`,
-      );
-    }
-    if (fotos.length > 1) {
-      avisos.push(
-        `"${producto}"${colorLimpio ? ` (${colorLimpio})` : ""}: hay ${fotos.length} fotos, ` +
-          `se toma "${principal}" como principal.`,
-      );
-    }
+    fotos.forEach((f, i) => {
+      const ruta = join(version.ruta, f);
+      pesoOriginal += statSync(ruta).size;
+      conversiones.push({ desde: ruta, hacia: join(DESTINO_FOTOS, archivos[i]) });
+    });
 
-    copias.push({ desde: join(version.ruta, principal), hacia: join(DESTINO_FOTOS, nombreArchivo) });
+    // El recorte de la grilla sale siempre de la portada.
+    miniaturas.push({
+      desde: join(version.ruta, fotos[0]),
+      hacia: join(DESTINO_FOTOS, nombreMini),
+    });
 
     filas.push({
       sku,
@@ -193,7 +213,9 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
       grupo: hayVariantes ? skuBase : "",
       precio_unitario: "",
       precio_mayor: "",
-      imagen: nombreArchivo,
+      imagen: archivos[0],
+      imagen_mini: nombreMini,
+      imagenes: archivos.join(" | "),
       ficha_tecnica: "",
       especificaciones: "",
       modo_uso: "",
@@ -203,7 +225,8 @@ for (const producto of productos.sort((a, b) => a.localeCompare(b, "es"))) {
     });
 
     console.log(
-      `  ${sku.padEnd(10)} ${(colorLimpio ?? "único").padEnd(10)} ${nombreArchivo}`,
+      `  ${sku.padEnd(10)} ${(colorLimpio ?? "único").padEnd(10)} ` +
+        `${String(fotos.length).padStart(2)} piezas -> ${base}-1..${fotos.length}.webp`,
     );
   }
 }
@@ -227,8 +250,47 @@ if (filas.length === 0) {
 }
 
 mkdirSync(DESTINO_FOTOS, { recursive: true });
-for (const c of copias) copyFileSync(c.desde, c.hacia);
-console.log(`\n${copias.length} fotos copiadas a ${DESTINO_FOTOS}/`);
+
+console.log(`
+Convirtiendo ${conversiones.length} imagenes...`);
+
+for (const c of conversiones) {
+  await sharp(c.desde)
+    .resize(LADO_FICHA, LADO_FICHA, { fit: "inside", withoutEnlargement: true })
+    .webp({ quality: CALIDAD })
+    .toFile(c.hacia);
+}
+
+console.log(`Recortando ${miniaturas.length} miniaturas...`);
+
+for (const m of miniaturas) {
+  // La regla depende de la orientacion porque estas piezas se maquetan
+  // siempre igual. En las horizontales el texto va a la izquierda y la
+  // herramienta a la derecha, asi que recortamos por la derecha. En las
+  // verticales el titular va arriba y el producto ocupa el centro, y ahi
+  // `attention` acierta. Para las horizontales no sirve: el bloque de texto
+  // tiene mas detalle que la herramienta y se queda con el.
+  const meta = await sharp(m.desde).metadata();
+  const proporcion = meta.width / meta.height;
+  const posicion =
+    proporcion > 1.1 ? "right" : proporcion < 0.9 ? sharp.strategy.attention : "centre";
+
+  await sharp(m.desde)
+    .resize(LADO_MINI, LADO_MINI, { fit: "cover", position: posicion })
+    .webp({ quality: CALIDAD })
+    .toFile(m.hacia);
+}
+
+const pesoFinal = [...conversiones, ...miniaturas].reduce(
+  (t, x) => t + statSync(x.hacia).size,
+  0,
+);
+const mb = (n) => (n / 1024 / 1024).toFixed(1);
+console.log(
+  `${conversiones.length + miniaturas.length} archivos en ${DESTINO_FOTOS}/ ` +
+    `(${mb(pesoOriginal)} MB -> ${mb(pesoFinal)} MB, ` +
+    `${Math.round((1 - pesoFinal / pesoOriginal) * 100)}% menos)`,
+);
 
 const columnas = Object.keys(filas[0]);
 const csv = [
@@ -241,7 +303,8 @@ writeFileSync(DESTINO_CSV, "﻿" + csv, "utf8");
 console.log(`Borrador escrito en ${DESTINO_CSV}
 
 Siguientes pasos:
-  1. Abre ${DESTINO_CSV} en Excel.
+  1. Abre ${DESTINO_CSV} en Excel. Revisa los nombres: salen del nombre de la
+     carpeta, que no siempre es el nombre comercial del producto.
   2. Completa categoria, precio_unitario y precio_mayor (obligatorias las tres
      primeras; el resto del contenido mejora tu posicionamiento).
   3. Ajusta los SKU provisionales (BT-001, BT-002…) por los tuyos reales.

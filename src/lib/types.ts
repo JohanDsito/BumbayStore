@@ -34,6 +34,13 @@ export type Product = {
   precioMayor: number | null;
   /** Ruta de la imagen principal en el bucket de Supabase. */
   imagen: string | null;
+  /**
+   * Recorte cuadrado para la grilla. Las piezas de marca vienen en
+   * proporciones muy distintas y con texto que a tamaño de miniatura no se
+   * lee; el recorte deja el producto centrado y legible. Si falta, la grilla
+   * usa `imagen`.
+   */
+  imagenMini: string | null;
   imagenes: string[];
   fichaTecnica: string | null;
   especificaciones: Spec[];

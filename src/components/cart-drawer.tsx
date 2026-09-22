@@ -92,7 +92,7 @@ export function PanelPedido() {
             <button
               type="button"
               onClick={cerrar}
-              className="font-mono text-xs uppercase tracking-[0.14em] text-naranja-400 hover:text-naranja-300"
+              className="font-mono text-xs uppercase tracking-[0.14em] text-marca-400 hover:text-marca-300"
             >
               Seguir viendo productos
             </button>
@@ -176,7 +176,7 @@ export function PanelPedido() {
                         type="button"
                         onClick={() => quitar(linea.slug)}
                         aria-label={`Eliminar ${linea.nombre}`}
-                        className="self-start p-1 text-carbon-500 transition-colors hover:text-naranja-400"
+                        className="self-start p-1 text-carbon-500 transition-colors hover:text-marca-400"
                       >
                         <IconoCerrar className="h-3.5 w-3.5" />
                       </button>
@@ -198,20 +198,20 @@ export function PanelPedido() {
                   onChange={(e) => fijarComentario(e.target.value)}
                   rows={3}
                   placeholder="Ciudad de envío, cantidades especiales, forma de pago…"
-                  className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-naranja-500 focus:outline-none"
+                  className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
                 />
               </div>
             </div>
 
             <footer className="shrink-0 border-t border-carbon-800 bg-carbon-900 p-4">
               {ahorroPosible > 0 && (
-                <div className="mb-3 flex items-start gap-2.5 border border-naranja-500/30 bg-naranja-500/[0.07] p-3">
-                  <span aria-hidden className="mt-px font-mono text-sm text-naranja-400">
+                <div className="mb-3 flex items-start gap-2.5 border border-marca-500/30 bg-marca-500/[0.07] p-3">
+                  <span aria-hidden className="mt-px font-mono text-sm text-marca-400">
                     ▲
                   </span>
                   <p className="text-[12px] leading-relaxed text-carbon-300">
                     A precio al mayor este pedido sería{" "}
-                    <span className="font-mono font-semibold text-naranja-400">
+                    <span className="font-mono font-semibold text-marca-400">
                       {precio(totalMayor)}
                     </span>
                     . Consulta por WhatsApp si aplicas: podrías ahorrar{" "}
@@ -236,7 +236,7 @@ export function PanelPedido() {
                 href={enlacePedido(lineas, total, comentario)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-14 w-full items-center justify-center gap-2.5 bg-naranja-500 font-semibold tracking-tight text-carbon-950 transition-colors hover:bg-naranja-400"
+                className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
               >
                 <IconoWhatsApp className="h-5 w-5" />
                 Enviar pedido por WhatsApp

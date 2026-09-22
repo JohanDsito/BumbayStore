@@ -45,7 +45,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
     <section aria-labelledby="titulo-destacados" className="relative">
       <div className="mb-5 flex items-end justify-between gap-4">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
             Lo más pedido
           </p>
           <h2
@@ -62,7 +62,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
             onClick={() => desplazar(-1)}
             disabled={!puedeIzquierda}
             aria-label="Anterior"
-            className="flex h-10 w-10 items-center justify-center bg-carbon-900 text-carbon-300 transition-colors hover:bg-carbon-800 hover:text-naranja-400 disabled:opacity-30 disabled:hover:bg-carbon-900 disabled:hover:text-carbon-300"
+            className="flex h-10 w-10 items-center justify-center bg-carbon-900 text-carbon-300 transition-colors hover:bg-carbon-800 hover:text-marca-400 disabled:opacity-30 disabled:hover:bg-carbon-900 disabled:hover:text-carbon-300"
           >
             <IconoFlecha className="h-4 w-4 rotate-180" />
           </button>
@@ -71,7 +71,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
             onClick={() => desplazar(1)}
             disabled={!puedeDerecha}
             aria-label="Siguiente"
-            className="flex h-10 w-10 items-center justify-center bg-carbon-900 text-carbon-300 transition-colors hover:bg-carbon-800 hover:text-naranja-400 disabled:opacity-30 disabled:hover:bg-carbon-900 disabled:hover:text-carbon-300"
+            className="flex h-10 w-10 items-center justify-center bg-carbon-900 text-carbon-300 transition-colors hover:bg-carbon-800 hover:text-marca-400 disabled:opacity-30 disabled:hover:bg-carbon-900 disabled:hover:text-carbon-300"
           >
             <IconoFlecha className="h-4 w-4" />
           </button>

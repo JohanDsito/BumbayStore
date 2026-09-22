@@ -22,11 +22,14 @@
   --color-carbon-100: #ebebef;
   --color-carbon-50: #f6f6f8;
 
-  /* Naranja técnico: el acento de la marca */
-  --color-naranja-600: #d94a00;
-  --color-naranja-500: #ff5b04;
-  --color-naranja-400: #ff7a2f;
-  --color-naranja-300: #ff9c63;
+  /* Rojo Bumbay. El 500 es el rojo exacto del logotipo, medido sobre las
+     piezas de marca. El 400 existe porque el 500 sobre fondo oscuro se queda
+     corto de contraste para texto pequeño. */
+  --color-marca-700: #8f0409;
+  --color-marca-600: #c2060c;
+  --color-marca-500: #ec080f;
+  --color-marca-400: #ff3b41;
+  --color-marca-300: #ff8a8e;
 
   /* Semánticos */
   --color-disponible: #35d07f;
@@ -114,12 +117,12 @@
   }
 
   ::selection {
-    background-color: var(--color-naranja-500);
+    background-color: var(--color-marca-500);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-naranja-500);
+    outline: 2px solid var(--color-marca-500);
     outline-offset: 2px;
   }
 
@@ -148,7 +151,7 @@
   .cinta-precaucion {
     background-image: repeating-linear-gradient(
       -45deg,
-      var(--color-naranja-500) 0 8px,
+      var(--color-marca-500) 0 8px,
       transparent 8px 16px
     );
   }
@@ -181,7 +184,7 @@
   }
   .group:hover .esquinas-tecnicas::before,
   .group:hover .esquinas-tecnicas::after {
-    border-color: var(--color-naranja-500);
+    border-color: var(--color-marca-500);
   }
 
   /* Oculta la barra de scroll en los carruseles horizontales */

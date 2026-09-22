@@ -25,14 +25,14 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
     >
       <div className="relative">
         <ImagenProducto
-          imagen={producto.imagen}
+          imagen={producto.imagenMini ?? producto.imagen}
           nombre={producto.nombre}
           sku={producto.sku}
           prioridad={prioridad}
         />
 
         {producto.precioMayor !== null && (
-          <span className="absolute left-0 top-3 bg-naranja-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-950">
+          <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
             Mayor −{ahorro}%
           </span>
         )}
@@ -68,7 +68,7 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
 
             {producto.precioMayor !== null && (
               <div className="min-w-0 sm:text-right">
-                <span className="block font-mono text-sm font-semibold leading-none text-naranja-400">
+                <span className="block font-mono text-sm font-semibold leading-none text-marca-400">
                   {precio(producto.precioMayor)}
                 </span>
                 <span className="mt-1 block text-[10px] uppercase tracking-[0.12em] text-carbon-500">

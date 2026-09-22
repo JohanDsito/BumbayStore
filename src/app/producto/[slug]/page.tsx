@@ -13,7 +13,7 @@ import { imagenUrl } from "@/lib/supabase";
 import { site } from "@/lib/site-config";
 import { precio, ahorroPorcentaje } from "@/lib/format";
 import { enlaceConsulta } from "@/lib/whatsapp";
-import { ImagenProducto } from "@/components/product-image";
+import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { TarjetaProducto } from "@/components/product-card";
 import { SelectorColor } from "@/components/color-selector";
@@ -74,7 +74,16 @@ export default async function FichaProducto({ params }: Props) {
     getVariantes(producto),
   ]);
 
-  const imagen = imagenUrl(producto.imagen);
+  // La galería usa la secuencia completa de piezas; si un producto solo tiene
+  // portada, cae a esa sola imagen.
+  const galeria =
+    producto.imagenes.length > 0
+      ? producto.imagenes
+      : producto.imagen
+        ? [producto.imagen]
+        : [];
+
+  const imagen = imagenUrl(producto.imagen ?? galeria[0] ?? null);
   const ahorro =
     producto.precioMayor !== null
       ? ahorroPorcentaje(producto.precioUnitario, producto.precioMayor)
@@ -90,7 +99,11 @@ export default async function FichaProducto({ params }: Props) {
     sku: producto.sku,
     mpn: producto.sku,
     description: producto.fichaTecnica ?? producto.nombre,
-    ...(imagen ? { image: [imagen] } : {}),
+    ...(galeria.length > 0
+      ? { image: galeria.map((i) => imagenUrl(i)).filter(Boolean) }
+      : imagen
+        ? { image: [imagen] }
+        : {}),
     ...(producto.marca ? { brand: { "@type": "Brand", name: producto.marca } } : {}),
     ...(producto.color ? { color: producto.color } : {}),
     ...(categoria ? { category: categoria.nombre } : {}),
@@ -172,7 +185,7 @@ export default async function FichaProducto({ params }: Props) {
         <nav aria-label="Ruta de navegación" className="py-4">
           <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-carbon-500">
             <li>
-              <Link href="/" className="transition-colors hover:text-naranja-400">
+              <Link href="/" className="transition-colors hover:text-marca-400">
                 Inicio
               </Link>
             </li>
@@ -182,7 +195,7 @@ export default async function FichaProducto({ params }: Props) {
                 <li>
                   <Link
                     href={`/categoria/${categoria.slug}`}
-                    className="transition-colors hover:text-naranja-400"
+                    className="transition-colors hover:text-marca-400"
                   >
                     {categoria.nombre}
                   </Link>
@@ -197,16 +210,14 @@ export default async function FichaProducto({ params }: Props) {
         <div className="grid gap-8 pb-12 lg:grid-cols-2 lg:gap-12">
           {/* --- Imagen --- */}
           <div className="lg:sticky lg:top-44 lg:self-start">
-            <div className="relative border border-carbon-800">
-              <ImagenProducto
-                imagen={producto.imagen}
+            <div className="relative">
+              <GaleriaProducto
+                imagenes={galeria}
                 nombre={producto.nombre}
                 sku={producto.sku}
-                prioridad
-                sizes="(max-width: 1024px) 100vw, 640px"
               />
               {producto.precioMayor !== null && (
-                <span className="absolute left-0 top-4 bg-naranja-500 py-1.5 pl-3 pr-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-carbon-950">
+                <span className="pointer-events-none absolute left-0 top-4 z-10 bg-marca-500 py-1.5 pl-3 pr-4 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white">
                   Precio al mayor −{ahorro}%
                 </span>
               )}
@@ -251,11 +262,11 @@ export default async function FichaProducto({ params }: Props) {
                 </div>
 
                 {producto.precioMayor !== null && (
-                  <div className="flex-1 border-t border-carbon-800 bg-naranja-500/[0.06] p-5 sm:border-t-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-naranja-400">
+                  <div className="flex-1 border-t border-carbon-800 bg-marca-500/[0.06] p-5 sm:border-t-0">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">
                       Precio al por mayor
                     </p>
-                    <p className="mt-1.5 font-mono text-3xl font-extrabold leading-none text-naranja-400">
+                    <p className="mt-1.5 font-mono text-3xl font-extrabold leading-none text-marca-400">
                       {precio(producto.precioMayor)}
                     </p>
                     <p className="mt-2 text-[11px] leading-relaxed text-carbon-400">
@@ -291,7 +302,7 @@ export default async function FichaProducto({ params }: Props) {
               <ul className="mt-8 space-y-2.5 border-t border-carbon-800 pt-6">
                 {producto.beneficios.map((b) => (
                   <li key={b} className="flex gap-3 text-[14px] leading-relaxed text-carbon-300">
-                    <span aria-hidden className="mt-2 h-1 w-3 shrink-0 bg-naranja-500" />
+                    <span aria-hidden className="mt-2 h-1 w-3 shrink-0 bg-marca-500" />
                     {b}
                   </li>
                 ))}
@@ -324,11 +335,11 @@ export default async function FichaProducto({ params }: Props) {
                 <div className="divide-y divide-carbon-800 border-y border-carbon-800">
                   {producto.faq.map((f) => (
                     <details key={f.pregunta} className="group py-4">
-                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[15px] font-semibold text-carbon-100 transition-colors hover:text-naranja-400">
+                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[15px] font-semibold text-carbon-100 transition-colors hover:text-marca-400">
                         {f.pregunta}
                         <span
                           aria-hidden
-                          className="mt-1 shrink-0 font-mono text-naranja-500 transition-transform group-open:rotate-45"
+                          className="mt-1 shrink-0 font-mono text-marca-500 transition-transform group-open:rotate-45"
                         >
                           +
                         </span>
@@ -346,7 +357,7 @@ export default async function FichaProducto({ params }: Props) {
           {/* Especificaciones: tabla fija, en monoespaciada, como una hoja de datos */}
           {producto.especificaciones.length > 0 && (
             <aside className="lg:sticky lg:top-44 lg:self-start">
-              <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+              <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
                 Especificaciones
               </h2>
               <dl className="mt-4 divide-y divide-carbon-800 border border-carbon-800 bg-carbon-900">

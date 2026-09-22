@@ -18,6 +18,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 289000,
     precioMayor: 245000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Taladro percutor inalámbrico de 20V con motor de alto rendimiento y portabrocas metálico de 13 mm con autoajuste. Incluye dos baterías de litio de 2.0 Ah, cargador rápido de 1 hora y maletín rígido. Su caja de cambios de dos velocidades y los 25 niveles de torque permiten pasar de atornillado fino en madera a perforación con percusión en concreto sin cambiar de herramienta.",
@@ -73,6 +74,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 345000,
     precioMayor: 298000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Pulidora angular a batería de 20V para disco de 115 mm (4 1/2"). Motor sin escobillas que entrega mayor autonomía y vida útil que los motores convencionales. Guarda de disco ajustable sin herramienta, interruptor de seguridad contra arranque accidental y freno de disco que detiene el giro en menos de 3 segundos al soltar el gatillo.',
@@ -121,6 +123,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 720000,
     precioMayor: 615000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Kit profesional de tres herramientas inalámbricas que comparten la plataforma de batería de 20V: taladro percutor de 13 mm, pistola de impacto de 1/2" y pulidora angular de 4 1/2". Incluye dos baterías de litio de 4.0 Ah, cargador rápido doble y maletín rígido con espuma troquelada.',
@@ -170,6 +173,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 398000,
     precioMayor: 340000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Llave de impacto inalámbrica de 20V con encastre cuadrado de 1/2" y 350 N·m de torque de apriete. Mecanismo de impacto de doble martillo, selector de tres velocidades y modo de aflojado progresivo. Pensada para montallantas, mecánica automotriz y montaje de estructura metálica.',
@@ -219,6 +223,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 415000,
     precioMayor: 359000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Rotomartillo eléctrico de 800W con mandril SDS-Plus y capacidad de perforación de 26 mm en concreto. Tres modos de operación: rotación, rotopercusión y solo percusión para demolición liviana. Embrague de seguridad que protege al operario si la broca se atasca.",
@@ -269,6 +274,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 465000,
     precioMayor: 398000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Nivel láser autonivelante de 12 líneas verdes que proyecta tres planos de 360°: uno horizontal y dos verticales cruzados. El láser verde es hasta cuatro veces más visible que el rojo, lo que permite trabajar con luz ambiente alta. Incluye batería recargable, base magnética giratoria y maletín.",
@@ -318,6 +324,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 268000,
     precioMayor: 219000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Juego de 108 piezas en acero cromo vanadio con acabado espejo, presentado en maletín rígido con bandeja organizadora. Incluye rachets de 1/4" y 3/8" de 72 dientes, copas milimétricas y en pulgadas, puntas de atornillar, extensiones y llave de bujía.',
@@ -366,6 +373,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 185000,
     precioMayor: 152000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Reflector LED recargable de 50W con 5.000 lúmenes y trípode telescópico de hasta 1,8 m. Cabezal orientable 180°, tres niveles de intensidad y batería de litio con autonomía de hasta 8 horas en modo bajo. Carcasa de aluminio con protección IP65 para uso en exteriores.",
@@ -414,6 +422,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 165000,
     precioMayor: 138000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Atornillador inalámbrico de 12V, compacto y liviano, ideal para muebles, drywall e instalaciones eléctricas. Portabrocas de 10 mm, 18 niveles de torque y dos velocidades. Incluye dos baterías de 1.5 Ah, cargador y estuche.",
@@ -457,6 +466,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 218000,
     precioMayor: 179000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Pulidora angular eléctrica de 1200W para disco de 125 mm (5"). Mango lateral reposicionable en tres puntos, guarda ajustable sin herramienta y arranque suave que evita el tirón inicial. Bobinado de cobre con protección contra sobrecalentamiento.',
@@ -500,6 +510,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 545000,
     precioMayor: 468000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       'Combo de dos herramientas inalámbricas de 20V: taladro percutor de 13 mm y pulidora angular de 4 1/2". Comparten batería y cargador. Incluye dos baterías de litio de 4.0 Ah, cargador rápido y maletín rígido.',
@@ -541,6 +552,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 89000,
     precioMayor: 68000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Juego de 45 piezas con mango ergonómico antideslizante, eje magnético intercambiable y puntas en acero S2 de alta dureza. Incluye puntas planas, Phillips, Torx, hexagonales y de precisión, más adaptador para portabrocas.",
@@ -583,6 +595,7 @@ export const productosSeed: Product[] = [
     precioUnitario: 289000,
     precioMayor: 245000,
     imagen: null,
+    imagenMini: null,
     imagenes: [],
     fichaTecnica:
       "Taladro percutor inalámbrico de 20V con motor de alto rendimiento y portabrocas metálico de 13 mm con autoajuste. Incluye dos baterías de litio de 2.0 Ah, cargador rápido de 1 hora y maletín rígido. Su caja de cambios de dos velocidades y los 25 niveles de torque permiten pasar de atornillado fino en madera a perforación con percusión en concreto sin cambiar de herramienta.",

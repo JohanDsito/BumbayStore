@@ -7,7 +7,8 @@
  *
  * Columnas esperadas (el orden no importa, los nombres sí):
  *   sku, nombre, categoria, marca, color, grupo, precio_unitario, precio_mayor,
- *   imagen, ficha_tecnica, especificaciones, modo_uso, beneficios, faq, destacado
+ *   imagen, imagen_mini, ficha_tecnica, especificaciones, modo_uso, beneficios,
+ *   faq, destacado
  *
  * Versiones de color: dos filas con el mismo `grupo` y distinto `color` son la
  * misma herramienta en colores diferentes; la ficha muestra un selector para
@@ -214,6 +215,8 @@ filas.forEach((f, i) => {
     precio_unitario: precioUnitario,
     precio_mayor: precioMayor,
     imagen: f.imagen?.trim() || null,
+    imagen_mini: f.imagen_mini?.trim() || null,
+    imagenes: aLista(f.imagenes),
     ficha_tecnica: f.ficha_tecnica?.trim() || null,
     especificaciones: aEspecificaciones(f.especificaciones),
     modo_uso: f.modo_uso?.trim() || null,

@@ -36,7 +36,7 @@ export function Buscador({ className = "" }: { className?: string }) {
         defaultValue={consulta}
         placeholder="Buscar taladro, pulidora, código…"
         aria-label="Buscar productos"
-        className="h-10 w-full border border-carbon-700 bg-carbon-850 pl-9 pr-3 text-[13px] text-carbon-100 transition-colors placeholder:text-carbon-500 focus:border-naranja-500 focus:outline-none"
+        className="h-10 w-full border border-carbon-700 bg-carbon-850 pl-9 pr-3 text-[13px] text-carbon-100 transition-colors placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
       />
     </form>
   );

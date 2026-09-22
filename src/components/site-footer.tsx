@@ -15,12 +15,12 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <Logotipo className="h-8 w-8 text-naranja-500" />
+              <Logotipo className="h-8 w-8 text-marca-500" />
               <span className="flex flex-col leading-none">
                 <span className="text-lg font-extrabold tracking-[-0.03em] text-carbon-50">
-                  BUMBAY
+                  BUMB<span className="text-marca-500">A</span>Y
                 </span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-naranja-500">
+                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
                   Tools
                 </span>
               </span>
@@ -48,7 +48,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                 <li key={c.slug}>
                   <Link
                     href={`/categoria/${c.slug}`}
-                    className="text-[13px] text-carbon-400 transition-colors hover:text-naranja-400"
+                    className="text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
                   >
                     {c.nombre}
                   </Link>
@@ -75,7 +75,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                 <dd>
                   <a
                     href={`mailto:${site.email}`}
-                    className="text-carbon-300 transition-colors hover:text-naranja-400"
+                    className="text-carbon-300 transition-colors hover:text-marca-400"
                   >
                     {site.email}
                   </a>
@@ -91,7 +91,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-naranja-400"
+                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       Instagram
                     </a>
@@ -103,7 +103,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-naranja-400"
+                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       Facebook
                     </a>
@@ -115,7 +115,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-naranja-400"
+                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       TikTok
                     </a>

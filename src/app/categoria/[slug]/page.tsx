@@ -101,7 +101,7 @@ export default async function PaginaCategoria({ params }: Props) {
         <nav aria-label="Ruta de navegación" className="py-4">
           <ol className="flex items-center gap-1.5 font-mono text-[11px] text-carbon-500">
             <li>
-              <Link href="/" className="transition-colors hover:text-naranja-400">
+              <Link href="/" className="transition-colors hover:text-marca-400">
                 Inicio
               </Link>
             </li>
@@ -111,7 +111,7 @@ export default async function PaginaCategoria({ params }: Props) {
         </nav>
 
         <header className="border-b border-carbon-800 pb-8">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
             Categoría
           </p>
           <h1 className="mt-2.5 text-3xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-4xl lg:text-5xl">

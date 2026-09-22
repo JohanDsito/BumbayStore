@@ -42,6 +42,8 @@ create table if not exists public.productos (
 
   -- Nombre del archivo dentro del bucket `productos`. Ej: bt-tal-2001.webp
   imagen           text,
+  -- Recorte cuadrado para la grilla del catálogo.
+  imagen_mini      text,
   imagenes         text[] not null default '{}',
 
   ficha_tecnica    text,
@@ -65,6 +67,12 @@ create table if not exists public.productos (
 );
 
 comment on table public.productos is 'Catálogo. El slug es la URL: /producto/{slug}';
+
+-- Columnas añadidas después de la primera versión del esquema. Van como ALTER
+-- para que volver a ejecutar este archivo actualice una tabla ya creada.
+alter table public.productos add column if not exists color       text;
+alter table public.productos add column if not exists grupo       text;
+alter table public.productos add column if not exists imagen_mini text;
 
 -- Índices para las consultas que realmente hace el sitio.
 create index if not exists productos_categoria_idx

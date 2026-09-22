@@ -42,10 +42,10 @@ export default async function Portada() {
               <li key={c.slug}>
                 <Link
                   href={`/categoria/${c.slug}`}
-                  className="group flex items-center gap-2 border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-naranja-500 hover:text-carbon-50"
+                  className="group flex items-center gap-2 border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
                 >
                   {c.nombre}
-                  <IconoFlecha className="h-3.5 w-3.5 text-carbon-500 transition-all group-hover:translate-x-0.5 group-hover:text-naranja-500" />
+                  <IconoFlecha className="h-3.5 w-3.5 text-carbon-500 transition-all group-hover:translate-x-0.5 group-hover:text-marca-500" />
                 </Link>
               </li>
             ))}
@@ -55,7 +55,7 @@ export default async function Portada() {
         <section aria-labelledby="titulo-catalogo" className="pb-8">
           <div className="mb-5 flex items-end justify-between gap-4 border-t border-carbon-800 pt-8">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
                 Catálogo completo
               </p>
               <h2
@@ -92,19 +92,19 @@ function Portico({
       {/* Resplandor cálido detrás del texto, como la luz de un taller */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 -top-40 h-[420px] w-[420px] rounded-full bg-naranja-500/[0.14] blur-[100px]"
+        className="pointer-events-none absolute -left-40 -top-40 h-[420px] w-[420px] rounded-full bg-marca-500/[0.14] blur-[100px]"
       />
 
       <div className="relative mx-auto max-w-[1400px] px-4 py-14 sm:px-6 sm:py-20">
         <div className="max-w-3xl">
-          <p className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
-            <span aria-hidden className="h-px w-8 bg-naranja-500" />
+          <p className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
+            <span aria-hidden className="h-px w-8 bg-marca-500" />
             Importador y distribuidor directo
           </p>
 
           <h1 className="mt-5 text-4xl font-extrabold leading-[0.95] tracking-[-0.04em] text-carbon-50 sm:text-6xl lg:text-7xl">
             Herramienta inalámbrica
-            <span className="block text-naranja-500">a precio de mayorista.</span>
+            <span className="block text-marca-500">a precio de mayorista.</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-carbon-400 sm:text-base">
@@ -116,7 +116,7 @@ function Portico({
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a
               href="#contenido-catalogo"
-              className="flex h-12 items-center justify-center gap-2 bg-naranja-500 px-7 text-sm font-semibold tracking-tight text-carbon-950 transition-colors hover:bg-naranja-400"
+              className="flex h-12 items-center justify-center gap-2 bg-marca-500 px-7 text-sm font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
             >
               Ver catálogo
               <IconoFlecha className="h-4 w-4" />
@@ -169,7 +169,7 @@ function BloqueMayorista() {
       <div aria-hidden className="absolute inset-x-0 top-0 h-1 cinta-precaucion" />
       <div className="grid gap-8 p-8 sm:p-12 lg:grid-cols-[1.5fr_1fr] lg:items-center">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-naranja-500">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
             Compra por volumen
           </p>
           <h2 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl">

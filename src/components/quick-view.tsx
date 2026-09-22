@@ -101,7 +101,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
           <button
             type="button"
             onClick={copiarEnlace}
-            className="flex items-center gap-2 px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-naranja-400"
+            className="flex items-center gap-2 px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-marca-400"
           >
             <svg
               viewBox="0 0 24 24"
@@ -145,7 +145,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               sizes="(max-width: 640px) 100vw, 400px"
             />
             {producto.precioMayor !== null && (
-              <span className="absolute left-0 top-3 bg-naranja-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-950">
+              <span className="absolute left-0 top-3 bg-marca-500 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-white">
                 Mayor −{ahorro}%
               </span>
             )}
@@ -179,11 +179,11 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
             </div>
 
             {producto.precioMayor !== null && (
-              <div className="mt-3 border-l-2 border-naranja-500 bg-naranja-500/[0.08] px-3 py-2.5">
-                <span className="font-mono text-lg font-bold leading-none text-naranja-400">
+              <div className="mt-3 border-l-2 border-marca-500 bg-marca-500/[0.08] px-3 py-2.5">
+                <span className="font-mono text-lg font-bold leading-none text-marca-400">
                   {precio(producto.precioMayor)}
                 </span>
-                <span className="ml-2 text-[11px] uppercase tracking-[0.1em] text-naranja-300">
+                <span className="ml-2 text-[11px] uppercase tracking-[0.1em] text-marca-300">
                   al mayor
                 </span>
               </div>
@@ -213,12 +213,12 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               <button
                 type="button"
                 onClick={abrir}
-                className="flex h-11 items-center justify-center gap-2 border border-carbon-700 px-3 text-[13px] font-medium text-carbon-200 transition-colors hover:border-naranja-500 hover:text-naranja-400"
+                className="flex h-11 items-center justify-center gap-2 border border-carbon-700 px-3 text-[13px] font-medium text-carbon-200 transition-colors hover:border-marca-500 hover:text-marca-400"
               >
                 <IconoCarrito className="h-4 w-4" />
                 Ver pedido
                 {unidades > 0 && (
-                  <span className="font-mono text-[11px] text-naranja-400">
+                  <span className="font-mono text-[11px] text-marca-400">
                     ({unidades})
                   </span>
                 )}
@@ -251,7 +251,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
 
             <Link
               href={`/producto/${producto.slug}`}
-              className="group mt-4 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-naranja-400 transition-colors hover:text-naranja-300"
+              className="group mt-4 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-marca-400 transition-colors hover:text-marca-300"
             >
               Ver ficha completa
               <IconoFlecha className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

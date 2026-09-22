@@ -29,7 +29,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
       <button
         type="button"
         onClick={() => agregar(producto)}
-        className={`group/btn flex w-full items-center justify-center gap-2 bg-naranja-500 font-semibold text-carbon-950 transition-all duration-200 hover:bg-naranja-400 active:scale-[0.98] ${
+        className={`group/btn flex w-full items-center justify-center gap-2 bg-marca-500 font-semibold text-white transition-all duration-200 hover:bg-marca-400 active:scale-[0.98] ${
           grande
             ? "h-14 text-[15px] tracking-tight"
             : "h-10 text-[13px] tracking-tight"
@@ -43,7 +43,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
 
   return (
     <div
-      className={`flex w-full items-stretch border border-naranja-500 bg-naranja-500/10 ${
+      className={`flex w-full items-stretch border border-marca-500 bg-marca-500/10 ${
         grande ? "h-14" : "h-10"
       }`}
     >
@@ -51,7 +51,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad - 1)}
         aria-label={cantidad === 1 ? "Quitar del pedido" : "Quitar una unidad"}
-        className="flex w-12 shrink-0 items-center justify-center text-naranja-400 transition-colors hover:bg-naranja-500 hover:text-carbon-950"
+        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-white"
       >
         {cantidad === 1 ? (
           <IconoBasura className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -69,7 +69,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
           {cantidad}
         </span>
         {grande && (
-          <span className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-naranja-300">
+          <span className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-marca-300">
             {cantidad === 1 ? "unidad" : "unidades"}
           </span>
         )}
@@ -79,7 +79,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad + 1)}
         aria-label="Agregar una unidad"
-        className="flex w-12 shrink-0 items-center justify-center text-naranja-400 transition-colors hover:bg-naranja-500 hover:text-carbon-950"
+        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-white"
       >
         <IconoMas className={grande ? "h-5 w-5" : "h-4 w-4"} />
       </button>
