@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useCarrito } from "@/lib/cart-context";
 import { precio } from "@/lib/format";
 import { enlacePedido } from "@/lib/whatsapp";
-import { imagenUrl } from "@/lib/supabase";
+import { imagenUrl } from "@/lib/imagen-url";
 import { CampoCiudad, esCiudadValida } from "@/components/city-field";
 import { registrarPedido } from "@/lib/registro";
 import {

@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 
 import { getSupabaseSesion } from "@/lib/supabase-sesion";
-import { imagenUrl } from "@/lib/supabase";
+import { imagenUrl } from "@/lib/imagen-url";
 import { precio } from "@/lib/format";
 import {
   listaATexto,

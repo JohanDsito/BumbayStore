@@ -2,7 +2,20 @@
 
 import { useCarrito } from "@/lib/cart-context";
 import { precio } from "@/lib/format";
-import { PanelPedido } from "@/components/cart-drawer";
+import dynamic from "next/dynamic";
+
+/**
+ * El panel del pedido se carga solo cuando hace falta.
+ *
+ * Arrastra el formulario de envío y con él la lista de los 1.122 municipios
+ * del DANE: unos 24 KB que estaban descargándose en todas las páginas aunque
+ * el visitante no llegara a abrir el carrito. Ahora llegan al abrirlo, que es
+ * una acción deliberada y da tiempo de sobra.
+ */
+const PanelPedido = dynamic(
+  () => import("@/components/cart-drawer").then((m) => m.PanelPedido),
+  { ssr: false },
+);
 import { IconoCarrito, IconoFlecha } from "@/components/icons";
 
 /**
@@ -51,7 +64,7 @@ export function BarraPedido() {
         </div>
       )}
 
-      <PanelPedido />
+      {abierto && <PanelPedido />}
     </>
   );
 }

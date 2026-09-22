@@ -9,7 +9,7 @@ import {
   getRelacionados,
   getVariantes,
 } from "@/lib/products";
-import { imagenUrl } from "@/lib/supabase";
+import { imagenUrl } from "@/lib/imagen-url";
 import { site } from "@/lib/site-config";
 import { precio } from "@/lib/format";
 import { enlaceConsulta } from "@/lib/whatsapp";
