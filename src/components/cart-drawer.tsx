@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCarrito } from "@/lib/cart-context";
 import { precio } from "@/lib/format";
 import { enlacePedido } from "@/lib/whatsapp";
@@ -18,6 +18,8 @@ import {
 export function PanelPedido() {
   const {
     lineas,
+    nombre,
+    ciudad,
     comentario,
     total,
     unidades,
@@ -27,7 +29,13 @@ export function PanelPedido() {
     quitar,
     vaciar,
     fijarComentario,
+    fijarNombre,
+    fijarCiudad,
   } = useCarrito();
+
+  // Los errores aparecen al intentar enviar, no mientras se escribe: avisar
+  // de un campo vacío que todavía no se ha tocado solo molesta.
+  const [errores, setErrores] = useState({ nombre: false, ciudad: false });
 
   // Mientras el panel está abierto, el fondo no debe desplazarse: en celular
   // es muy fácil arrastrar la página por debajo del panel sin querer.
@@ -48,6 +56,20 @@ export function PanelPedido() {
     window.addEventListener("keydown", alPresionar);
     return () => window.removeEventListener("keydown", alPresionar);
   }, [abierto, cerrar]);
+
+  // El vendedor necesita nombre y ciudad para cotizar el envío sin tener que
+  // preguntarlos por chat, así que son obligatorios. Se valida al pulsar en
+  // vez de deshabilitar el botón: un botón inerte no explica qué falta.
+  const alEnviar = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const faltaNombre = nombre.trim().length < 2;
+    const faltaCiudad = ciudad.trim().length < 2;
+    if (!faltaNombre && !faltaCiudad) return;
+
+    e.preventDefault();
+    setErrores({ nombre: faltaNombre, ciudad: faltaCiudad });
+    const id = faltaNombre ? "pedido-nombre" : "pedido-ciudad";
+    document.getElementById(id)?.focus();
+  };
 
   if (!abierto) return null;
 
@@ -183,21 +205,53 @@ export function PanelPedido() {
                 })}
               </ul>
 
-              <div className="border-t border-carbon-800 p-4">
-                <label
-                  htmlFor="comentario-pedido"
-                  className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
-                >
-                  Comentarios para el vendedor
-                </label>
-                <textarea
-                  id="comentario-pedido"
-                  value={comentario}
-                  onChange={(e) => fijarComentario(e.target.value)}
-                  rows={3}
-                  placeholder="Ciudad de envío, cantidades especiales, forma de pago…"
-                  className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
+              <div className="space-y-4 border-t border-carbon-800 p-4">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">
+                  Datos para calcular el envío
+                </p>
+
+                <Campo
+                  id="pedido-nombre"
+                  etiqueta="Tu nombre"
+                  valor={nombre}
+                  alCambiar={(v) => {
+                    fijarNombre(v);
+                    if (errores.nombre) setErrores((x) => ({ ...x, nombre: false }));
+                  }}
+                  marcador="Nombre y apellido"
+                  autoComplete="name"
+                  error={errores.nombre ? "Escribe tu nombre" : null}
                 />
+
+                <Campo
+                  id="pedido-ciudad"
+                  etiqueta="Ciudad o municipio"
+                  valor={ciudad}
+                  alCambiar={(v) => {
+                    fijarCiudad(v);
+                    if (errores.ciudad) setErrores((x) => ({ ...x, ciudad: false }));
+                  }}
+                  marcador="Ej: Ipiales, Nariño"
+                  autoComplete="address-level2"
+                  error={errores.ciudad ? "Dinos a dónde enviamos" : null}
+                />
+
+                <div>
+                  <label
+                    htmlFor="comentario-pedido"
+                    className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+                  >
+                    Comentarios <span className="text-carbon-600">(opcional)</span>
+                  </label>
+                  <textarea
+                    id="comentario-pedido"
+                    value={comentario}
+                    onChange={(e) => fijarComentario(e.target.value)}
+                    rows={3}
+                    placeholder="Dirección, forma de pago, cantidades especiales…"
+                    className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
+                  />
+                </div>
               </div>
             </div>
 
@@ -212,7 +266,8 @@ export function PanelPedido() {
               </div>
 
               <a
-                href={enlacePedido(lineas, total, comentario)}
+                href={enlacePedido(lineas, total, { nombre, ciudad, comentario })}
+                onClick={alEnviar}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
@@ -237,6 +292,63 @@ export function PanelPedido() {
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+
+/**
+ * Campo de texto del formulario de pedido, con su error debajo.
+ *
+ * El foco ya pinta el borde de rojo, así que el estado de error necesita algo
+ * más para no confundirse con un campo simplemente seleccionado: lleva además
+ * un fondo teñido, que se mantiene aunque el campo pierda el foco.
+ */
+function Campo({
+  id,
+  etiqueta,
+  valor,
+  alCambiar,
+  marcador,
+  autoComplete,
+  error,
+}: {
+  id: string;
+  etiqueta: string;
+  valor: string;
+  alCambiar: (v: string) => void;
+  marcador: string;
+  autoComplete: string;
+  error: string | null;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+      >
+        {etiqueta}
+      </label>
+      <input
+        id={id}
+        type="text"
+        value={valor}
+        onChange={(e) => alCambiar(e.target.value)}
+        placeholder={marcador}
+        autoComplete={autoComplete}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className={`mt-2 h-11 w-full border px-3 text-[14px] text-carbon-100 placeholder:text-carbon-500 focus:outline-none focus:border-marca-500 ${
+          error
+            ? "border-marca-500 bg-marca-500/[0.10]"
+            : "border-carbon-700 bg-carbon-850"
+        }`}
+      />
+      {error && (
+        <p id={`${id}-error`} className="mt-1.5 text-[12px] text-marca-400">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

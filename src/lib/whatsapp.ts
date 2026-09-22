@@ -9,10 +9,16 @@ import type { CartLine, Product } from "@/lib/types";
  * la venta se cierra hablando. Por eso el mensaje tiene que leerse bien en el
  * celular, sin tablas ni caracteres raros.
  */
+type DatosPedido = {
+  nombre: string;
+  ciudad: string;
+  comentario: string;
+};
+
 export function enlacePedido(
   lineas: CartLine[],
   total: number,
-  comentario: string,
+  datos: DatosPedido,
 ): string {
   const items = lineas.map((l) => {
     const importe = precio(l.precioUnitario * l.cantidad);
@@ -22,14 +28,17 @@ export function enlacePedido(
   const partes = [
     `*Nuevo pedido — ${site.nombre}*`,
     "",
+    `*Cliente:* ${datos.nombre.trim()}`,
+    `*Ciudad:* ${datos.ciudad.trim()}`,
+    "",
     items.join("\n"),
     "",
     `*Total: ${precio(total)}*`,
     `${lineas.length} ${lineas.length === 1 ? "producto" : "productos"} · ${sumaUnidades(lineas)} ${sumaUnidades(lineas) === 1 ? "unidad" : "unidades"}`,
   ];
 
-  if (comentario.trim()) {
-    partes.push("", `*Comentarios:*`, comentario.trim());
+  if (datos.comentario.trim()) {
+    partes.push("", `*Comentarios:*`, datos.comentario.trim());
   }
 
   return construirEnlace(partes.join("\n"));

@@ -25,6 +25,8 @@ export function useCarrito() {
     );
     return {
       lineas: estado.lineas as CartLine[],
+      nombre: estado.nombre,
+      ciudad: estado.ciudad,
       comentario: estado.comentario,
       abierto: estado.abierto,
       unidades,
@@ -37,6 +39,8 @@ export function useCarrito() {
       quitar: almacen.quitar,
       vaciar: almacen.vaciar,
       fijarComentario: almacen.fijarComentario,
+      fijarNombre: almacen.fijarNombre,
+      fijarCiudad: almacen.fijarCiudad,
       abrir: almacen.abrir,
       cerrar: almacen.cerrar,
     };

@@ -20,12 +20,22 @@ const CLAVE = "bumbay:pedido:v1";
 
 export type EstadoPedido = {
   lineas: CartLine[];
+  /** Nombre de quien hace el pedido. */
+  nombre: string;
+  /** Ciudad o municipio de entrega: sin esto no se puede cotizar el envío. */
+  ciudad: string;
   comentario: string;
   /** Panel abierto. Es estado de interfaz: no se persiste. */
   abierto: boolean;
 };
 
-const VACIO: EstadoPedido = { lineas: [], comentario: "", abierto: false };
+const VACIO: EstadoPedido = {
+  lineas: [],
+  nombre: "",
+  ciudad: "",
+  comentario: "",
+  abierto: false,
+};
 
 let estado: EstadoPedido = VACIO;
 let hidratado = false;
@@ -39,6 +49,8 @@ function leerAlmacen(): EstadoPedido {
     const datos = JSON.parse(bruto) as Partial<EstadoPedido>;
     return {
       lineas: Array.isArray(datos.lineas) ? datos.lineas : [],
+      nombre: typeof datos.nombre === "string" ? datos.nombre : "",
+      ciudad: typeof datos.ciudad === "string" ? datos.ciudad : "",
       comentario: typeof datos.comentario === "string" ? datos.comentario : "",
       abierto: false,
     };
@@ -52,7 +64,12 @@ function guardar(nuevo: EstadoPedido) {
   try {
     window.localStorage.setItem(
       CLAVE,
-      JSON.stringify({ lineas: nuevo.lineas, comentario: nuevo.comentario }),
+      JSON.stringify({
+        lineas: nuevo.lineas,
+        nombre: nuevo.nombre,
+        ciudad: nuevo.ciudad,
+        comentario: nuevo.comentario,
+      }),
     );
   } catch {
     // Sin almacenamiento: el pedido vive solo en memoria.
@@ -137,11 +154,21 @@ export function quitar(slug: string) {
 }
 
 export function vaciar() {
+  // El nombre y la ciudad se conservan: si el cliente vuelve a pedir, no
+  // tiene por qué escribirlos otra vez.
   fijar({ lineas: [], comentario: "", abierto: false });
 }
 
 export function fijarComentario(comentario: string) {
   fijar({ comentario });
+}
+
+export function fijarNombre(nombre: string) {
+  fijar({ nombre });
+}
+
+export function fijarCiudad(ciudad: string) {
+  fijar({ ciudad });
 }
 
 export function abrir() {
