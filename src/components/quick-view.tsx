@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useCarrito } from "@/lib/cart-context";
-import { ImagenProducto } from "@/components/product-image";
+import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { precio } from "@/lib/format";
 import { enlaceConsulta } from "@/lib/whatsapp";
@@ -60,6 +60,15 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
       document.body.style.overflow = previo;
     };
   }, [cerrar]);
+
+  // Misma secuencia de piezas que en la ficha: cada una explica algo distinto
+  // del producto, y aquí es donde el cliente decide sin salir del catálogo.
+  const galeria =
+    producto.imagenes.length > 0
+      ? producto.imagenes
+      : producto.imagen
+        ? [producto.imagen]
+        : [];
 
   const url = `${site.url}/producto/${producto.slug}`;
 
@@ -125,19 +134,13 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
         </div>
 
         <div className="grid flex-1 overflow-y-auto overscroll-contain sm:grid-cols-2">
-          {/* --- Imagen --- */}
-          {/* El panel claro cubre toda la columna y la foto se centra en él:
-              de lo contrario queda un vacío oscuro cuando la columna de texto
-              es más alta que la imagen cuadrada. */}
-          <div className="relative flex items-center border-b border-carbon-800 bg-carbon-50 sm:border-b-0 sm:border-r">
-            <ImagenProducto
-              className="w-full"
-              aspecto="h-[30vh] sm:h-auto sm:aspect-square"
-              imagen={producto.imagen}
+          {/* --- Galería --- */}
+          <div className="border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
+            <GaleriaProducto
+              imagenes={galeria}
               nombre={producto.nombre}
               sku={producto.sku}
-              prioridad
-              sizes="(max-width: 640px) 100vw, 400px"
+              tamano="compacto"
             />
           </div>
 

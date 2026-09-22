@@ -10,6 +10,12 @@ type Props = {
   imagenes: string[];
   nombre: string;
   sku: string;
+  /**
+   * `compacto` es la variante de la vista previa: el marco se limita en alto
+   * para que el botón de compra no quede fuera de pantalla en celular, y las
+   * miniaturas se encogen.
+   */
+  tamano?: "normal" | "compacto";
 };
 
 /**
@@ -24,11 +30,17 @@ type Props = {
  * muy distintas y sin un marco fijo la página daría saltos al cambiar de
  * imagen.
  */
-export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
+export function GaleriaProducto({
+  imagenes,
+  nombre,
+  sku,
+  tamano = "normal",
+}: Props) {
   const [activa, setActiva] = useState(0);
   const tira = useRef<HTMLDivElement>(null);
 
   const total = imagenes.length;
+  const compacto = tamano === "compacto";
 
   const ir = useCallback(
     (indice: number) => {
@@ -62,7 +74,13 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
   return (
     <div>
       <div className="relative border border-carbon-800 bg-carbon-50">
-        <div className="relative aspect-square">
+        <div
+          className={
+            compacto
+              ? "relative h-[30vh] sm:h-auto sm:aspect-square"
+              : "relative aspect-square"
+          }
+        >
           {url && (
             <Image
               key={imagenes[activa]}
@@ -73,7 +91,7 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
                   : `${nombre} — imagen ${activa + 1} de ${total}`
               }
               fill
-              sizes="(max-width: 1024px) 100vw, 640px"
+              sizes={compacto ? "(max-width: 640px) 100vw, 400px" : "(max-width: 1024px) 100vw, 640px"}
               priority={activa === 0}
               className="animate-[aparecer_0.3s_var(--ease-salida)] object-contain"
             />
@@ -86,7 +104,9 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
               type="button"
               onClick={() => ir(activa - 1)}
               aria-label="Imagen anterior"
-              className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500"
+              className={`absolute left-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 ${
+                compacto ? "h-8 w-8" : "h-10 w-10"
+              }`}
             >
               <IconoFlecha className="h-4 w-4 rotate-180" />
             </button>
@@ -94,7 +114,9 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
               type="button"
               onClick={() => ir(activa + 1)}
               aria-label="Imagen siguiente"
-              className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500"
+              className={`absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 ${
+                compacto ? "h-8 w-8" : "h-10 w-10"
+              }`}
             >
               <IconoFlecha className="h-4 w-4" />
             </button>
@@ -123,7 +145,9 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
                 aria-selected={activaEsta}
                 aria-label={`Ver imagen ${i + 1}`}
                 onClick={() => ir(i)}
-                className={`relative h-16 w-16 shrink-0 overflow-hidden border bg-carbon-50 transition-colors ${
+                className={`relative shrink-0 overflow-hidden border bg-carbon-50 transition-colors ${
+                  compacto ? "h-11 w-11" : "h-16 w-16"
+                } ${
                   activaEsta
                     ? "border-marca-500"
                     : "border-carbon-800 hover:border-carbon-600"
@@ -134,7 +158,7 @@ export function GaleriaProducto({ imagenes, nombre, sku }: Props) {
                     src={miniatura}
                     alt=""
                     fill
-                    sizes="64px"
+                    sizes={compacto ? "44px" : "64px"}
                     className="object-contain p-0.5"
                   />
                 )}
