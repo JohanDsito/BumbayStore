@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site-config";
+import { site } from "@/config/sitio";
 
 /**
  * Dejamos entrar a todos los rastreadores, incluidos los de las IAs: que

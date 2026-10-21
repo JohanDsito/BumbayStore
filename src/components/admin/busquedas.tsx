@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
 
 type Busqueda = { consulta: string; resultados: number; creado_en: string };
 

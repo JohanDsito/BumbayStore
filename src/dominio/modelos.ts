@@ -1,4 +1,11 @@
-/** Modelo de datos del catálogo. Refleja 1:1 las tablas de Supabase. */
+/**
+ * Modelo del negocio: qué es un producto, una categoría, un nicho y una línea
+ * del pedido.
+ *
+ * Es la capa más interna. No sabe de dónde vienen los datos ni cómo se
+ * pintan: no importa nada de Next, React ni Supabase, y nada de aquí debe
+ * cambiar porque cambie la base de datos o el diseño.
+ */
 
 export type Spec = {
   label: string;
@@ -58,8 +65,24 @@ export type Product = {
   activo: boolean;
 };
 
+/**
+ * Una línea de negocio dentro de Bumbay Store: herramientas, hogar… Agrupa
+ * categorías y puede llevar el nombre de una submarca propia, como
+ * "Bumbay Tools" en herramientas.
+ */
+export type Niche = {
+  slug: string;
+  nombre: string;
+  /** Marca con la que se presenta el nicho. null si usa solo Bumbay Store. */
+  submarca: string | null;
+  descripcion: string | null;
+  orden: number;
+};
+
 export type Category = {
   slug: string;
+  /** Nicho al que pertenece. Los productos llegan al nicho por su categoría. */
+  nichoSlug: string;
   nombre: string;
   orden: number;
   descripcion: string | null;

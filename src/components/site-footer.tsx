@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { site } from "@/lib/site-config";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { site } from "@/config/sitio";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Logotipo, IconoWhatsApp } from "@/components/icons";
-import type { Category } from "@/lib/types";
+import type { Category } from "@/dominio/modelos";
 
 export function PieSitio({ categorias }: { categorias: Category[] }) {
   const anio = new Date().getFullYear();

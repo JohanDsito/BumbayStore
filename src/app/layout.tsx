@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-import { site } from "@/lib/site-config";
+import { site } from "@/config/sitio";
 
 /**
  * Armazón mínimo, común a todo.

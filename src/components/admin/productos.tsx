@@ -3,9 +3,9 @@
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
-import { imagenUrl } from "@/lib/imagen-url";
-import { precio } from "@/lib/format";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { imagenUrl } from "@/infraestructura/imagen-url";
+import { precio } from "@/dominio/formato";
 import {
   listaATexto,
   textoALista,
@@ -14,7 +14,7 @@ import {
   faqATexto,
   textoAFaq,
   nombreMiniatura,
-} from "@/lib/formato-campos";
+} from "@/dominio/campos-texto";
 
 /** Lo que el panel edita de cada producto. */
 type Fila = {

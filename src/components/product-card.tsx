@@ -2,8 +2,8 @@ import Link from "next/link";
 import { ImagenProducto } from "@/components/product-image";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { EtiquetaColor } from "@/components/color-selector";
-import { precio } from "@/lib/format";
-import type { Product } from "@/lib/types";
+import { precio } from "@/dominio/formato";
+import type { Product } from "@/dominio/modelos";
 
 type Props = {
   producto: Product;

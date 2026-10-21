@@ -4,12 +4,12 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useCarrito } from "@/lib/cart-context";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
-import { precio } from "@/lib/format";
-import { enlaceConsulta } from "@/lib/whatsapp";
-import { site } from "@/lib/site-config";
+import { precio } from "@/dominio/formato";
+import { enlaceConsulta } from "@/infraestructura/whatsapp";
+import { site } from "@/config/sitio";
 import {
   IconoCerrar,
   IconoWhatsApp,
@@ -17,7 +17,7 @@ import {
   IconoCarrito,
 } from "@/components/icons";
 import { SelectorColor } from "@/components/color-selector";
-import type { Product, Category } from "@/lib/types";
+import type { Product, Category } from "@/dominio/modelos";
 
 type Props = {
   producto: Product;

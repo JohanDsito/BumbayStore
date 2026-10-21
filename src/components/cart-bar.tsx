@@ -1,7 +1,7 @@
 "use client";
 
-import { useCarrito } from "@/lib/cart-context";
-import { precio } from "@/lib/format";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
+import { precio } from "@/dominio/formato";
 import dynamic from "next/dynamic";
 
 /**

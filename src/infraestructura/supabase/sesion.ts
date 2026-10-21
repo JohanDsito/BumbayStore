@@ -10,8 +10,9 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
  * entró entre recargas.
  *
  * Todo lo que el panel puede hacer lo decide la base, no este código: las
- * políticas de seguridad por fila solo permiten escribir a un usuario
- * autenticado. Aunque alguien abra /admin, sin sesión no puede tocar nada.
+ * políticas de seguridad por fila solo permiten escribir a quien esté en la
+ * tabla `admins`. Aunque alguien encuentre el panel y se cree una cuenta, sin
+ * estar en esa lista no puede tocar nada.
  */
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

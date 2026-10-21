@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
-import { precio } from "@/lib/format";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { precio } from "@/dominio/formato";
 
 type Linea = { sku: string; nombre: string; cantidad: number; precio: number };
 

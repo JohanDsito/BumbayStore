@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site-config";
-import { getProductos, getCategorias } from "@/lib/products";
+import { site } from "@/config/sitio";
+import { catalogo } from "@/servidor/catalogo";
 
 /**
  * Mapa del sitio. Se regenera solo: cada producto y cada categoría que exista
@@ -8,8 +8,8 @@ import { getProductos, getCategorias } from "@/lib/products";
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [productos, categorias] = await Promise.all([
-    getProductos(),
-    getCategorias(),
+    catalogo.productos(),
+    catalogo.categorias(),
   ]);
 
   const ahora = new Date();

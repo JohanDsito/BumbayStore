@@ -2,37 +2,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  getProducto,
-  getProductos,
-  getCategoria,
-  getRelacionados,
-  getVariantes,
-} from "@/lib/products";
-import { imagenUrl } from "@/lib/imagen-url";
-import { site } from "@/lib/site-config";
-import { precio } from "@/lib/format";
-import { enlaceConsulta } from "@/lib/whatsapp";
+import { catalogo } from "@/servidor/catalogo";
+import { imagenUrl } from "@/infraestructura/imagen-url";
+import { site } from "@/config/sitio";
+import { precio } from "@/dominio/formato";
+import { enlaceConsulta } from "@/infraestructura/whatsapp";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { TarjetaProducto } from "@/components/product-card";
 import { SelectorColor } from "@/components/color-selector";
 import { IconoWhatsApp } from "@/components/icons";
+import { JsonLd } from "@/components/json-ld";
 
 type Props = { params: Promise<{ slug: string }> };
 
 /** Prerenderiza cada ficha en el build: HTML completo para Google y las IAs. */
 export async function generateStaticParams() {
-  const productos = await getProductos();
+  const productos = await catalogo.productos();
   return productos.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const producto = await getProducto(slug);
+  const producto = await catalogo.producto(slug);
   if (!producto) return { title: "Producto no encontrado" };
 
-  const categoria = await getCategoria(producto.categoriaSlug);
+  const categoria = await catalogo.categoria(producto.categoriaSlug);
   const imagen = imagenUrl(producto.imagen);
 
   // Descripción corta y con el dato que importa: qué es y cuánto cuesta.
@@ -65,13 +60,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FichaProducto({ params }: Props) {
   const { slug } = await params;
-  const producto = await getProducto(slug);
+  const producto = await catalogo.producto(slug);
   if (!producto) notFound();
 
   const [categoria, relacionados, variantes] = await Promise.all([
-    getCategoria(producto.categoriaSlug),
-    getRelacionados(producto, 4),
-    getVariantes(producto),
+    catalogo.categoria(producto.categoriaSlug),
+    catalogo.relacionadosDe(producto, 4),
+    catalogo.variantesDe(producto),
   ]);
 
   // La galería usa la secuencia completa de piezas; si un producto solo tiene
@@ -163,19 +158,10 @@ export default async function FichaProducto({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosProducto) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosMigas) }}
-      />
+      <JsonLd datos={datosProducto} />
+      <JsonLd datos={datosMigas} />
       {datosFaq && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(datosFaq) }}
-        />
+        <JsonLd datos={datosFaq} />
       )}
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">

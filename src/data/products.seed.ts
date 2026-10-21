@@ -1,4 +1,4 @@
-import type { Product } from "@/lib/types";
+import type { Product } from "@/dominio/modelos";
 
 /**
  * Datos de ejemplo con la MISMA forma que tendrá la tabla `productos` de

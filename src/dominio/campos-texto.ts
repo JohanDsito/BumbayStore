@@ -1,4 +1,4 @@
-import type { Spec, Faq } from "@/lib/types";
+import type { Spec, Faq } from "@/dominio/modelos";
 
 /**
  * Conversión entre los campos estructurados y el texto plano que se edita en

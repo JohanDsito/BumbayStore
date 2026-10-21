@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { createClient } from "@supabase/supabase-js";
+import { esAdministrador } from "@/infraestructura/supabase/administradores";
 
 /**
  * Regenera las páginas del catálogo después de un cambio en el panel.
@@ -9,26 +9,19 @@ import { createClient } from "@supabase/supabase-js";
  * reconstrucción. Esto invalida las rutas afectadas y Next las vuelve a
  * generar en la siguiente visita, sin perder el prerenderizado.
  *
- * Solo responde a quien traiga una sesión válida de Supabase. Se verifica
- * contra Supabase en cada llamada en vez de confiar en el token a ciegas.
+ * Solo responde a un administrador. Regenerar todo el catálogo cuesta
+ * trabajo del servidor, y si bastara con tener cuenta, cualquiera podría
+ * pedirlo una y otra vez.
  */
 export async function POST(peticion: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    return Response.json({ error: "Supabase no está configurado" }, { status: 500 });
-  }
-
   const cabecera = peticion.headers.get("authorization") ?? "";
   const token = cabecera.startsWith("Bearer ") ? cabecera.slice(7) : null;
   if (!token) {
     return Response.json({ error: "Falta la sesión" }, { status: 401 });
   }
 
-  const sb = createClient(url, anonKey, { auth: { persistSession: false } });
-  const { data, error } = await sb.auth.getUser(token);
-  if (error || !data.user) {
-    return Response.json({ error: "Sesión inválida" }, { status: 401 });
+  if (!(await esAdministrador(token))) {
+    return Response.json({ error: "Sin permiso" }, { status: 403 });
   }
 
   // Las rutas con segmento dinámico necesitan el patrón y el tipo, no una URL

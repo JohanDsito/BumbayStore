@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { buscarProductos, getCategorias } from "@/lib/products";
+import { catalogo } from "@/servidor/catalogo";
 import { GrillaProductos } from "@/components/product-grid";
 import { RegistrarBusqueda } from "@/components/search-logger";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp } from "@/components/icons";
 
 type Props = { searchParams: Promise<{ q?: string }> };
@@ -20,8 +20,8 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
   const { q } = await searchParams;
   const consulta = (q ?? "").trim();
   const [resultados, categorias] = await Promise.all([
-    consulta ? buscarProductos(consulta) : Promise.resolve([]),
-    getCategorias(),
+    consulta ? catalogo.buscar(consulta) : Promise.resolve([]),
+    catalogo.categorias(),
   ]);
 
   return (

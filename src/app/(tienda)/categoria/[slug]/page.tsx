@@ -2,28 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  getCategoria,
-  getCategorias,
-  getProductosPorCategoria,
-} from "@/lib/products";
-import { site } from "@/lib/site-config";
-import { precio } from "@/lib/format";
+import { catalogo } from "@/servidor/catalogo";
+import { site } from "@/config/sitio";
+import { precio } from "@/dominio/formato";
 import { GrillaProductos } from "@/components/product-grid";
+import { JsonLd } from "@/components/json-ld";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
-  const categorias = await getCategorias();
+  const categorias = await catalogo.categorias();
   return categorias.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const categoria = await getCategoria(slug);
+  const categoria = await catalogo.categoria(slug);
   if (!categoria) return { title: "Categoría no encontrada" };
 
-  const productos = await getProductosPorCategoria(slug);
+  const productos = await catalogo.productosDeCategoria(slug);
   const desde = productos.length
     ? Math.min(...productos.map((p) => p.precioUnitario))
     : 0;
@@ -51,10 +48,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PaginaCategoria({ params }: Props) {
   const { slug } = await params;
-  const categoria = await getCategoria(slug);
+  const categoria = await catalogo.categoria(slug);
   if (!categoria) notFound();
 
-  const productos = await getProductosPorCategoria(slug);
+  const productos = await catalogo.productosDeCategoria(slug);
 
   // Lista de items: ayuda a los buscadores a entender que esto es un listado
   // de productos y no una página de texto cualquiera.
@@ -88,14 +85,8 @@ export default async function PaginaCategoria({ params }: Props) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosLista) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosMigas) }}
-      />
+      <JsonLd datos={datosLista} />
+      <JsonLd datos={datosMigas} />
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         <nav aria-label="Ruta de navegación" className="py-4">

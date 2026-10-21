@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/dominio/modelos";
 
 /**
  * Muestra de color para cada nombre. Si aparece un color nuevo que no esté

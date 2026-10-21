@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import type { Session } from "@supabase/supabase-js";
 
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
 import { AdminProductos } from "@/components/admin/productos";
 import { AdminPedidos } from "@/components/admin/pedidos";
 import { AdminBusquedas } from "@/components/admin/busquedas";
@@ -78,8 +78,8 @@ export function PanelAdmin() {
         <span className="font-mono text-carbon-100">{sesion.user.email}</span> entró
         correctamente, pero no está en la lista de administradores, así que no
         puede ver ni modificar nada. Añádela desde el SQL Editor de Supabase
-        con la instrucción que hay al final de{" "}
-        <code className="font-mono text-marca-400">supabase/schema.sql</code>.
+        con la instrucción de la sección{" "}
+        <span className="font-mono text-marca-400">Crear tu usuario</span> del README.
         <button
           type="button"
           onClick={() => sb.auth.signOut()}

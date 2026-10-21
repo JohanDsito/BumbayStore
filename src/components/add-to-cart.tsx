@@ -1,8 +1,8 @@
 "use client";
 
-import { useCarrito } from "@/lib/cart-context";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
 import { IconoCarrito, IconoMas, IconoMenos, IconoBasura } from "@/components/icons";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/dominio/modelos";
 
 type Props = {
   producto: Product;

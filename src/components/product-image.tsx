@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { imagenUrl } from "@/lib/imagen-url";
+import { imagenUrl } from "@/infraestructura/imagen-url";
 
 type Props = {
   imagen: string | null;

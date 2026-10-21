@@ -1,6 +1,7 @@
-import { site } from "@/lib/site-config";
-import { precio } from "@/lib/format";
-import type { CartLine, Product } from "@/lib/types";
+import { site } from "@/config/sitio";
+import { precio } from "@/dominio/formato";
+import type { CartLine, Product } from "@/dominio/modelos";
+import { totalesPedido } from "@/dominio/pedido";
 
 /**
  * Arma el enlace de WhatsApp con el pedido ya redactado.
@@ -25,6 +26,7 @@ export function enlacePedido(
     return `• ${l.cantidad} x ${l.nombre}\n  ${l.sku} — ${precio(l.precioUnitario)} c/u = ${importe}`;
   });
 
+  const { unidades } = totalesPedido(lineas);
   const partes = [
     `*Nuevo pedido — ${site.nombre}*`,
     "",
@@ -34,7 +36,7 @@ export function enlacePedido(
     items.join("\n"),
     "",
     `*Total: ${precio(total)}*`,
-    `${lineas.length} ${lineas.length === 1 ? "producto" : "productos"} · ${sumaUnidades(lineas)} ${sumaUnidades(lineas) === 1 ? "unidad" : "unidades"}`,
+    `${lineas.length} ${lineas.length === 1 ? "producto" : "productos"} · ${unidades} ${unidades === 1 ? "unidad" : "unidades"}`,
   ];
 
   if (datos.comentario.trim()) {
@@ -65,8 +67,4 @@ export function enlaceGeneral(texto = "Hola, quisiera información sobre sus her
 
 function construirEnlace(texto: string): string {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(texto)}`;
-}
-
-function sumaUnidades(lineas: CartLine[]): number {
-  return lineas.reduce((suma, l) => suma + l.cantidad, 0);
 }

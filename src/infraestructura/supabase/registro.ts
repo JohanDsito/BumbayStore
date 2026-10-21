@@ -1,6 +1,7 @@
 "use client";
 
-import type { CartLine } from "@/lib/types";
+import type { CartLine } from "@/dominio/modelos";
+import { busquedaRegistrable, totalesPedido } from "@/dominio/pedido";
 
 /**
  * Registro de lo que hace el cliente en el catálogo, para que el panel de
@@ -62,7 +63,7 @@ export async function registrarPedido(datos: {
     ciudad: datos.ciudad.trim(),
     comentario: datos.comentario.trim() || null,
     total: datos.total,
-    unidades: datos.lineas.reduce((s, l) => s + l.cantidad, 0),
+    unidades: totalesPedido(datos.lineas).unidades,
     // Se congela el precio del momento: si mañana cambia, este registro
     // sigue diciendo por cuánto se pidió.
     lineas: datos.lineas.map((l) => ({
@@ -82,7 +83,6 @@ export async function registrarBusqueda(
   consulta: string,
   resultados: number,
 ): Promise<void> {
-  const limpia = consulta.trim();
-  if (limpia.length < 2 || limpia.length > 120) return;
-  await insertar("busquedas", { consulta: limpia, resultados });
+  if (!busquedaRegistrable(consulta)) return;
+  await insertar("busquedas", { consulta: consulta.trim(), resultados });
 }

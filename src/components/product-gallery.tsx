@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { imagenUrl } from "@/lib/imagen-url";
+import { imagenUrl } from "@/infraestructura/imagen-url";
 import { IconoFlecha } from "@/components/icons";
 
 type Props = {

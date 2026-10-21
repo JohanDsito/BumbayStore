@@ -1,4 +1,5 @@
-import type { CartLine, Product } from "@/lib/types";
+import type { CartLine, Product } from "@/dominio/modelos";
+import { LIMITES_PEDIDO, acotarCantidad } from "@/dominio/pedido";
 
 /**
  * Almacén del pedido.
@@ -119,10 +120,13 @@ export function getSnapshotServidor(): EstadoPedido {
 
 export function agregar(producto: Product, cantidad = 1) {
   const existente = estado.lineas.find((l) => l.slug === producto.slug);
+  // Un pedido tiene un tope de productos distintos; pasado ese punto ya es
+  // una cotización que conviene hablar directamente.
+  if (!existente && estado.lineas.length >= LIMITES_PEDIDO.lineasMaximas) return;
   const lineas = existente
     ? estado.lineas.map((l) =>
         l.slug === producto.slug
-          ? { ...l, cantidad: Math.min(999, l.cantidad + cantidad) }
+          ? { ...l, cantidad: acotarCantidad(l.cantidad + cantidad) }
           : l,
       )
     : [
@@ -133,7 +137,7 @@ export function agregar(producto: Product, cantidad = 1) {
           nombre: producto.nombre,
           precioUnitario: producto.precioUnitario,
           imagen: producto.imagen,
-          cantidad,
+          cantidad: acotarCantidad(cantidad),
         },
       ];
   fijar({ lineas });
@@ -144,7 +148,7 @@ export function fijarCantidad(slug: string, cantidad: number) {
     cantidad <= 0
       ? estado.lineas.filter((l) => l.slug !== slug)
       : estado.lineas.map((l) =>
-          l.slug === slug ? { ...l, cantidad: Math.min(999, cantidad) } : l,
+          l.slug === slug ? { ...l, cantidad: acotarCantidad(cantidad) } : l,
         );
   fijar({ lineas });
 }

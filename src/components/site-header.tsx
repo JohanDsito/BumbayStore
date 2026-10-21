@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, Suspense } from "react";
-import { site } from "@/lib/site-config";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { site } from "@/config/sitio";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Buscador } from "@/components/search-box";
 import { BotonPedidoHeader } from "@/components/cart-bar";
 import { Logotipo, IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
-import type { Category } from "@/lib/types";
+import type { Category } from "@/dominio/modelos";
 
 export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
   const [menuAbierto, setMenuAbierto] = useState(false);

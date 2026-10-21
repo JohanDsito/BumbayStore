@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-import { site } from "@/lib/site-config";
-import { getProductos, getDestacados, getCategorias } from "@/lib/products";
+import { site } from "@/config/sitio";
+import { catalogo } from "@/servidor/catalogo";
 import { CarruselDestacados } from "@/components/featured-carousel";
 import { GrillaProductos } from "@/components/product-grid";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -16,9 +16,9 @@ export const metadata: Metadata = {
 
 export default async function Portada() {
   const [productos, destacados, categorias] = await Promise.all([
-    getProductos(),
-    getDestacados(8),
-    getCategorias(),
+    catalogo.productos(),
+    catalogo.destacados(8),
+    catalogo.categorias(),
   ]);
 
   return (

@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCarrito } from "@/lib/cart-context";
-import { precio } from "@/lib/format";
-import { enlacePedido } from "@/lib/whatsapp";
-import { imagenUrl } from "@/lib/imagen-url";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
+import { precio } from "@/dominio/formato";
+import { LIMITES_PEDIDO, nombreValido } from "@/dominio/pedido";
+import { enlacePedido } from "@/infraestructura/whatsapp";
+import { imagenUrl } from "@/infraestructura/imagen-url";
 import { CampoCiudad, esCiudadValida } from "@/components/city-field";
-import { registrarPedido } from "@/lib/registro";
+import { registrarPedido } from "@/infraestructura/supabase/registro";
 import {
   IconoCerrar,
   IconoMas,
@@ -63,7 +64,7 @@ export function PanelPedido() {
   // preguntarlos por chat, así que son obligatorios. Se valida al pulsar en
   // vez de deshabilitar el botón: un botón inerte no explica qué falta.
   const alEnviar = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const faltaNombre = nombre.trim().length < 2;
+    const faltaNombre = !nombreValido(nombre);
     // La ciudad tiene que salir de la lista del DANE: así llega siempre
     // escrita igual y se puede agrupar por zona para cotizar el envío.
     const faltaCiudad = !esCiudadValida(ciudad);
@@ -230,6 +231,7 @@ export function PanelPedido() {
                   }}
                   marcador="Nombre y apellido"
                   autoComplete="name"
+                  maxLength={LIMITES_PEDIDO.nombreMaximo}
                   error={errores.nombre ? "Escribe tu nombre" : null}
                 />
 
@@ -255,6 +257,7 @@ export function PanelPedido() {
                     value={comentario}
                     onChange={(e) => fijarComentario(e.target.value)}
                     rows={3}
+                    maxLength={LIMITES_PEDIDO.comentarioMaximo}
                     placeholder="Dirección, forma de pago, cantidades especiales…"
                     className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
                   />
@@ -318,6 +321,7 @@ function Campo({
   alCambiar,
   marcador,
   autoComplete,
+  maxLength,
   error,
 }: {
   id: string;
@@ -326,6 +330,7 @@ function Campo({
   alCambiar: (v: string) => void;
   marcador: string;
   autoComplete: string;
+  maxLength: number;
   error: string | null;
 }) {
   return (
@@ -343,6 +348,7 @@ function Campo({
         onChange={(e) => alCambiar(e.target.value)}
         placeholder={marcador}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         className={`mt-2 h-11 w-full border px-3 text-[14px] text-carbon-100 placeholder:text-carbon-500 focus:outline-none focus:border-marca-500 ${

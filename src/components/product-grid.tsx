@@ -1,5 +1,5 @@
 import { TarjetaProducto } from "@/components/product-card";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/dominio/modelos";
 
 type Props = {
   productos: Product[];

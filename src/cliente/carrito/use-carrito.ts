@@ -1,14 +1,15 @@
 "use client";
 
 import { useSyncExternalStore, useMemo } from "react";
-import * as almacen from "@/lib/cart-store";
-import type { CartLine, Product } from "@/lib/types";
+import * as almacen from "@/cliente/carrito/almacen";
+import type { CartLine, Product } from "@/dominio/modelos";
+import { totalesPedido } from "@/dominio/pedido";
 
 /**
  * Acceso al pedido desde cualquier componente cliente.
  *
  * No hace falta envolver nada en un proveedor: el estado vive en
- * `cart-store.ts` y React se suscribe con `useSyncExternalStore`.
+ * `almacen.ts` y React se suscribe con `useSyncExternalStore`.
  */
 export function useCarrito() {
   const estado = useSyncExternalStore(
@@ -18,11 +19,7 @@ export function useCarrito() {
   );
 
   return useMemo(() => {
-    const unidades = estado.lineas.reduce((s, l) => s + l.cantidad, 0);
-    const total = estado.lineas.reduce(
-      (s, l) => s + l.precioUnitario * l.cantidad,
-      0,
-    );
+    const { unidades, total } = totalesPedido(estado.lineas);
     return {
       lineas: estado.lineas as CartLine[],
       nombre: estado.nombre,

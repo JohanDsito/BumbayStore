@@ -1,15 +1,16 @@
-import { site } from "@/lib/site-config";
-import { getCategorias } from "@/lib/products";
+import { site } from "@/config/sitio";
+import { catalogo } from "@/servidor/catalogo";
 import { EncabezadoSitio } from "@/components/site-header";
 import { PieSitio } from "@/components/site-footer";
 import { BarraPedido } from "@/components/cart-bar";
+import { JsonLd } from "@/components/json-ld";
 
 /** Armazón de la tienda: cabecera, catálogo, pie y el pedido siempre a mano. */
 export default async function LayoutTienda({
   children,
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
-  const categorias = await getCategorias();
+  const categorias = await catalogo.categorias();
 
   // Datos estructurados del negocio: le dicen a Google y a los asistentes de IA
   // qué es Bumbay Tools, dónde está y cómo contactarlo.
@@ -33,10 +34,7 @@ export default async function LayoutTienda({
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosNegocio) }}
-      />
+      <JsonLd datos={datosNegocio} />
       <a
         href="#contenido"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-marca-500 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"

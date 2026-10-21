@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { TarjetaProducto } from "@/components/product-card";
 import { IconoFlecha } from "@/components/icons";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/dominio/modelos";
 
 /**
  * Carrusel de destacados. Scroll nativo con puntos de anclaje (así funciona

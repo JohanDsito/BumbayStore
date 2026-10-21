@@ -54,3 +54,9 @@ datos/productos.borrador.csv
 
 # scripts temporales de depuracion
 _*.mjs
+
+# variables copiadas para Vercel (tienen valores reales)
+vercel-variables.txt
+
+# cache de Python de las skills
+__pycache__/

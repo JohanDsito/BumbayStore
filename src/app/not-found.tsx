@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
 
 export default function NoEncontrado() {
