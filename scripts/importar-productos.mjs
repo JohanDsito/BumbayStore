@@ -8,9 +8,14 @@
  * (útil al renombrar un SKU: el upsert crea la fila nueva pero deja la vieja).
  *
  * Columnas esperadas (el orden no importa, los nombres sí):
- *   sku, nombre, categoria, marca, color, grupo, precio_unitario, imagen,
- *   imagen_mini, imagenes, ficha_tecnica, especificaciones, modo_uso,
+ *   sku, nombre, nicho, categoria, marca, color, grupo, precio_unitario,
+ *   imagen, imagen_mini, imagenes, ficha_tecnica, especificaciones, modo_uso,
  *   beneficios, faq, destacado
+ *
+ * Nicho: la línea de negocio de Bumbay Store a la que pertenece la categoría
+ * ("herramientas", "hogar"…). Tiene que existir ya en la tabla `nichos`. Si
+ * la columna falta o va vacía se usa "herramientas", que era el único nicho
+ * antes de que hubiera varios; el resumen avisa cuántas filas lo asumieron.
  *
  * Bumbay maneja un solo precio, ya a nivel de distribuidor: no hay columna de
  * precio al por mayor.
@@ -32,6 +37,7 @@ import { readFileSync } from "node:fs";
 import { createClient } from "@supabase/supabase-js";
 
 const RUTA = process.argv[2] ?? "datos/productos.csv";
+const NICHO_POR_DEFECTO = "herramientas";
 const SIMULAR = process.argv.includes("--simular");
 const LIMPIAR = process.argv.includes("--limpiar");
 
@@ -158,12 +164,16 @@ const errores = [];
 const avisos = [];
 const slugsVistos = new Set();
 const skusVistos = new Set();
+let filasSinNicho = 0;
 
 filas.forEach((f, i) => {
   const linea = i + 2; // +1 por la cabecera, +1 porque Excel cuenta desde 1
   const sku = f.sku?.trim();
   const nombre = f.nombre?.trim();
   const categoria = f.categoria?.trim();
+  const nichoEscrito = f.nicho?.trim();
+  if (!nichoEscrito) filasSinNicho++;
+  const nicho = slugify(nichoEscrito || NICHO_POR_DEFECTO);
   const precioUnitario = aEntero(f.precio_unitario);
 
   if (!sku) return errores.push(`Fila ${linea}: falta el SKU`);
@@ -191,12 +201,21 @@ filas.forEach((f, i) => {
   }
 
   const categoriaSlug = slugify(categoria);
-  if (!categorias.has(categoriaSlug)) {
+  const existente = categorias.get(categoriaSlug);
+  if (!existente) {
     categorias.set(categoriaSlug, {
       slug: categoriaSlug,
+      nicho_slug: nicho,
       nombre: categoria,
       orden: categorias.size,
     });
+  } else if (existente.nicho_slug !== nicho) {
+    // Una categoría vive en un solo nicho. Si dos filas no están de acuerdo,
+    // casi siempre es un error de digitación en una de ellas.
+    return errores.push(
+      `Fila ${linea} (${sku}): la categoría "${categoria}" ya venía en el nicho ` +
+        `"${existente.nicho_slug}" y aquí aparece en "${nicho}"`,
+    );
   }
 
   // El SKU al final garantiza que dos productos de nombre parecido no choquen.
@@ -260,16 +279,41 @@ console.log(`Productos válidos:  ${productos.length}`);
 console.log(`Categorías nuevas:  ${categorias.size}`);
 console.log(`Destacados:         ${productos.filter((p) => p.destacado).length}`);
 console.log(`Sin imagen:         ${productos.filter((p) => !p.imagen).length}`);
+const nichosUsados = [...new Set([...categorias.values()].map((c) => c.nicho_slug))];
+console.log(`Nichos:             ${nichosUsados.join(", ")}`);
+if (filasSinNicho > 0) {
+  console.log(
+    `
+Aviso: ${filasSinNicho} filas no traen la columna "nicho" y se asignaron a "${NICHO_POR_DEFECTO}".`,
+  );
+}
 
 if (SIMULAR) {
   console.log("Modo simulación. Ejemplo del primer producto:\n");
   console.log(JSON.stringify(productos[0], null, 2));
   console.log("\nCategorías detectadas:");
-  for (const c of categorias.values()) console.log(`  ${c.slug}  ←  ${c.nombre}`);
+  for (const c of categorias.values())
+    console.log(`  ${c.nicho_slug} / ${c.slug}  ←  ${c.nombre}`);
   process.exit(0);
 }
 
 const sb = createClient(URL, LLAVE, { auth: { persistSession: false } });
+
+// Los nichos se crean a propósito, no por un error de digitación en el CSV:
+// si alguno no existe se detiene todo antes de escribir.
+const { data: nichosEnBase, error: errorNichos } = await sb.from("nichos").select("slug");
+if (errorNichos) {
+  console.error("No pude leer los nichos:", errorNichos.message);
+  console.error("¿Ya se aplicaron las migraciones? (ver README, sección Base de datos)");
+  process.exit(1);
+}
+const nichosExistentes = new Set((nichosEnBase ?? []).map((n) => n.slug));
+const nichosFaltantes = nichosUsados.filter((n) => !nichosExistentes.has(n));
+if (nichosFaltantes.length > 0) {
+  console.error(`Estos nichos no existen en la base: ${nichosFaltantes.join(", ")}`);
+  console.error("Créalos primero o corrige la columna \"nicho\" del CSV. No se escribió nada.");
+  process.exit(1);
+}
 
 console.log("Subiendo categorías…");
 const { error: errorCat } = await sb
@@ -294,11 +338,9 @@ Error en el lote ${i / LOTE + 1}: ${error.message}`);
     if (/column|schema cache/i.test(error.message)) {
       console.error(
         `
-A la tabla le falta una columna. Vuelve a ejecutar supabase/schema.sql
+A la tabla le falta una columna: la base no tiene las últimas migraciones.
 ` +
-          `en el SQL Editor de Supabase: incluye los ALTER que añaden las columnas
-` +
-          `nuevas y se puede correr las veces que haga falta.`,
+          `Aplícalas con  npx supabase db push  (ver README, sección Base de datos).`,
       );
     }
     process.exit(1);
