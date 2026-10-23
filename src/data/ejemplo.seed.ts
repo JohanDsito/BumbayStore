@@ -29,7 +29,7 @@ export const nichosEjemplo: Niche[] = [
     descripcion:
       "Cargadores, cables, audífonos y soportes para el día a día, importados sin intermediarios.",
     datos: [],
-    acento: "#2e9bff",
+    acento: "#8b5cff",
     orden: 3,
   },
 ];

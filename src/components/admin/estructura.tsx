@@ -17,6 +17,7 @@ import {
   type NichoAdmin,
 } from "@/infraestructura/supabase/admin-catalogo";
 import { slugify } from "@/dominio/formato";
+import { site } from "@/config/sitio";
 import { datosATexto, textoADatos } from "@/dominio/campos-texto";
 import { slugDeNichoValido } from "@/dominio/rutas";
 import { AreaTexto, BarraGuardado, Campo, Interruptor } from "@/components/admin/campos";
@@ -164,8 +165,8 @@ type BorradorNicho = {
   activo: boolean;
 };
 
-/** Color que propone el panel mientras el nicho no tenga uno propio. */
-const ACENTO_INICIAL = "#ec080f";
+/** Color que propone el panel mientras el nicho no tenga uno propio: el de la tienda. */
+const ACENTO_INICIAL = site.acento;
 
 const aBorradorNicho = (n: NichoAdmin): BorradorNicho => ({
   nombre: n.nombre,

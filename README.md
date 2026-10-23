@@ -382,4 +382,5 @@ base de datos.
 
 - **Textos, teléfono, horario:** `src/config/sitio.ts` y `.env.local`
 - **Colores y tipografías:** el bloque `@theme` de `src/app/globals.css`
-- **Logo:** `Logotipo` en `src/components/icons.tsx`
+- **Logos:** `public/marca/bumbay-store.png` y `bumbay-tools.png`, usados desde `src/components/logos.tsx`
+- **Color de la tienda:** `acento` en `src/config/sitio.ts` y `--acento` en `src/app/globals.css`; el de cada nicho, en el panel

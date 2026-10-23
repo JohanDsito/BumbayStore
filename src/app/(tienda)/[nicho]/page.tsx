@@ -9,6 +9,7 @@ import { CarruselDestacados } from "@/components/featured-carousel";
 import { GrillaProductos } from "@/components/product-grid";
 import { Migas } from "@/components/migas";
 import { ContextoNicho } from "@/components/contexto-nicho";
+import { LogoTools } from "@/components/logos";
 import { BloqueMayorista, EncabezadoSeccion, Portico } from "@/components/portada";
 
 type Props = { params: Promise<{ nicho: string }> };
@@ -61,6 +62,8 @@ export default async function PortadaNicho({ params }: Props) {
   ]);
 
   const marca = nicho.submarca ?? nicho.nombre;
+  // Herramientas es Bumbay Tools: lleva su logo y su cinta de taller.
+  const esTaller = nicho.slug === site.nichoTaller;
   const conteo = (n: number) => `${n} ${n === 1 ? "producto" : "productos"}`;
 
   return (
@@ -71,9 +74,12 @@ export default async function PortadaNicho({ params }: Props) {
 
       <Portico
         titular={nicho.titular ?? nicho.nombre}
-        lineaClave={nicho.submarca ? `${nicho.submarca} · ${nicho.nombre}` : nicho.nombre}
+        lineaClave={
+          nicho.submarca && !esTaller ? `${nicho.submarca} · ${nicho.nombre}` : nicho.nombre
+        }
         descripcion={nicho.descripcion}
-        cinta={nicho.slug === site.nichoTaller}
+        cinta={esTaller}
+        logo={esTaller ? <LogoTools className="w-[240px] sm:w-[320px]" /> : undefined}
         indice={{
           titulo: "Categorías",
           enciende: false,

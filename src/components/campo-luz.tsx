@@ -26,8 +26,11 @@ import * as campo from "@/cliente/campo/estado";
 
 const FILAMENTOS = 4;
 
-/** Relleno para cuando la tienda tiene menos de cuatro nichos: brasas del rojo. */
-const RELLENO = ["#ff6a2a", "#9b0c2e", "#ff3b41"];
+/**
+ * Relleno para cuando la tienda tiene menos de cuatro nichos: tonos del
+ * turquesa de Bumbay Store, así la portada nunca queda con un solo hilo.
+ */
+const RELLENO = ["#12acaa", "#0b6f6e", "#6fe0da"];
 
 type Props = {
   /** Color de cada nicho visible, en el orden del menú. */

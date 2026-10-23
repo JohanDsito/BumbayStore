@@ -45,8 +45,8 @@ export default async function LayoutTienda({
       {/* El campo vive aquí y no en cada página: así sobrevive a la
           navegación y cambia de color en vez de volver a empezar. */}
       <CampoLuz
-        colores={menu.map((s) => s.nicho.acento ?? "#ec080f")}
-        acentoTienda="#ec080f"
+        colores={menu.map((s) => s.nicho.acento ?? site.acento)}
+        acentoTienda={site.acento}
       />
       <EncabezadoSitio menu={menu} />
       <main id="contenido">{children}</main>

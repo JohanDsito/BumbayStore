@@ -15,9 +15,10 @@ colors:
   noche-200: "#d9dbe6"
   noche-100: "#edeef4"
   noche-50: "#f7f8fb"
+  turquesa-store: "#12acaa"
   rojo-bumbay: "#ec080f"
   ambar-hogar: "#ffb21a"
-  cian-tecnologia: "#2e9bff"
+  violeta-tecnologia: "#8b5cff"
   panel-foto: "#e4e6ee"
   disponible: "#35d07f"
   alerta: "#ffc53d"
@@ -67,8 +68,8 @@ spacing:
   container: "1400px"
 components:
   button-primary:
-    backgroundColor: "{colors.rojo-bumbay}"
-    textColor: "#ffffff"
+    backgroundColor: "{colors.turquesa-store}"
+    textColor: "{colors.noche-950}"
     rounded: "{rounded.none}"
     height: "48px"
     padding: "0 28px"
@@ -80,7 +81,7 @@ components:
     padding: "0 28px"
   button-add-grid:
     backgroundColor: "transparent"
-    textColor: "{colors.rojo-bumbay}"
+    textColor: "{colors.turquesa-store}"
     rounded: "{rounded.none}"
     height: "40px"
   button-whatsapp:
@@ -124,7 +125,7 @@ Bumbay Tools conserva su firma de taller dentro de su nicho: la cinta de precauc
 
 **Key Characteristics:**
 - Fondo noche casi negro azulado, sin retícula; el campo de luz es la única textura.
-- El color de marca cambia con el nicho: rojo Bumbay, ámbar, cian. Todo lo demás es noche.
+- El color de marca cambia con el nicho: turquesa de Bumbay Store en la tienda, rojo en Bumbay Tools, el suyo en cada nicho. Todo lo demás es noche.
 - Titulares en Archivo al 62 % de ancho, en mayúsculas y enormes; rótulos al 112 % de ancho, diminutos y espaciados.
 - Esquinas rectas en todo; el vidrio oscuro solo donde hay texto sobre el campo.
 - Fotos de producto fundidas sobre un panel gris azulado, nunca sobre blanco puro.
@@ -134,10 +135,11 @@ Bumbay Tools conserva su firma de taller dentro de su nicho: la cinta de precauc
 Una escala de noche azulada casi sin color, para que los filamentos de cada nicho sean lo único saturado de la pantalla.
 
 ### Primary
-- **Rojo Bumbay** (rojo-bumbay): el color de la tienda y el de su logotipo. Es el acento de la portada general, del encabezado, del pie y del pedido, y el de Bumbay Tools.
+- **Turquesa Store** (turquesa-store): el color de Bumbay Store, tomado de su logo. Es el acento de la portada general, del encabezado, del pie y del pedido. Tinta oscura encima.
 
 ### Secondary
-- **Acento de nicho** (ámbar-hogar, cian-tecnologia y los que se creen): cada nicho trae su color desde la base de datos. Dentro del nicho reemplaza al rojo en botones, enlaces, titulares y en el campo. La tinta sobre el acento se calcula: blanca sobre rojo, oscura sobre ámbar o cian.
+- **Rojo Bumbay** (rojo-bumbay): el color de Bumbay Tools y de la "A" de su logo. Es el acento del nicho de herramientas, no de la tienda.
+- **Acento de nicho** (ámbar-hogar, violeta-tecnologia y los que se creen): cada nicho trae su color desde la base de datos. Dentro del nicho reemplaza al turquesa en botones, enlaces, titulares y en el campo. La tinta sobre el acento se calcula: blanca sobre rojo o violeta, oscura sobre turquesa o ámbar.
 - **Verde disponible** (disponible): WhatsApp y el estado "Disponible". Nunca decora.
 
 ### Tertiary
@@ -228,6 +230,9 @@ La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de
 
 ### Índice de portada
 Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a la izquierda del titular. En la portada general, pasar por una entrada enciende su filamento y la lectura del campo dice su nombre.
+
+### Logos
+Los dos logos son imágenes del negocio, recortadas sobre fondo transparente en `public/marca/` y nunca redibujadas: Bumbay Store (letra manuscrita blanca con sombra turquesa) en el encabezado, el pie y el panel; Bumbay Tools (bloque blanco con la "A" roja) sobre el titular de su nicho.
 
 ### Cinta de precaución (Bumbay Tools)
 Franjas en el acento a 45°, 4 px de alto, sobre la portada del nicho de herramientas. Solo ahí.

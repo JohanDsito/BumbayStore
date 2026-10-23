@@ -87,22 +87,3 @@ export function IconoWhatsApp(props: Props) {
     </svg>
   );
 }
-
-/** Marca: una llave y un engranaje abstractos dentro de un hexágono. */
-export function Logotipo({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" className={className} aria-hidden>
-      <path
-        d="M16 2.2 27.4 8.8v13.2L16 29.8 4.6 23V8.8Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M19.6 11.4a3.6 3.6 0 0 0-4.9 4.3l-4.6 4.6 2.1 2.1 4.6-4.6a3.6 3.6 0 0 0 4.3-4.9l-2.1 2.1-1.6-.4-.4-1.6Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}

@@ -59,9 +59,10 @@
 }
 
 :root {
-  /* Rojo Bumbay: el color de la tienda y de su logotipo. */
-  --acento: #ec080f;
-  --acento-tinta: #ffffff;
+  /* Turquesa de Bumbay Store, el de su logo (ver site.acento en
+     src/config/sitio.ts). La tinta oscura es la que contrasta sobre él. */
+  --acento: #12acaa;
+  --acento-tinta: #0b0c12;
 }
 
 @keyframes aparecer {

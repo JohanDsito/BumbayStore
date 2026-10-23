@@ -28,6 +28,7 @@ export function Portico({
   lectura,
   mensajeWhatsApp,
   cinta = false,
+  logo,
 }: {
   titular: string;
   descripcion: string | null;
@@ -39,6 +40,8 @@ export function Portico({
   mensajeWhatsApp: string;
   /** La cinta de precaución de Bumbay Tools, solo en su nicho. */
   cinta?: boolean;
+  /** Logo de la submarca, sobre el titular. */
+  logo?: React.ReactNode;
 }) {
   const [primera, ...resto] = titular.split("\n");
   const segunda = resto.join(" ").trim();
@@ -52,6 +55,7 @@ export function Portico({
         </div>
 
         <div className="order-1 lg:order-2">
+          {logo && <div className="mb-8">{logo}</div>}
           <h1 className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-carbon-50">
             {primera}
             {segunda && <span className="block text-marca-500">{segunda}</span>}

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { site } from "@/config/sitio";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
-import { Logotipo, IconoWhatsApp } from "@/components/icons";
+import { IconoWhatsApp } from "@/components/icons";
+import { LogoStore } from "@/components/logos";
 import type { SeccionMenu } from "@/dominio/catalogo";
 import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
@@ -15,17 +16,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
       <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <Logotipo className="h-8 w-8 text-marca-500" />
-              <span className="flex flex-col leading-none">
-                <span className="text-lg font-extrabold tracking-[-0.03em] text-carbon-50">
-                  BUMB<span className="text-marca-500">A</span>Y
-                </span>
-                <span className="rotulo mt-1 text-[8.5px] tracking-[0.42em] text-carbon-300">
-                  Store
-                </span>
-              </span>
-            </div>
+            <LogoStore className="w-[150px]" />
             <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-carbon-400">
               {site.descripcion}
             </p>

@@ -7,7 +7,8 @@ import { site } from "@/config/sitio";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Buscador } from "@/components/search-box";
 import { BotonPedidoHeader } from "@/components/cart-bar";
-import { Logotipo, IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
+import { IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
+import { LogoStore } from "@/components/logos";
 import type { SeccionMenu } from "@/dominio/catalogo";
 import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
@@ -33,16 +34,9 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
         <Link
           href="/"
           aria-label={`${site.nombre}, inicio`}
-          className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
+          className="flex shrink-0 items-center transition-opacity hover:opacity-80"
         >
-          <Logotipo className="h-7 w-7 text-marca-500" />
-          <span className="flex flex-col leading-none">
-            {/* La A en rojo reproduce el logotipo de la marca. */}
-            <span className="text-[17px] font-extrabold tracking-[-0.02em] text-carbon-50">
-              BUMB<span className="text-[#ec080f]">A</span>Y
-            </span>
-            <span className="rotulo mt-1 text-[8.5px] tracking-[0.42em] text-carbon-300">Store</span>
-          </span>
+          <LogoStore prioridad className="w-[108px] sm:w-[136px]" />
         </Link>
 
         <nav aria-label="Nichos" className="hidden lg:block">

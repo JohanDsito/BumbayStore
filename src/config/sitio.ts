@@ -27,6 +27,13 @@ export const site = {
   },
   moneda: "COP",
   /**
+   * Color de Bumbay Store: el turquesa de su logo. Es el acento de la portada
+   * general, del encabezado, del pie y del pedido. Cada nicho puede tener el
+   * suyo (herramientas usa el rojo de Bumbay Tools). Si se cambia, cambiar
+   * también --acento en src/app/globals.css.
+   */
+  acento: "#12acaa",
+  /**
    * Nicho que conserva la identidad de taller de Bumbay Tools (la cinta de
    * precaución). Los demás nichos usan solo el mundo de Bumbay Store.
    */
