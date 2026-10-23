@@ -181,7 +181,13 @@
   /* Titular del portal: Archivo en su ancho más estrecho, en mayúsculas.
      Lleva el peso de la página en lugar de una imagen. */
   .titular {
-    font-family: var(--font-display);
+    /* Si Archivo todavía no llegó, un respaldo también condensado: Arial
+       Narrow en computadores, Roboto Condensed en Android y la fuente del
+       sistema estrechada en iPhone. Con el respaldo ancho de siempre el
+       titular ocupaba más líneas y empujaba los botones al llegar la fuente. */
+    font-family:
+      var(--font-archivo-sola), "Arial Narrow", "Roboto Condensed", "sans-serif-condensed",
+      -apple-system, system-ui, sans-serif;
     font-stretch: 62%;
     font-weight: 700;
     text-transform: uppercase;
