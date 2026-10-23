@@ -4,12 +4,12 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useCarrito } from "@/lib/cart-context";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
-import { precio } from "@/lib/format";
-import { enlaceConsulta } from "@/lib/whatsapp";
-import { site } from "@/lib/site-config";
+import { precio } from "@/dominio/formato";
+import { enlaceConsulta } from "@/infraestructura/whatsapp";
+import { site } from "@/config/sitio";
 import {
   IconoCerrar,
   IconoWhatsApp,
@@ -17,7 +17,8 @@ import {
   IconoCarrito,
 } from "@/components/icons";
 import { SelectorColor } from "@/components/color-selector";
-import type { Product, Category } from "@/lib/types";
+import type { Product, Category } from "@/dominio/modelos";
+import { rutaProducto } from "@/dominio/rutas";
 
 type Props = {
   producto: Product;
@@ -70,7 +71,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
         ? [producto.imagen]
         : [];
 
-  const url = `${site.url}/producto/${producto.slug}`;
+  const url = `${site.url}${rutaProducto(producto)}`;
 
   const copiarEnlace = async () => {
     try {
@@ -98,14 +99,14 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
       />
 
       <div className="relative flex max-h-[92vh] w-full max-w-4xl animate-[subir_0.3s_var(--ease-salida)] flex-col border border-carbon-700 bg-carbon-900 shadow-flotante sm:max-h-[88vh] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
-        <div aria-hidden className="h-1 shrink-0 cinta-precaucion" />
+        <div aria-hidden className="h-px shrink-0 bg-marca-500/70" />
 
         {/* Barra superior: compartir a la izquierda, cerrar a la derecha */}
         <div className="flex shrink-0 items-center justify-between border-b border-carbon-800 px-3 py-2">
           <button
             type="button"
             onClick={copiarEnlace}
-            className="flex items-center gap-2 px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-marca-400"
+            className="flex items-center gap-2 px-2 py-1.5 rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
           >
             <svg
               viewBox="0 0 24 24"
@@ -137,7 +138,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
           {/* --- Galería --- */}
           <div className="relative border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
             {producto.agotado && (
-              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
+              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
                 Agotado
               </span>
             )}
@@ -171,7 +172,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               <span className="block font-mono text-3xl font-extrabold leading-none text-carbon-50">
                 {precio(producto.precioUnitario)}
               </span>
-              <span className="mt-1.5 block text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+              <span className="mt-1.5 block text-[11px] uppercase tracking-[0.14em] text-carbon-500">
                 Precio
               </span>
             </div>
@@ -238,8 +239,8 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
             )}
 
             <Link
-              href={`/producto/${producto.slug}`}
-              className="group mt-4 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-marca-400 transition-colors hover:text-marca-300"
+              href={rutaProducto(producto)}
+              className="group mt-4 flex items-center gap-1.5 rotulo text-[11px] text-marca-400 transition-colors hover:text-marca-300"
             >
               Ver ficha completa
               <IconoFlecha className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

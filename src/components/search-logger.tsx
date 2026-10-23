@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { registrarBusqueda } from "@/lib/registro";
+import { registrarBusqueda } from "@/infraestructura/supabase/registro";
 
 /**
  * Deja constancia de una búsqueda, una sola vez por consulta.

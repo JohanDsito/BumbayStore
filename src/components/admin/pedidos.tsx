@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
-import { precio } from "@/lib/format";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { precio } from "@/dominio/formato";
 
 type Linea = { sku: string; nombre: string; cantidad: number; precio: number };
 
@@ -90,7 +90,7 @@ export function AdminPedidos() {
 
       {ciudades.length > 1 && (
         <div className="mb-5 border border-carbon-800 bg-carbon-900 p-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+          <p className="rotulo text-[10px] text-carbon-500">
             Ciudades que más piden
           </p>
           <ul className="mt-3 flex flex-wrap gap-2">
@@ -152,7 +152,7 @@ export function AdminPedidos() {
 function Dato({ titulo, valor }: { titulo: string; valor: string }) {
   return (
     <div className="bg-carbon-900 p-4">
-      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+      <p className="rotulo text-[10px] text-carbon-500">
         {titulo}
       </p>
       <p className="mt-1.5 font-mono text-xl font-bold text-carbon-50">{valor}</p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
 
 type Busqueda = { consulta: string; resultados: number; creado_en: string };
 
@@ -69,7 +69,7 @@ export function AdminBusquedas() {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <section>
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-marca-400">
+        <h2 className="rotulo text-[10px] text-marca-400">
           Buscaron y no encontraron
         </h2>
         <p className="mt-1.5 text-[12px] leading-relaxed text-carbon-500">
@@ -98,7 +98,7 @@ export function AdminBusquedas() {
       </section>
 
       <section>
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
+        <h2 className="rotulo text-[10px] text-carbon-500">
           Lo que sí encuentran
         </h2>
         <p className="mt-1.5 text-[12px] leading-relaxed text-carbon-500">

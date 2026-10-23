@@ -1,37 +1,33 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Bumbay Tools — sistema de diseño
-   Concepto: catálogo técnico de taller. Chrome oscuro industrial,
-   producto sobre panel claro, datos técnicos en monoespaciada.
+   Bumbay Store — sistema de diseño
+   Concepto: un portal vivo. Un campo de luz respira detrás del
+   catálogo, con un filamento por nicho; la interfaz flota encima
+   en tipografía fina y condensada. Cada nicho trae su color.
    ============================================================ */
 
 @theme {
-  /* Neutros: del negro de la herramienta al blanco de la ficha técnica */
-  --color-carbon-950: #0a0a0b;
-  --color-carbon-900: #0f0f11;
-  --color-carbon-850: #141417;
-  --color-carbon-800: #1a1a1f;
-  --color-carbon-750: #232329;
-  --color-carbon-700: #2e2e36;
-  --color-carbon-600: #454551;
-  --color-carbon-500: #6b6b78;
-  --color-carbon-400: #8e8e9c;
-  --color-carbon-300: #b4b4bf;
-  --color-carbon-200: #d6d6dd;
-  --color-carbon-100: #ebebef;
-  --color-carbon-50: #f6f6f8;
+  /* Noche: del vacío del fondo al blanco de la ficha. Azulada y casi sin
+     color, para que los filamentos de cada nicho sean lo único saturado. */
+  --color-carbon-950: #07080d;
+  --color-carbon-900: #0c0e17;
+  --color-carbon-850: #11141f;
+  --color-carbon-800: #191c29;
+  --color-carbon-750: #212534;
+  --color-carbon-700: #2c3043;
+  --color-carbon-600: #444a63;
+  --color-carbon-500: #7b81a0;
+  --color-carbon-400: #959bb5;
+  --color-carbon-300: #bcc0d3;
+  --color-carbon-200: #d9dbe6;
+  --color-carbon-100: #edeef4;
+  --color-carbon-50: #f7f8fb;
 
-  /* Rojo Bumbay. El 500 es el rojo exacto del logotipo, medido sobre las
-     piezas de marca. El 400 existe porque el 500 sobre fondo oscuro se queda
-     corto de contraste para texto pequeño. */
-  --color-marca-700: #8f0409;
-  --color-marca-600: #c2060c;
-  --color-marca-500: #ec080f;
-  --color-marca-400: #ff3b41;
-  --color-marca-300: #ff8a8e;
+  /* Panel donde se apoyan las fotos de producto (con mezcla multiplicar). */
+  --color-panel-foto: #e4e6ee;
 
-  /* Semánticos */
+  /* Semánticos: no cambian con el nicho. */
   --color-disponible: #35d07f;
   --color-alerta: #ffc53d;
 
@@ -43,6 +39,8 @@
 
   --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
   --shadow-flotante: 0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7);
+  /* Brillo de los botones: la luz del campo reflejada en el canto superior. */
+  --shadow-brillo: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 -1px 0 rgb(0 0 0 / 0.18);
 
   --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -50,10 +48,52 @@
   --animate-subir: subir 0.32s var(--ease-salida) both;
 }
 
+/* El color de marca sale de --acento, que cada nicho reemplaza en su
+   página. Va "inline" para que cada utilidad lea la variable en el elemento
+   donde se usa y no la congele en la raíz. */
+@theme inline {
+  --color-marca-700: color-mix(in oklab, var(--acento) 55%, black);
+  --color-marca-600: color-mix(in oklab, var(--acento) 80%, black);
+  --color-marca-500: var(--acento);
+  --color-marca-400: color-mix(in oklab, var(--acento) 74%, white);
+  --color-marca-300: color-mix(in oklab, var(--acento) 48%, white);
+  /* Tinta sobre el acento: blanca sobre rojo o azul, oscura sobre ámbar. */
+  --color-sobre-marca: var(--acento-tinta);
+}
+
+:root {
+  /* Turquesa de Bumbay Store, el de su logo (ver site.acento en
+     src/config/sitio.ts). La tinta oscura es la que contrasta sobre él. */
+  --acento: #12acaa;
+  --acento-tinta: #0b0c12;
+}
+
 @keyframes aparecer {
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Entrada del titular de portada, letra por letra (TitularAnimado).
+   Para cambiar el carácter de la entrada basta con tocar este bloque: el
+   componente solo numera las letras. */
+:root {
+  --letra-duracion: 760ms;
+  /* Separación entre una letra y la siguiente. */
+  --letra-paso: 26ms;
+  /* Pausa extra antes de que empiece la segunda línea. */
+  --linea-pausa: 140ms;
+}
+
+@keyframes letra-entra {
+  from {
+    opacity: 0;
+    transform: translateY(0.42em) rotate(4deg);
   }
   to {
     opacity: 1;
@@ -72,15 +112,6 @@
   }
 }
 
-@keyframes deslizar-marquesina {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* ------------------------------------------------------------
    Base
    ------------------------------------------------------------ */
@@ -88,6 +119,7 @@
 @layer base {
   :root {
     color-scheme: dark;
+    scrollbar-color: var(--color-carbon-700) transparent;
   }
 
   html {
@@ -99,14 +131,6 @@
     background-color: var(--color-carbon-950);
     color: var(--color-carbon-100);
     font-family: var(--font-sans);
-    font-feature-settings: "cv05" 1;
-    /* Retícula de papel milimetrado, apenas perceptible: da textura
-       de plano técnico sin competir con el producto. */
-    background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.022) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.022) 1px, transparent 1px);
-    background-size: 72px 72px;
-    background-attachment: fixed;
   }
 
   /* Cifras siempre tabulares: los precios de una grilla quedan alineados
@@ -117,16 +141,20 @@
   }
 
   ::selection {
-    background-color: var(--color-marca-500);
-    color: #fff;
+    background-color: var(--acento);
+    color: var(--acento-tinta);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-marca-500);
+    outline: 2px solid var(--color-marca-400);
     outline-offset: 2px;
   }
 
-  /* Tipografía de encabezados: condensada y apretada, como señalética */
+  input,
+  textarea {
+    caret-color: var(--color-marca-400);
+  }
+
   h1,
   h2,
   h3 {
@@ -139,6 +167,10 @@
   p {
     text-wrap: pretty;
   }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
 }
 
 /* ------------------------------------------------------------
@@ -146,17 +178,58 @@
    ------------------------------------------------------------ */
 
 @layer utilities {
-  /* Cinta de precaución. La firma visual del sitio: aparece bajo el
-     header y sobre la barra del pedido. */
+  /* Titular del portal: Archivo en su ancho más estrecho, en mayúsculas.
+     Lleva el peso de la página en lugar de una imagen. */
+  .titular {
+    font-family: var(--font-display);
+    font-stretch: 62%;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.86;
+  }
+
+  .letra-entra {
+    display: inline-block;
+    transform-origin: 0% 100%;
+    animation: letra-entra var(--letra-duracion) var(--ease-salida) both;
+    animation-delay: calc(var(--n, 0) * var(--letra-paso) + var(--linea, 0) * var(--linea-pausa));
+  }
+
+  /* Condensado sin mayúsculas, para títulos de sección y nombres largos. */
+  .condensada {
+    font-stretch: 75%;
+  }
+
+  /* Rótulo diminuto y espaciado: navegación, lecturas y etiquetas de campo. */
+  .rotulo {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* Vidrio oscuro: paneles que flotan sobre el campo de luz. El desenfoque
+     es lo que deja leer el texto encima de los filamentos, no un adorno. */
+  .vidrio {
+    background-color: rgb(12 14 23 / 0.72);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  }
+
+  /* Cinta de precaución: la firma de Bumbay Tools. Solo aparece dentro del
+     nicho de herramientas. */
   .cinta-precaucion {
     background-image: repeating-linear-gradient(
       -45deg,
-      var(--color-marca-500) 0 8px,
+      var(--acento) 0 8px,
       transparent 8px 16px
     );
   }
 
-  /* Marcas de esquina tipo dibujo técnico */
+  /* Marcas de esquina tipo dibujo técnico, de las tarjetas de producto. */
   .esquinas-tecnicas {
     position: relative;
   }
@@ -184,7 +257,7 @@
   }
   .group:hover .esquinas-tecnicas::before,
   .group:hover .esquinas-tecnicas::after {
-    border-color: var(--color-marca-500);
+    border-color: var(--acento);
   }
 
   /* Oculta la barra de scroll en los carruseles horizontales */
@@ -194,20 +267,6 @@
   }
   .sin-scrollbar::-webkit-scrollbar {
     display: none;
-  }
-
-  /* Escalonado de entrada para las grillas */
-  .escalonar > * {
-    animation: var(--animate-aparecer);
-    animation-delay: calc(var(--i, 0) * 45ms);
-  }
-
-  .marquesina {
-    animation: deslizar-marquesina 40s linear infinite;
-  }
-
-  .texto-equilibrado {
-    text-wrap: balance;
   }
 }
 
@@ -219,5 +278,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* El titular aparece completo de una vez: la regla de arriba acorta la
+     animación, pero no su retraso, y las letras quedarían ocultas. */
+  .letra-entra {
+    animation: none;
   }
 }

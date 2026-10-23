@@ -1,7 +1,11 @@
-# Bumbay Tools
+# Bumbay Store
 
-Catálogo web de herramientas inalámbricas. El cliente arma su pedido y lo
-envía por WhatsApp; el pago y el envío se coordinan hablando.
+Catálogo web de varios nichos. Bumbay Tools (herramienta inalámbrica) es el
+primero; los demás se agregan como datos, no como sitios nuevos. El cliente
+arma su pedido y lo envía por WhatsApp; el pago y el envío se coordinan
+hablando.
+
+Qué es la tienda, para quién y qué la diferencia está en `PRODUCT.md`.
 
 **Stack:** Next.js 16 (App Router) · TypeScript · Tailwind v4 · Supabase · Vercel
 
@@ -16,8 +20,14 @@ npm run dev                  # http://localhost:3000
 ```
 
 El sitio **funciona sin Supabase**: si no hay credenciales usa los productos de
-`src/data/products.seed.ts`. Así puedes trabajar en el diseño sin depender de
-la base de datos, y si Supabase se cae en producción el catálogo no desaparece.
+ejemplo de `src/data`, para trabajar en el diseño sin depender de la base de
+datos.
+
+Con Supabase configurado, el catálogo sale solo de ahí. Si Supabase no
+responde (cada consulta espera 8 segundos y se reintenta una vez), **no** se
+muestran productos de ejemplo como si fueran reales: las páginas ya generadas
+conservan su última versión buena, una publicación fallida en Vercel deja en
+línea la anterior, y la búsqueda muestra un aviso para reintentar.
 
 ---
 
@@ -35,8 +45,8 @@ Todas van en `.env.local` (que nunca se sube a git) y en Vercel.
 | `SUPABASE_SERVICE_ROLE_KEY` | **Solo local**, para los scripts de carga. Nunca en Vercel ni en git. |
 
 > La llave `anon` es pública por diseño: viaja al navegador. Lo que la hace
-> segura son las políticas RLS de `supabase/schema.sql`, que solo permiten
-> **leer**. La `service_role` sí es secreta y se salta toda la seguridad.
+> segura son las políticas RLS de `supabase/migrations/`, que solo permiten
+> **leer** el catálogo. La `service_role` sí es secreta y se salta toda la seguridad.
 
 ---
 
@@ -44,10 +54,9 @@ Todas van en `.env.local` (que nunca se sube a git) y en Vercel.
 
 ### 1. Crear las tablas
 
-En supabase.com → tu proyecto → **SQL Editor** → pega y ejecuta
-`supabase/schema.sql`. Crea las tablas, los índices, las políticas de
-seguridad y el bucket de imágenes. Puedes correrlo más de una vez sin romper
-nada.
+Aplica las migraciones como se explica en [Base de datos](#base-de-datos).
+Crean las tablas, los índices, las políticas de seguridad y el bucket de
+imágenes.
 
 ### 2. Preparar el Excel
 
@@ -58,7 +67,8 @@ Toma el Excel que ya tienes y déjalo con estas columnas
 |---|---|---|
 | `sku` | sí | Código único. Es la llave: reimportar actualiza, no duplica. |
 | `nombre` | sí | Aparece como título y en el resultado de Google. |
-| `categoria` | sí | Texto normal; el slug se genera solo. |
+| `nicho` | no | Slug del nicho: `herramientas`, `hogar`… Tiene que existir ya en la tabla `nichos`. Si va vacía se asume `herramientas`. |
+| `categoria` | sí | Texto normal; el slug se genera solo. Una categoría vive en un solo nicho. |
 | `marca` | no | |
 | `color` | no | `Azul`, `Amarillo`… Déjala vacía si la herramienta va en un solo color. |
 | `grupo` | no | Enlaza las versiones de color entre sí. Si la dejas vacía se deduce del SKU. |
@@ -189,15 +199,26 @@ Está fuera del índice de Google y `/acceso` está bloqueado en `robots.txt`.
 
 1. Panel de Supabase → **Authentication** → **Users** → **Add user**
 2. Correo y contraseña, y marca *Auto Confirm User*
-3. Entra en `tudominio.com/admin` con esos datos
+3. **SQL Editor**, cambiando el correo por el tuyo:
+   ```sql
+   insert into public.admins (user_id, correo)
+   select id, email from auth.users where email = 'TU-CORREO@ejemplo.com'
+   on conflict (user_id) do nothing;
+   ```
+4. Entra en `tudominio.com/acceso/<ADMIN_RUTA>` con esos datos
 
-No hay registro público: el único usuario es el que creas ahí a mano.
+Sin el paso 3 el panel deja entrar pero no deja guardar nada. Es a propósito:
+el registro de Supabase está abierto por defecto y cualquiera podría crearse
+una cuenta, así que tener cuenta no da permisos; estar en `admins`, sí. Para
+cerrar también la puerta del registro: **Authentication** → **Sign In /
+Providers** → desactiva *Allow new users to sign up*.
 
 ### Qué se puede hacer
 
 | Sección | Para qué |
 |---|---|
 | **Productos** | Precio, foto de portada, marcar agotado o destacado, y editar ficha técnica, especificaciones, modo de uso, beneficios y preguntas frecuentes. |
+| **Nichos y categorías** | Crear nichos y categorías, mover una categoría de nicho y editar lo que muestra la portada de cada nicho: titular, presentación y cifras. Un nicho nuevo nace oculto; se muestra cuando lo marcas visible y tiene productos. |
 | **Pedidos** | Cada pedido que alguien inició, aunque nunca te haya escrito. Con nombre, ciudad, productos y total, más las ciudades que más piden. |
 | **Búsquedas** | Lo que la gente busca. Lo importante es la columna de las que **no** encontraron nada: es demanda medida. |
 
@@ -265,28 +286,106 @@ detallado, y tú ya lo tienes escrito.
 
 ## Estructura
 
+El código está ordenado por capas, de adentro hacia afuera. Cada capa solo
+conoce a las de adentro, y el lint falla si alguien rompe esa regla
+(`eslint.config.mjs`):
+
 ```
 src/
-  app/
-    page.tsx                  portada
-    categoria/[slug]/         listado por categoría
-    producto/[slug]/          ficha (JSON-LD de producto y FAQ)
-    buscar/                   resultados (fuera del índice)
-    sitemap.ts · robots.ts    SEO automático
-    globals.css               tema y sistema de diseño
-  components/                 header, tarjetas, carrito, carrusel…
-  lib/
-    products.ts               capa de datos (Supabase o local)
-    cart-context.tsx          carrito, persistido en el navegador
-    whatsapp.ts               armado del mensaje de pedido
-    site-config.ts            datos de la marca
-  data/                       catálogo de respaldo
-supabase/schema.sql           tablas, seguridad y bucket
-scripts/                      importación de datos e imágenes
+  dominio/            reglas del negocio, puras: producto, nicho, pedido,
+                      búsqueda, variantes… Sin Next, React ni Supabase.
+  aplicacion/         casos de uso del catálogo y los contratos (puertos.ts)
+                      de lo que se necesita del exterior
+  infraestructura/    quién cumple esos contratos: Supabase, los datos
+                      locales, WhatsApp, las URLs de imagen
+  servidor/           el punto de armado: elige la fuente y le pone caché
+                      por visita. Las páginas importan `catalogo` de aquí.
+  cliente/            estado que vive en el navegador (el pedido)
+  config/sitio.ts     datos de la marca
+  app/                rutas de Next (ver abajo), panel, sitemap y robots
+  components/         piezas de interfaz
+  data/               catálogo de ejemplo, municipios del DANE
+supabase/
+  migrations/         la base de datos, cambio por cambio
+  config.toml         configuración del CLI de Supabase
+scripts/              importación de datos e imágenes
 ```
+
+Para cambiar de base de datos o de proveedor basta con escribir otra
+implementación en `infraestructura/` y elegirla en `servidor/`: las páginas y
+las reglas no se enteran.
+
+---
+
+## Base de datos
+
+Los cambios de la base viven en `supabase/migrations/`, numerados por fecha.
+Ya no se pega SQL a mano en el editor: cada cambio queda en git, se aplica en
+orden y una sola vez.
+
+La primera vez, en una terminal en la carpeta del proyecto:
+
+```bash
+npx supabase login                       # abre el navegador para iniciar sesión
+npx supabase link --project-ref <ref>    # el <ref> sale de la URL del proyecto
+```
+
+`link` pide la contraseña de la base de datos (Project Settings → Database).
+Después, cada vez que haya migraciones nuevas:
+
+```bash
+npx supabase db push
+```
+
+La migración inicial (`..._esquema_inicial.sql`) repite lo que antes se
+ejecutaba a mano y es idempotente: aplicarla sobre una base que ya lo tenía no
+cambia nada.
+
+---
+
+## Direcciones
+
+| Página | Dirección |
+|---|---|
+| Portada de la tienda | `/` |
+| Portada de un nicho | `/herramientas` |
+| Categoría | `/herramientas/taladros` |
+| Ficha de producto | `/producto/taladro-percutor-…` (sin nicho: si el producto cambia de categoría, su dirección no cambia) |
+
+Las direcciones viejas `/categoria/taladros` redirigen de forma permanente a la
+nueva. Todas se arman en `src/dominio/rutas.ts`; ningún componente las escribe
+a mano.
+
+## Ver la tienda con varios nichos
+
+Mientras los nichos reales no existan, se puede ver la tienda con dos nichos
+de ejemplo (`src/data/ejemplo.seed.ts`) agregando a `.env.local`:
+
+```
+CATALOGO=ejemplo
+```
+
+Solo en tu equipo: con esa variable se ignora Supabase. Nunca la pongas en
+Vercel.
+
+Con `CATALOGO=extremo` se carga en cambio el **peor caso**
+(`src/data/extremo.seed.ts`): siete nichos, nombres y códigos larguísimos,
+precios extremos. Sirve para revisar que la interfaz no se rompa antes de
+cargar productos reales incómodos.
+
+## Pruebas
+
+```bash
+npm test
+```
+
+Prueban las reglas del dominio (búsqueda, variantes, destacados, límites del
+pedido). Son funciones puras, así que corren en menos de un segundo y sin
+base de datos.
 
 ## Cambiar la marca
 
-- **Textos, teléfono, horario:** `src/lib/site-config.ts` y `.env.local`
+- **Textos, teléfono, horario:** `src/config/sitio.ts` y `.env.local`
 - **Colores y tipografías:** el bloque `@theme` de `src/app/globals.css`
-- **Logo:** `Logotipo` en `src/components/icons.tsx`
+- **Logos:** `public/marca/bumbay-store.png` y `bumbay-tools.png`, usados desde `src/components/logos.tsx`
+- **Color de la tienda:** `acento` en `src/config/sitio.ts` y `--acento` en `src/app/globals.css`; el de cada nicho, en el panel

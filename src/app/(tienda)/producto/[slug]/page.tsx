@@ -1,38 +1,35 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  getProducto,
-  getProductos,
-  getCategoria,
-  getRelacionados,
-  getVariantes,
-} from "@/lib/products";
-import { imagenUrl } from "@/lib/imagen-url";
-import { site } from "@/lib/site-config";
-import { precio } from "@/lib/format";
-import { enlaceConsulta } from "@/lib/whatsapp";
+import { catalogo } from "@/servidor/catalogo";
+import { imagenUrl } from "@/infraestructura/imagen-url";
+import { site } from "@/config/sitio";
+import { precio } from "@/dominio/formato";
+import { rutaCategoria, rutaNicho, rutaProducto } from "@/dominio/rutas";
+import { enlaceConsulta } from "@/infraestructura/whatsapp";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
 import { TarjetaProducto } from "@/components/product-card";
 import { SelectorColor } from "@/components/color-selector";
 import { IconoWhatsApp } from "@/components/icons";
+import { JsonLd } from "@/components/json-ld";
+import { Migas, type Paso } from "@/components/migas";
+import { ContextoNicho } from "@/components/contexto-nicho";
 
 type Props = { params: Promise<{ slug: string }> };
 
 /** Prerenderiza cada ficha en el build: HTML completo para Google y las IAs. */
 export async function generateStaticParams() {
-  const productos = await getProductos();
+  const productos = await catalogo.productos();
   return productos.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const producto = await getProducto(slug);
+  const producto = await catalogo.producto(slug);
   if (!producto) return { title: "Producto no encontrado" };
 
-  const categoria = await getCategoria(producto.categoriaSlug);
+  const categoria = await catalogo.categoria(producto.categoriaSlug);
   const imagen = imagenUrl(producto.imagen);
 
   // Descripción corta y con el dato que importa: qué es y cuánto cuesta.
@@ -45,12 +42,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${producto.nombre} — ${producto.sku}`,
     description: descripcion,
-    alternates: { canonical: `/producto/${producto.slug}` },
+    alternates: { canonical: rutaProducto(producto) },
     openGraph: {
       type: "website",
       title: producto.nombre,
       description: descripcion,
-      url: `${site.url}/producto/${producto.slug}`,
+      url: `${site.url}${rutaProducto(producto)}`,
       siteName: site.nombre,
       locale: "es_CO",
       ...(imagen ? { images: [{ url: imagen, alt: producto.nombre }] } : {}),
@@ -65,14 +62,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function FichaProducto({ params }: Props) {
   const { slug } = await params;
-  const producto = await getProducto(slug);
+  const producto = await catalogo.producto(slug);
   if (!producto) notFound();
 
   const [categoria, relacionados, variantes] = await Promise.all([
-    getCategoria(producto.categoriaSlug),
-    getRelacionados(producto, 4),
-    getVariantes(producto),
+    catalogo.categoria(producto.categoriaSlug),
+    catalogo.relacionadosDe(producto, 4),
+    catalogo.variantesDe(producto),
   ]);
+  const nicho = categoria ? await catalogo.nicho(categoria.nichoSlug) : null;
 
   // La galería usa la secuencia completa de piezas; si un producto solo tiene
   // portada, cae a esa sola imagen.
@@ -113,7 +111,7 @@ export default async function FichaProducto({ params }: Props) {
       : {}),
     offers: {
       "@type": "Offer",
-      url: `${site.url}/producto/${producto.slug}`,
+      url: `${site.url}${rutaProducto(producto)}`,
       priceCurrency: site.moneda,
       price: producto.precioUnitario,
       availability: producto.agotado
@@ -124,29 +122,11 @@ export default async function FichaProducto({ params }: Props) {
     },
   };
 
-  const datosMigas = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: site.url },
-      ...(categoria
-        ? [
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: categoria.nombre,
-              item: `${site.url}/categoria/${categoria.slug}`,
-            },
-          ]
-        : []),
-      {
-        "@type": "ListItem",
-        position: categoria ? 3 : 2,
-        name: producto.nombre,
-        item: `${site.url}/producto/${producto.slug}`,
-      },
-    ],
-  };
+  const migas: Paso[] = [
+    ...(nicho ? [{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }] : []),
+    ...(categoria ? [{ nombre: categoria.nombre, ruta: rutaCategoria(categoria) }] : []),
+    { nombre: producto.nombre, ruta: rutaProducto(producto), etiqueta: producto.sku },
+  ];
 
   const datosFaq =
     producto.faq.length > 0
@@ -162,47 +142,14 @@ export default async function FichaProducto({ params }: Props) {
       : null;
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosProducto) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(datosMigas) }}
-      />
+    <ContextoNicho acento={nicho?.acento ?? null} intensidad={0.45}>
+      <JsonLd datos={datosProducto} />
       {datosFaq && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(datosFaq) }}
-        />
+        <JsonLd datos={datosFaq} />
       )}
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="py-4">
-          <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-carbon-500">
-            <li>
-              <Link href="/" className="transition-colors hover:text-marca-400">
-                Inicio
-              </Link>
-            </li>
-            {categoria && (
-              <>
-                <li aria-hidden>/</li>
-                <li>
-                  <Link
-                    href={`/categoria/${categoria.slug}`}
-                    className="transition-colors hover:text-marca-400"
-                  >
-                    {categoria.nombre}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li aria-hidden>/</li>
-            <li className="text-carbon-300">{producto.sku}</li>
-          </ol>
-        </nav>
+        <Migas pasos={migas} />
 
         <div className="grid gap-8 pb-12 lg:grid-cols-2 lg:gap-12">
           {/* --- Imagen --- */}
@@ -230,7 +177,7 @@ export default async function FichaProducto({ params }: Props) {
               )}
             </p>
 
-            <h1 className="mt-2.5 text-2xl font-extrabold leading-[1.1] tracking-[-0.03em] text-carbon-50 sm:text-3xl lg:text-4xl">
+            <h1 className="condensada mt-2.5 text-3xl font-extrabold leading-[1.02] tracking-[-0.02em] text-carbon-50 sm:text-4xl lg:text-5xl">
               {producto.nombre}
             </h1>
 
@@ -242,7 +189,7 @@ export default async function FichaProducto({ params }: Props) {
                 }`}
               />
               <span
-                className={`font-mono text-[11px] uppercase tracking-[0.14em] ${
+                className={`rotulo text-[11px] ${
                   producto.agotado ? "text-carbon-400" : "text-disponible"
                 }`}
               >
@@ -251,14 +198,12 @@ export default async function FichaProducto({ params }: Props) {
             </div>
 
             {/* Precio único: Bumbay maneja una sola tarifa para todos. */}
-            <div className="mt-5 border border-carbon-800 bg-carbon-900 p-5">
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-                Precio
-              </p>
+            <div className="vidrio mt-5 border border-carbon-700 p-5">
+              <p className="rotulo text-carbon-400">Precio</p>
               <p className="mt-1.5 font-mono text-4xl font-extrabold leading-none text-carbon-50">
                 {precio(producto.precioUnitario)}
               </p>
-              <p className="mt-2.5 text-[12px] leading-relaxed text-carbon-400">
+              <p className="mt-2.5 text-[13px] leading-relaxed text-carbon-300">
                 Precio de distribuidor, igual para todos. Envíos a toda Colombia.
               </p>
             </div>
@@ -278,7 +223,7 @@ export default async function FichaProducto({ params }: Props) {
                 Más información por WhatsApp
               </a>
 
-              <p className="text-center font-mono text-[10px] text-carbon-500">
+              <p className="text-center text-[12px] text-carbon-400">
                 {producto.agotado
                   ? "Escríbenos y te avisamos cuando vuelva a entrar"
                   : "Agrega al pedido y envíanos todo junto por WhatsApp"}
@@ -344,13 +289,11 @@ export default async function FichaProducto({ params }: Props) {
           {/* Especificaciones: tabla fija, en monoespaciada, como una hoja de datos */}
           {producto.especificaciones.length > 0 && (
             <aside className="lg:sticky lg:top-44 lg:self-start">
-              <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-                Especificaciones
-              </h2>
-              <dl className="mt-4 divide-y divide-carbon-800 border border-carbon-800 bg-carbon-900">
+              <h2 className="rotulo text-carbon-300">Especificaciones</h2>
+              <dl className="vidrio mt-4 divide-y divide-carbon-800 border border-carbon-700">
                 {producto.especificaciones.map((e) => (
                   <div key={e.label} className="flex justify-between gap-4 px-4 py-2.5">
-                    <dt className="text-[12px] text-carbon-500">{e.label}</dt>
+                    <dt className="text-[12px] text-carbon-400">{e.label}</dt>
                     <dd className="text-right font-mono text-[12px] font-medium text-carbon-100">
                       {e.valor}
                     </dd>
@@ -370,14 +313,14 @@ export default async function FichaProducto({ params }: Props) {
               También te puede servir
             </h2>
             <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-              {relacionados.map((p, i) => (
-                <TarjetaProducto key={p.slug} producto={p} indice={i} />
+              {relacionados.map((p) => (
+                <TarjetaProducto key={p.slug} producto={p} />
               ))}
             </div>
           </section>
         )}
       </div>
-    </>
+    </ContextoNicho>
   );
 }
 

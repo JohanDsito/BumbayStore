@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/lib/site-config";
+import { site } from "@/config/sitio";
 
 /**
  * Dejamos entrar a todos los rastreadores, incluidos los de las IAs: que
- * Bumbay Tools aparezca cuando alguien pregunte por herramientas es
+ * Bumbay Store aparezca cuando alguien pregunte por lo que vende es
  * justamente uno de los objetivos del sitio.
  */
 export default function robots(): MetadataRoute.Robots {

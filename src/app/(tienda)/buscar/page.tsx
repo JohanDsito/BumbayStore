@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { buscarProductos, getCategorias } from "@/lib/products";
+import { catalogo } from "@/servidor/catalogo";
 import { GrillaProductos } from "@/components/product-grid";
 import { RegistrarBusqueda } from "@/components/search-logger";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp } from "@/components/icons";
+import { rutaCategoria } from "@/dominio/rutas";
 
 type Props = { searchParams: Promise<{ q?: string }> };
 
@@ -20,8 +21,8 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
   const { q } = await searchParams;
   const consulta = (q ?? "").trim();
   const [resultados, categorias] = await Promise.all([
-    consulta ? buscarProductos(consulta) : Promise.resolve([]),
-    getCategorias(),
+    consulta ? catalogo.buscar(consulta) : Promise.resolve([]),
+    catalogo.categorias(),
   ]);
 
   return (
@@ -30,17 +31,14 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
         <RegistrarBusqueda consulta={consulta} resultados={resultados.length} />
       )}
       <header className="border-b border-carbon-800 py-8">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-          Búsqueda
-        </p>
-        <h1 className="mt-2.5 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl">
+        <h1 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl">
           {consulta ? (
             <>
               Resultados para{" "}
               <span className="font-mono text-marca-400">{consulta}</span>
             </>
           ) : (
-            "¿Qué herramienta necesitas?"
+            "¿Qué estás buscando?"
           )}
         </h1>
         {consulta && (
@@ -74,17 +72,20 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
             </a>
           </div>
         ) : consulta ? (
-          <GrillaProductos productos={resultados} prioritarias={4} />
+          <>
+            <h2 className="sr-only">Resultados</h2>
+            <GrillaProductos productos={resultados} prioritarias={4} />
+          </>
         ) : (
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-carbon-500">
+            <h2 className="rotulo text-carbon-400">
               O explora por categoría
             </h2>
             <ul className="mt-4 flex flex-wrap gap-2">
               {categorias.map((c) => (
                 <li key={c.slug}>
                   <Link
-                    href={`/categoria/${c.slug}`}
+                    href={rutaCategoria(c)}
                     className="block border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
                   >
                     {c.nombre}

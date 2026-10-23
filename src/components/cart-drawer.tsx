@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCarrito } from "@/lib/cart-context";
-import { precio } from "@/lib/format";
-import { enlacePedido } from "@/lib/whatsapp";
-import { imagenUrl } from "@/lib/imagen-url";
+import { useCarrito } from "@/cliente/carrito/use-carrito";
+import { precio } from "@/dominio/formato";
+import { LIMITES_PEDIDO, nombreValido } from "@/dominio/pedido";
+import { enlacePedido } from "@/infraestructura/whatsapp";
+import { imagenUrl } from "@/infraestructura/imagen-url";
 import { CampoCiudad, esCiudadValida } from "@/components/city-field";
-import { registrarPedido } from "@/lib/registro";
+import { registrarPedido } from "@/infraestructura/supabase/registro";
 import {
   IconoCerrar,
   IconoMas,
@@ -63,7 +64,7 @@ export function PanelPedido() {
   // preguntarlos por chat, así que son obligatorios. Se valida al pulsar en
   // vez de deshabilitar el botón: un botón inerte no explica qué falta.
   const alEnviar = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const faltaNombre = nombre.trim().length < 2;
+    const faltaNombre = !nombreValido(nombre);
     // La ciudad tiene que salir de la lista del DANE: así llega siempre
     // escrita igual y se puede agrupar por zona para cotizar el envío.
     const faltaCiudad = !esCiudadValida(ciudad);
@@ -94,7 +95,7 @@ export function PanelPedido() {
       />
 
       <div className="relative flex h-full w-full max-w-md flex-col border-l border-carbon-800 bg-carbon-900 shadow-flotante animate-[subir_0.3s_var(--ease-salida)] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
-        <div aria-hidden className="h-1 shrink-0 cinta-precaucion" />
+        <div aria-hidden className="h-px shrink-0 bg-marca-500/70" />
 
         <header className="flex shrink-0 items-center justify-between border-b border-carbon-800 px-5 py-4">
           <div>
@@ -135,7 +136,7 @@ export function PanelPedido() {
                   const url = imagenUrl(linea.imagen);
                   return (
                     <li key={linea.slug} className="flex gap-3 p-4">
-                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-carbon-50">
+                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-panel-foto">
                         {url ? (
                           // Miniatura del carrito: img nativo basta y evita
                           // reservar layout de next/image en una lista dinámica.
@@ -143,10 +144,10 @@ export function PanelPedido() {
                           <img
                             src={url}
                             alt=""
-                            className="h-full w-full object-contain p-1"
+                            className="h-full w-full object-contain p-1 mix-blend-multiply"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-carbon-100">
+                          <div className="flex h-full w-full items-center justify-center bg-panel-foto">
                             <span className="font-mono text-[8px] text-carbon-500">
                               {linea.sku.slice(-4)}
                             </span>
@@ -155,7 +156,7 @@ export function PanelPedido() {
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[10px] tracking-[0.14em] text-carbon-500">
+                        <p className="font-mono text-[11px] tracking-[0.14em] text-carbon-500">
                           {linea.sku}
                         </p>
                         <p className="mt-0.5 line-clamp-2 text-[13px] font-medium leading-snug text-carbon-100">
@@ -194,7 +195,7 @@ export function PanelPedido() {
                               {precio(linea.precioUnitario * linea.cantidad)}
                             </span>
                             {linea.cantidad > 1 && (
-                              <span className="font-mono text-[10px] text-carbon-500">
+                              <span className="font-mono text-[11px] text-carbon-500">
                                 {precio(linea.precioUnitario)} c/u
                               </span>
                             )}
@@ -216,7 +217,7 @@ export function PanelPedido() {
               </ul>
 
               <div className="space-y-4 border-t border-carbon-800 p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">
+                <p className="rotulo text-[11px] text-marca-400">
                   Datos para calcular el envío
                 </p>
 
@@ -230,6 +231,7 @@ export function PanelPedido() {
                   }}
                   marcador="Nombre y apellido"
                   autoComplete="name"
+                  maxLength={LIMITES_PEDIDO.nombreMaximo}
                   error={errores.nombre ? "Escribe tu nombre" : null}
                 />
 
@@ -246,7 +248,7 @@ export function PanelPedido() {
                 <div>
                   <label
                     htmlFor="comentario-pedido"
-                    className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+                    className="block rotulo text-[11px] text-carbon-500"
                   >
                     Comentarios <span className="text-carbon-600">(opcional)</span>
                   </label>
@@ -255,6 +257,7 @@ export function PanelPedido() {
                     value={comentario}
                     onChange={(e) => fijarComentario(e.target.value)}
                     rows={3}
+                    maxLength={LIMITES_PEDIDO.comentarioMaximo}
                     placeholder="Dirección, forma de pago, cantidades especiales…"
                     className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
                   />
@@ -264,7 +267,7 @@ export function PanelPedido() {
 
             <footer className="shrink-0 border-t border-carbon-800 bg-carbon-900 p-4">
               <div className="mb-3 flex items-end justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-carbon-500">
+                <span className="rotulo text-[11px] text-carbon-500">
                   Total
                 </span>
                 <span className="font-mono text-2xl font-extrabold leading-none text-carbon-50">
@@ -277,7 +280,7 @@ export function PanelPedido() {
                 onClick={alEnviar}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
+                className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-sobre-marca transition-colors hover:bg-marca-400"
               >
                 <IconoWhatsApp className="h-5 w-5" />
                 Enviar pedido por WhatsApp
@@ -287,11 +290,11 @@ export function PanelPedido() {
                 <button
                   type="button"
                   onClick={vaciar}
-                  className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500 transition-colors hover:text-carbon-300"
+                  className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-carbon-300"
                 >
                   Vaciar pedido
                 </button>
-                <p className="font-mono text-[10px] text-carbon-500">
+                <p className="font-mono text-[11px] text-carbon-500">
                   El pago se coordina por WhatsApp
                 </p>
               </div>
@@ -318,6 +321,7 @@ function Campo({
   alCambiar,
   marcador,
   autoComplete,
+  maxLength,
   error,
 }: {
   id: string;
@@ -326,13 +330,14 @@ function Campo({
   alCambiar: (v: string) => void;
   marcador: string;
   autoComplete: string;
+  maxLength: number;
   error: string | null;
 }) {
   return (
     <div>
       <label
         htmlFor={id}
-        className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+        className="block rotulo text-[11px] text-carbon-500"
       >
         {etiqueta}
       </label>
@@ -343,6 +348,7 @@ function Campo({
         onChange={(e) => alCambiar(e.target.value)}
         placeholder={marcador}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
         className={`mt-2 h-11 w-full border px-3 text-[14px] text-carbon-100 placeholder:text-carbon-500 focus:outline-none focus:border-marca-500 ${

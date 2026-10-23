@@ -3,9 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
-import { imagenUrl } from "@/lib/imagen-url";
-import { precio } from "@/lib/format";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { pedirRegeneracion } from "@/infraestructura/supabase/admin-catalogo";
+import { imagenUrl } from "@/infraestructura/imagen-url";
+import { precio } from "@/dominio/formato";
 import {
   listaATexto,
   textoALista,
@@ -14,7 +15,8 @@ import {
   faqATexto,
   textoAFaq,
   nombreMiniatura,
-} from "@/lib/formato-campos";
+} from "@/dominio/campos-texto";
+import { AreaTexto, BarraGuardado, Campo, Interruptor } from "@/components/admin/campos";
 
 /** Lo que el panel edita de cada producto. */
 type Fila = {
@@ -204,16 +206,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
       return;
     }
 
-    // El catálogo está prerenderizado: sin esto el cambio no se vería hasta
-    // la próxima reconstrucción del sitio.
-    const { data: sesion } = await sb.auth.getSession();
-    const token = sesion.session?.access_token;
-    if (token) {
-      await fetch("/api/revalidar", {
-        method: "POST",
-        headers: { authorization: `Bearer ${token}` },
-      }).catch(() => undefined);
-    }
+    await pedirRegeneracion(sb);
 
     setGuardando(false);
     setMensaje("Guardado");
@@ -261,7 +254,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
           type="button"
           onClick={() => setAbierto((v) => !v)}
           aria-expanded={abierto}
-          className="shrink-0 border border-carbon-700 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="shrink-0 border border-carbon-700 px-3 py-2 rotulo text-[10px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
         >
           {abierto ? "Cerrar" : "Editar"}
         </button>
@@ -297,7 +290,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
 
           {fila.imagenes.length > 1 && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+              <p className="rotulo text-[10px] text-carbon-500">
                 Foto de portada
                 <span className="ml-2 normal-case tracking-normal text-carbon-600">
                   la que se ve en la grilla y al compartir
@@ -364,127 +357,16 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
         </div>
       )}
 
-      {(sucio || mensaje) && (
-        <div className="flex items-center justify-between gap-3 border-t border-carbon-800 bg-carbon-850 px-3 py-2">
-          <span
-            className={`font-mono text-[11px] ${
-              mensaje === "Guardado" ? "text-disponible" : mensaje ? "text-marca-400" : "text-carbon-400"
-            }`}
-          >
-            {mensaje ?? "Cambios sin guardar"}
-          </span>
-          {sucio && (
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setB(aBorrador(fila));
-                  setMensaje(null);
-                }}
-                className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-carbon-100"
-              >
-                Descartar
-              </button>
-              <button
-                type="button"
-                onClick={guardar}
-                disabled={guardando}
-                className="bg-marca-500 px-4 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-marca-400 disabled:opacity-50"
-              >
-                {guardando ? "Guardando…" : "Guardar"}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+      <BarraGuardado
+        sucio={sucio}
+        mensaje={mensaje}
+        guardando={guardando}
+        alDescartar={() => {
+          setB(aBorrador(fila));
+          setMensaje(null);
+        }}
+        alGuardar={guardar}
+      />
     </li>
-  );
-}
-
-function Interruptor({
-  activo,
-  alCambiar,
-  etiqueta,
-  tono,
-}: {
-  activo: boolean;
-  alCambiar: (v: boolean) => void;
-  etiqueta: string;
-  tono: "alerta" | "normal";
-}) {
-  const encendido =
-    tono === "alerta"
-      ? "border-marca-500 bg-marca-500/[0.15] text-marca-300"
-      : "border-disponible bg-disponible/[0.12] text-disponible";
-  return (
-    <button
-      type="button"
-      onClick={() => alCambiar(!activo)}
-      aria-pressed={activo}
-      className={`border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
-        activo ? encendido : "border-carbon-700 text-carbon-500 hover:text-carbon-300"
-      }`}
-    >
-      {etiqueta}
-    </button>
-  );
-}
-
-function Campo({
-  etiqueta,
-  valor,
-  alCambiar,
-  mono = false,
-}: {
-  etiqueta: string;
-  valor: string;
-  alCambiar: (v: string) => void;
-  mono?: boolean;
-}) {
-  return (
-    <div>
-      <label className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-        {etiqueta}
-        <input
-          type="text"
-          value={valor}
-          onChange={(e) => alCambiar(e.target.value)}
-          className={`mt-2 h-10 w-full border border-carbon-700 bg-carbon-850 px-3 text-[14px] normal-case tracking-normal text-carbon-100 focus:border-marca-500 focus:outline-none ${
-            mono ? "font-mono" : "font-sans"
-          }`}
-        />
-      </label>
-    </div>
-  );
-}
-
-function AreaTexto({
-  etiqueta,
-  ayuda,
-  valor,
-  alCambiar,
-  filas,
-}: {
-  etiqueta: string;
-  ayuda?: string;
-  valor: string;
-  alCambiar: (v: string) => void;
-  filas: number;
-}) {
-  return (
-    <div>
-      <label className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-        {etiqueta}
-        {ayuda && (
-          <span className="ml-2 normal-case tracking-normal text-carbon-600">{ayuda}</span>
-        )}
-        <textarea
-          value={valor}
-          onChange={(e) => alCambiar(e.target.value)}
-          rows={filas}
-          className="mt-2 w-full resize-y border border-carbon-700 bg-carbon-850 px-3 py-2 font-sans text-[13px] normal-case leading-relaxed tracking-normal text-carbon-100 focus:border-marca-500 focus:outline-none"
-        />
-      </label>
-    </div>
   );
 }

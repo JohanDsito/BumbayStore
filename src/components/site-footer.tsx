@@ -1,30 +1,22 @@
 import Link from "next/link";
-import { site } from "@/lib/site-config";
-import { enlaceGeneral } from "@/lib/whatsapp";
-import { Logotipo, IconoWhatsApp } from "@/components/icons";
-import type { Category } from "@/lib/types";
+import { site } from "@/config/sitio";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
+import { IconoWhatsApp } from "@/components/icons";
+import { LogoStore } from "@/components/logos";
+import type { SeccionMenu } from "@/dominio/catalogo";
+import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
-export function PieSitio({ categorias }: { categorias: Category[] }) {
+export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
   const anio = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-carbon-800 bg-carbon-900">
-      <div aria-hidden className="h-[3px] cinta-precaucion opacity-70" />
+    <footer className="mt-20 border-t border-carbon-800 bg-carbon-950">
+      
 
       <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <Logotipo className="h-8 w-8 text-marca-500" />
-              <span className="flex flex-col leading-none">
-                <span className="text-lg font-extrabold tracking-[-0.03em] text-carbon-50">
-                  BUMB<span className="text-marca-500">A</span>Y
-                </span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
-                  Tools
-                </span>
-              </span>
-            </div>
+            <LogoStore className="w-[150px]" />
             <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-carbon-400">
               {site.descripcion}
             </p>
@@ -40,25 +32,38 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
           </div>
 
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
-              Categorías
+            <h2 className="rotulo text-carbon-400">
+              Catálogo
             </h2>
-            <ul className="mt-4 space-y-2.5">
-              {categorias.slice(0, 8).map((c) => (
-                <li key={c.slug}>
+            <ul className="mt-4 space-y-5">
+              {menu.map(({ nicho, categorias }) => (
+                <li key={nicho.slug}>
                   <Link
-                    href={`/categoria/${c.slug}`}
-                    className="text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
+                    href={rutaNicho(nicho)}
+                    className="inline-block py-1.5 text-[13px] font-semibold text-carbon-200 transition-colors hover:text-marca-400"
                   >
-                    {c.nombre}
+                    {nicho.submarca ?? nicho.nombre}
                   </Link>
+                  {/* Las primeras categorías bastan: la lista completa está en el menú. */}
+                  <ul className="mt-1">
+                    {categorias.slice(0, 6).map((c) => (
+                      <li key={c.slug}>
+                        <Link
+                          href={rutaCategoria(c)}
+                          className="inline-block py-1.5 text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
+                        >
+                          {c.nombre}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
+            <h2 className="rotulo text-carbon-400">
               Contacto
             </h2>
             <dl className="mt-4 space-y-3 text-[13px]">
@@ -91,7 +96,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       Instagram
                     </a>
@@ -103,7 +108,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       Facebook
                     </a>
@@ -115,7 +120,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                       href={site.redes.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       TikTok
                     </a>

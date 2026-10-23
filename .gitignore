@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# La plantilla sí va en git: solo trae valores de muestra.
+!.env.example
 
 # vercel
 .vercel
@@ -54,3 +56,14 @@ datos/productos.borrador.csv
 
 # scripts temporales de depuracion
 _*.mjs
+
+# variables copiadas para Vercel (tienen valores reales)
+vercel-variables.txt
+
+# cache de Python de las skills
+__pycache__/
+
+# impeccable: capturas de revisión y la ronda de direcciones (material de trabajo)
+.impeccable/review/
+.impeccable/decision/
+.impeccable/mocks/

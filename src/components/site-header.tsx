@@ -3,68 +3,81 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, Suspense } from "react";
-import { site } from "@/lib/site-config";
-import { enlaceGeneral } from "@/lib/whatsapp";
+import { site } from "@/config/sitio";
+import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Buscador } from "@/components/search-box";
 import { BotonPedidoHeader } from "@/components/cart-bar";
-import { Logotipo, IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
-import type { Category } from "@/lib/types";
+import { IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
+import { LogoStore } from "@/components/logos";
+import type { SeccionMenu } from "@/dominio/catalogo";
+import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
-export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
+/**
+ * Encabezado de la tienda: vidrio oscuro flotando sobre el campo de luz.
+ *
+ * La fila de navegación muestra solo los nichos, así cabe aunque haya
+ * muchos. Las categorías aparecen en una segunda fila cuando se está dentro
+ * de un nicho, que es cuando sirven.
+ */
+export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const ruta = usePathname();
 
-  return (
-    <header className="sticky top-0 z-30 border-b border-carbon-800 bg-carbon-950/92 backdrop-blur-md">
-      {/* Franja de contacto: en este negocio el teléfono vende más que el diseño */}
-      <div className="hidden border-b border-carbon-850 bg-carbon-900 lg:block">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-1.5">
-          <p className="font-mono text-[11px] tracking-tight text-carbon-500">
-            Importador y distribuidor · {site.ciudad}, {site.pais}
-          </p>
-          <div className="flex items-center gap-5">
-            <span className="font-mono text-[11px] text-carbon-500">{site.horario}</span>
-            <a
-              href={enlaceGeneral()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-mono text-[11px] font-medium text-disponible transition-opacity hover:opacity-80"
-            >
-              <IconoWhatsApp className="h-3.5 w-3.5" />
-              Escríbenos por WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
+  // Nicho en el que se está: por su portada o por una de sus categorías.
+  const actual = menu.find(
+    (s) => ruta === rutaNicho(s.nicho) || ruta.startsWith(`${rutaNicho(s.nicho)}/`),
+  );
 
-      <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:px-6 sm:gap-5">
+  return (
+    <header className="sticky top-0 z-30 border-b border-carbon-800/80 bg-carbon-950/92 backdrop-blur-md">
+      <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
+          aria-label={`${site.nombre}, inicio`}
+          className="flex shrink-0 items-center transition-opacity hover:opacity-80"
         >
-          <Logotipo className="h-8 w-8 text-marca-500" />
-          <span className="flex flex-col leading-none">
-            {/* La A en rojo reproduce el logotipo de la marca. */}
-            <span className="text-[17px] font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-lg">
-              BUMB<span className="text-marca-500">A</span>Y
-            </span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
-              Tools
-            </span>
-          </span>
+          <LogoStore prioridad className="w-[108px] sm:w-[136px]" />
         </Link>
 
-        <Suspense fallback={<div className="hidden h-10 flex-1 md:block" />}>
-          <Buscador className="hidden flex-1 md:block" />
+        <nav aria-label="Nichos" className="sin-scrollbar hidden min-w-0 flex-1 overflow-x-auto lg:block">
+          <ul className="flex w-max items-center gap-1">
+            {menu.map(({ nicho }) => {
+              const activo = actual?.nicho.slug === nicho.slug;
+              return (
+                <li key={nicho.slug}>
+                  <Link
+                    href={rutaNicho(nicho)}
+                    aria-current={ruta === rutaNicho(nicho) ? "page" : undefined}
+                    title={nicho.nombre}
+                    className={`rotulo relative block max-w-[16rem] truncate whitespace-nowrap px-3 py-2 transition-colors ${
+                      activo ? "text-carbon-50" : "text-carbon-300 hover:text-carbon-50"
+                    }`}
+                  >
+                    {nicho.nombre}
+                    <span
+                      aria-hidden
+                      className={`absolute inset-x-3 -bottom-px h-px origin-left bg-marca-400 transition-transform duration-300 ease-[var(--ease-salida)] ${
+                        activo ? "scale-x-100" : "scale-x-0"
+                      }`}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <Suspense fallback={<div className="hidden h-11 flex-1 md:block" />}>
+          <Buscador className="ml-auto hidden w-full max-w-sm md:block" />
         </Suspense>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-1 md:ml-0">
           <a
             href={enlaceGeneral()}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Escribir por WhatsApp"
-            className="hidden h-10 w-10 items-center justify-center text-disponible transition-opacity hover:opacity-70 sm:flex"
+            className="hidden h-11 w-11 items-center justify-center text-disponible transition-opacity hover:opacity-70 sm:flex"
           >
             <IconoWhatsApp className="h-5 w-5" />
           </a>
@@ -72,114 +85,92 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
           <button
             type="button"
             onClick={() => setMenuAbierto((v) => !v)}
-            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú de categorías"}
+            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú del catálogo"}
             aria-expanded={menuAbierto}
-            className="flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400 lg:hidden"
+            className="flex h-11 w-11 items-center justify-center text-carbon-300 transition-colors hover:text-carbon-50 lg:hidden"
           >
-            {menuAbierto ? (
-              <IconoCerrar className="h-5 w-5" />
-            ) : (
-              <IconoMenu className="h-5 w-5" />
-            )}
+            {menuAbierto ? <IconoCerrar className="h-5 w-5" /> : <IconoMenu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Buscador en celular: va en su propia fila para no comprimir el logo */}
-      <div className="border-t border-carbon-850 px-4 py-2.5 md:hidden">
-        <Suspense fallback={<div className="h-10" />}>
+      {/* Buscador en celular: va en su propia fila para no comprimir la marca */}
+      <div className="border-t border-carbon-800/70 px-4 py-2.5 md:hidden">
+        <Suspense fallback={<div className="h-11" />}>
           <Buscador />
         </Suspense>
       </div>
 
-      {/* Categorías: carrusel horizontal en celular, fila completa en escritorio */}
-      <nav
-        aria-label="Categorías"
-        className="hidden border-t border-carbon-850 lg:block"
-      >
-        <div className="mx-auto max-w-[1400px] px-6">
-          <ul className="sin-scrollbar flex items-center gap-1 overflow-x-auto">
-            <li>
-              <EnlaceCategoria href="/" activo={ruta === "/"}>
-                Todo el catálogo
-              </EnlaceCategoria>
-            </li>
-            {categorias.map((c) => (
-              <li key={c.slug}>
-                <EnlaceCategoria
-                  href={`/categoria/${c.slug}`}
-                  activo={ruta === `/categoria/${c.slug}`}
-                >
-                  {c.nombre}
-                </EnlaceCategoria>
-              </li>
-            ))}
+      {/* Categorías del nicho en el que se está */}
+      {actual && actual.categorias.length > 0 && (
+        <nav
+          aria-label={`Categorías de ${actual.nicho.nombre}`}
+          className="hidden border-t border-carbon-800/70 lg:block"
+        >
+          <ul className="sin-scrollbar mx-auto flex max-w-[1400px] items-center gap-1 overflow-x-auto px-6">
+            {actual.categorias.map((c) => {
+              const activo = ruta === rutaCategoria(c);
+              return (
+                <li key={c.slug}>
+                  <Link
+                    href={rutaCategoria(c)}
+                    aria-current={activo ? "page" : undefined}
+                    className={`block whitespace-nowrap px-3 py-2.5 text-[13px] transition-colors ${
+                      activo ? "text-marca-400" : "text-carbon-300 hover:text-carbon-50"
+                    }`}
+                  >
+                    {c.nombre}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
-        </div>
-      </nav>
+        </nav>
+      )}
 
       {/* Menú desplegable en celular */}
       {menuAbierto && (
-        <nav
-          aria-label="Categorías"
-          className="border-t border-carbon-850 bg-carbon-900 lg:hidden"
-        >
+        <nav aria-label="Catálogo" className="border-t border-carbon-800 bg-carbon-900 lg:hidden">
           <ul className="max-h-[60vh] overflow-y-auto">
             <li>
               <Link
                 href="/"
                 onClick={() => setMenuAbierto(false)}
-                className="block border-b border-carbon-850 px-5 py-3 text-sm font-medium text-carbon-100"
+                className="rotulo block border-b border-carbon-850 px-5 py-4 text-carbon-100"
               >
-                Todo el catálogo
+                Inicio
               </Link>
             </li>
-            {categorias.map((c) => (
-              <li key={c.slug}>
+            {menu.map(({ nicho, categorias }) => (
+              <li key={nicho.slug}>
                 <Link
-                  href={`/categoria/${c.slug}`}
+                  href={rutaNicho(nicho)}
                   onClick={() => setMenuAbierto(false)}
-                  className="flex items-center justify-between border-b border-carbon-850 px-5 py-3 text-sm text-carbon-300 transition-colors active:bg-carbon-850"
+                  className="flex items-baseline justify-between border-b border-carbon-850 px-5 py-3.5 text-[15px] font-semibold text-carbon-50"
                 >
-                  {c.nombre}
+                  {nicho.nombre}
+                  {nicho.submarca && (
+                    <span className="rotulo text-[11px] text-carbon-400">{nicho.submarca}</span>
+                  )}
                 </Link>
+                <ul>
+                  {categorias.map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={rutaCategoria(c)}
+                        onClick={() => setMenuAbierto(false)}
+                        className="block border-b border-carbon-850 py-3 pl-9 pr-5 text-sm text-carbon-300 transition-colors active:bg-carbon-850"
+                      >
+                        {c.nombre}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
         </nav>
       )}
-
-      <div aria-hidden className="h-[3px] cinta-precaucion opacity-70" />
     </header>
-  );
-}
-
-function EnlaceCategoria({
-  href,
-  activo,
-  children,
-}: {
-  href: string;
-  activo: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      aria-current={activo ? "page" : undefined}
-      className={`relative block whitespace-nowrap px-3 py-2.5 text-[12.5px] font-medium tracking-tight transition-colors ${
-        activo
-          ? "text-marca-400"
-          : "text-carbon-400 hover:text-carbon-100"
-      }`}
-    >
-      {children}
-      {activo && (
-        <span
-          aria-hidden
-          className="absolute inset-x-3 bottom-0 h-[2px] bg-marca-500"
-        />
-      )}
-    </Link>
   );
 }

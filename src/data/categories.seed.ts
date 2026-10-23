@@ -1,12 +1,13 @@
-import type { Category } from "@/lib/types";
+import type { Category } from "@/dominio/modelos";
 
 /**
  * Categorías del catálogo. Al migrar a Supabase esto vive en la tabla
- * `categorias`; aquí queda como respaldo y como orden de referencia del menú.
+ * `categorias`; aquí quedan para trabajar sin base de datos.
  */
 export const categoriasSeed: Category[] = [
   {
     slug: "taladros-inalambricos",
+    nichoSlug: "herramientas",
     nombre: "Taladros inalámbricos",
     orden: 1,
     descripcion:
@@ -14,6 +15,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "pulidoras",
+    nichoSlug: "herramientas",
     nombre: "Pulidoras",
     orden: 2,
     descripcion:
@@ -21,6 +23,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "combos-inalambricos",
+    nichoSlug: "herramientas",
     nombre: "Combos inalámbricos",
     orden: 3,
     descripcion:
@@ -28,6 +31,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "pistolas-de-impacto",
+    nichoSlug: "herramientas",
     nombre: "Pistolas de impacto",
     orden: 4,
     descripcion:
@@ -35,6 +39,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "rotomartillos",
+    nichoSlug: "herramientas",
     nombre: "Rotomartillos",
     orden: 5,
     descripcion:
@@ -42,6 +47,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "herramienta-manual",
+    nichoSlug: "herramientas",
     nombre: "Herramienta manual",
     orden: 6,
     descripcion:
@@ -49,6 +55,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "niveles-laser",
+    nichoSlug: "herramientas",
     nombre: "Niveles láser",
     orden: 7,
     descripcion:
@@ -56,6 +63,7 @@ export const categoriasSeed: Category[] = [
   },
   {
     slug: "lamparas-y-linternas",
+    nichoSlug: "herramientas",
     nombre: "Lámparas y linternas",
     orden: 8,
     descripcion:

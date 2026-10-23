@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-import { site } from "@/lib/site-config";
+import { site } from "@/config/sitio";
 
 /**
  * Armazón mínimo, común a todo.
@@ -13,10 +13,14 @@ import { site } from "@/lib/site-config";
  * y los metadatos que comparten.
  */
 
+// Variable en peso y en ancho: el mismo Archivo da el titular ultracondensado
+// del portal (62 %) y los rótulos anchos y espaciados (112 %), sin cargar
+// una segunda familia.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
+  axes: ["wdth"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -29,12 +33,14 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.nombre} — Herramientas inalámbricas al por mayor en ${site.ciudad}`,
+    default: `${site.nombre} — Importador directo con envío a toda Colombia`,
     template: `%s | ${site.nombre}`,
   },
   description: site.descripcion,
   applicationName: site.nombre,
   keywords: [
+    "importador directo Colombia",
+    "tienda mayorista",
     "herramientas inalámbricas",
     "taladros inalámbricos",
     "pulidoras",
@@ -44,13 +50,14 @@ export const metadata: Metadata = {
     "ferretería mayorista",
     site.ciudad,
   ],
-  alternates: { canonical: "/" },
+  // Sin canonical aquí: lo hereda cada página que no declare el suyo, y
+  // apuntarlas todas a "/" le diría a Google que son la misma portada.
   openGraph: {
     type: "website",
     locale: "es_CO",
     url: site.url,
     siteName: site.nombre,
-    title: `${site.nombre} — Herramientas inalámbricas al por mayor`,
+    title: `${site.nombre} — Importador directo con envío a toda Colombia`,
     description: site.descripcion,
   },
   twitter: {
@@ -66,7 +73,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: "#07080d",
   colorScheme: "dark",
 };
 

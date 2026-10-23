@@ -3,15 +3,17 @@
 import { useEffect, useState, useCallback } from "react";
 import type { Session } from "@supabase/supabase-js";
 
-import { getSupabaseSesion } from "@/lib/supabase-sesion";
+import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
 import { AdminProductos } from "@/components/admin/productos";
 import { AdminPedidos } from "@/components/admin/pedidos";
 import { AdminBusquedas } from "@/components/admin/busquedas";
+import { AdminEstructura } from "@/components/admin/estructura";
 
-type Pestana = "productos" | "pedidos" | "busquedas";
+type Pestana = "productos" | "estructura" | "pedidos" | "busquedas";
 
 const PESTANAS: { id: Pestana; titulo: string }[] = [
   { id: "productos", titulo: "Productos" },
+  { id: "estructura", titulo: "Nichos y categorías" },
   { id: "pedidos", titulo: "Pedidos" },
   { id: "busquedas", titulo: "Búsquedas" },
 ];
@@ -78,12 +80,12 @@ export function PanelAdmin() {
         <span className="font-mono text-carbon-100">{sesion.user.email}</span> entró
         correctamente, pero no está en la lista de administradores, así que no
         puede ver ni modificar nada. Añádela desde el SQL Editor de Supabase
-        con la instrucción que hay al final de{" "}
-        <code className="font-mono text-marca-400">supabase/schema.sql</code>.
+        con la instrucción de la sección{" "}
+        <span className="font-mono text-marca-400">Crear tu usuario</span> del README.
         <button
           type="button"
           onClick={() => sb.auth.signOut()}
-          className="mt-4 block w-full border border-carbon-700 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="mt-4 block w-full border border-carbon-700 py-2 rotulo text-[11px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
         >
           Salir
         </button>
@@ -94,14 +96,14 @@ export function PanelAdmin() {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-carbon-800 pb-3">
-        <nav className="flex gap-1" aria-label="Secciones">
+        <nav className="sin-scrollbar flex max-w-full gap-1 overflow-x-auto" aria-label="Secciones">
           {PESTANAS.map((p) => (
             <button
               key={p.id}
               type="button"
               onClick={() => setPestana(p.id)}
               aria-current={pestana === p.id ? "page" : undefined}
-              className={`px-4 py-2 text-[13px] font-medium transition-colors ${
+              className={`whitespace-nowrap px-4 py-2 text-[13px] font-medium transition-colors ${
                 pestana === p.id
                   ? "border-b-2 border-marca-500 text-carbon-50"
                   : "text-carbon-400 hover:text-carbon-100"
@@ -119,7 +121,7 @@ export function PanelAdmin() {
           <button
             type="button"
             onClick={() => sb.auth.signOut()}
-            className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-marca-400"
+            className="rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
           >
             Salir
           </button>
@@ -127,6 +129,7 @@ export function PanelAdmin() {
       </div>
 
       {pestana === "productos" && <AdminProductos />}
+      {pestana === "estructura" && <AdminEstructura />}
       {pestana === "pedidos" && <AdminPedidos />}
       {pestana === "busquedas" && <AdminBusquedas />}
     </div>
@@ -177,7 +180,7 @@ function FormularioAcceso() {
         <div>
           <label
             htmlFor="admin-correo"
-            className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+            className="block rotulo text-[10px] text-carbon-500"
           >
             Correo
           </label>
@@ -195,7 +198,7 @@ function FormularioAcceso() {
         <div>
           <label
             htmlFor="admin-clave"
-            className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+            className="block rotulo text-[10px] text-carbon-500"
           >
             Contraseña
           </label>
@@ -215,7 +218,7 @@ function FormularioAcceso() {
         <button
           type="submit"
           disabled={enviando}
-          className="h-12 w-full bg-marca-500 text-[14px] font-semibold text-white transition-colors hover:bg-marca-400 disabled:opacity-50"
+          className="h-12 w-full bg-marca-500 text-[14px] font-semibold text-sobre-marca transition-colors hover:bg-marca-400 disabled:opacity-50"
         >
           {enviando ? "Entrando…" : "Entrar"}
         </button>
