@@ -24,6 +24,9 @@
   --color-carbon-100: #edeef4;
   --color-carbon-50: #f7f8fb;
 
+  /* Panel donde se apoyan las fotos de producto (con mezcla multiplicar). */
+  --color-panel-foto: #e4e6ee;
+
   /* Semánticos: no cambian con el nicho. */
   --color-disponible: #35d07f;
   --color-alerta: #ffc53d;
@@ -36,8 +39,8 @@
 
   --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
   --shadow-flotante: 0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7);
-  /* Brillo interior de los botones: la luz del campo reflejada en el borde. */
-  --shadow-brillo: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px -10px var(--acento);
+  /* Brillo de los botones: la luz del campo reflejada en el canto superior. */
+  --shadow-brillo: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 -1px 0 rgb(0 0 0 / 0.18);
 
   --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -69,6 +72,28 @@
   from {
     opacity: 0;
     transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Entrada del titular de portada, letra por letra (TitularAnimado).
+   Para cambiar el carácter de la entrada basta con tocar este bloque: el
+   componente solo numera las letras. */
+:root {
+  --letra-duracion: 760ms;
+  /* Separación entre una letra y la siguiente. */
+  --letra-paso: 26ms;
+  /* Pausa extra antes de que empiece la segunda línea. */
+  --linea-pausa: 140ms;
+}
+
+@keyframes letra-entra {
+  from {
+    opacity: 0;
+    transform: translateY(0.42em) rotate(4deg);
   }
   to {
     opacity: 1;
@@ -164,6 +189,13 @@
     line-height: 0.86;
   }
 
+  .letra-entra {
+    display: inline-block;
+    transform-origin: 0% 100%;
+    animation: letra-entra var(--letra-duracion) var(--ease-salida) both;
+    animation-delay: calc(var(--n, 0) * var(--letra-paso) + var(--linea, 0) * var(--linea-pausa));
+  }
+
   /* Condensado sin mayúsculas, para títulos de sección y nombres largos. */
   .condensada {
     font-stretch: 75%;
@@ -246,5 +278,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* El titular aparece completo de una vez: la regla de arriba acorta la
+     animación, pero no su retraso, y las letras quedarían ocultas. */
+  .letra-entra {
+    animation: none;
   }
 }

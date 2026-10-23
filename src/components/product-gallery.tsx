@@ -87,7 +87,7 @@ export function GaleriaProducto({
 
   return (
     <div>
-      <div className="relative border border-carbon-800 bg-[#e4e6ee]">
+      <div className="relative border border-carbon-800 bg-panel-foto">
         <div
           className={
             compacto
@@ -134,7 +134,7 @@ export function GaleriaProducto({
             >
               <IconoFlecha className="h-4 w-4" />
             </button>
-            <span className="absolute bottom-2 right-2 bg-carbon-950/70 px-2 py-1 font-mono text-[10px] text-white backdrop-blur-sm">
+            <span className="absolute bottom-2 right-2 bg-carbon-950/70 px-2 py-1 font-mono text-[11px] text-white backdrop-blur-sm">
               {activa + 1} / {total}
             </span>
           </>
@@ -159,7 +159,7 @@ export function GaleriaProducto({
                 aria-selected={activaEsta}
                 aria-label={`Ver imagen ${i + 1}`}
                 onClick={() => ir(i)}
-                className={`relative shrink-0 overflow-hidden border bg-[#e4e6ee] transition-colors ${
+                className={`relative shrink-0 overflow-hidden border bg-panel-foto transition-colors ${
                   compacto ? "h-11 w-11" : "h-16 w-16"
                 } ${
                   activaEsta

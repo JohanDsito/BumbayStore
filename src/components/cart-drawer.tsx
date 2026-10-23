@@ -136,7 +136,7 @@ export function PanelPedido() {
                   const url = imagenUrl(linea.imagen);
                   return (
                     <li key={linea.slug} className="flex gap-3 p-4">
-                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-[#e4e6ee]">
+                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-panel-foto">
                         {url ? (
                           // Miniatura del carrito: img nativo basta y evita
                           // reservar layout de next/image en una lista dinámica.
@@ -147,7 +147,7 @@ export function PanelPedido() {
                             className="h-full w-full object-contain p-1 mix-blend-multiply"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-[#e4e6ee]">
+                          <div className="flex h-full w-full items-center justify-center bg-panel-foto">
                             <span className="font-mono text-[8px] text-carbon-500">
                               {linea.sku.slice(-4)}
                             </span>
@@ -156,7 +156,7 @@ export function PanelPedido() {
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[10px] tracking-[0.14em] text-carbon-500">
+                        <p className="font-mono text-[11px] tracking-[0.14em] text-carbon-500">
                           {linea.sku}
                         </p>
                         <p className="mt-0.5 line-clamp-2 text-[13px] font-medium leading-snug text-carbon-100">
@@ -195,7 +195,7 @@ export function PanelPedido() {
                               {precio(linea.precioUnitario * linea.cantidad)}
                             </span>
                             {linea.cantidad > 1 && (
-                              <span className="font-mono text-[10px] text-carbon-500">
+                              <span className="font-mono text-[11px] text-carbon-500">
                                 {precio(linea.precioUnitario)} c/u
                               </span>
                             )}
@@ -217,7 +217,7 @@ export function PanelPedido() {
               </ul>
 
               <div className="space-y-4 border-t border-carbon-800 p-4">
-                <p className="rotulo text-[10px] text-marca-400">
+                <p className="rotulo text-[11px] text-marca-400">
                   Datos para calcular el envío
                 </p>
 
@@ -248,7 +248,7 @@ export function PanelPedido() {
                 <div>
                   <label
                     htmlFor="comentario-pedido"
-                    className="block rotulo text-[10px] text-carbon-500"
+                    className="block rotulo text-[11px] text-carbon-500"
                   >
                     Comentarios <span className="text-carbon-600">(opcional)</span>
                   </label>
@@ -290,11 +290,11 @@ export function PanelPedido() {
                 <button
                   type="button"
                   onClick={vaciar}
-                  className="rotulo text-[10px] text-carbon-500 transition-colors hover:text-carbon-300"
+                  className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-carbon-300"
                 >
                   Vaciar pedido
                 </button>
-                <p className="font-mono text-[10px] text-carbon-500">
+                <p className="font-mono text-[11px] text-carbon-500">
                   El pago se coordina por WhatsApp
                 </p>
               </div>
@@ -337,7 +337,7 @@ function Campo({
     <div>
       <label
         htmlFor={id}
-        className="block rotulo text-[10px] text-carbon-500"
+        className="block rotulo text-[11px] text-carbon-500"
       >
         {etiqueta}
       </label>

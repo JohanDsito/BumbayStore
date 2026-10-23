@@ -183,14 +183,14 @@ Una escala de noche azulada casi sin color, para que los filamentos de cada nich
 
 ## Layout
 
-Contenedor de 1400 px como máximo, margen lateral de 16 px en celular y 24 px desde 640 px. La primera pantalla de cada portada es una retícula de dos columnas: el índice (200 px) y el titular; la lectura del campo flota en la esquina inferior derecha. En celular se apila: titular, línea clave, acciones, índice. Bajo la primera pantalla, grillas de 2 columnas en celular y 3–4 en escritorio, con secciones separadas por un borde fino y 40–64 px de aire. El encabezado tiene una fila de nichos y, dentro de un nicho, una segunda fila con sus categorías.
+Contenedor de 1400 px como máximo, margen lateral de 16 px en celular y 24 px desde 640 px. La primera pantalla de cada portada es una retícula de dos columnas: a la izquierda el índice (200 px) con la lectura del campo debajo, y a la derecha el titular con todo el ancho. La lectura no flota sobre el titular: con titulares largos o muchas cifras chocaban. En celular se apila: titular, línea clave, acciones, índice. Bajo la primera pantalla, grillas de 2 columnas en celular y 3–4 en escritorio, con secciones separadas por un borde fino y 40–64 px de aire. El encabezado tiene una fila de nichos y, dentro de un nicho, una segunda fila con sus categorías.
 
 ## Elevation & Depth
 
 Profundidad por capas tonales de la noche y por el campo detrás de todo. Los paneles que flotan sobre el campo con texto encima (precio, especificaciones, bloque mayorista) son vidrio oscuro: noche al 72 % con desenfoque de 14 px, porque es lo que deja leer sobre los filamentos. El encabezado es casi opaco (92 %) para que las fotos claras no se transparenten al bajar.
 
 ### Shadow Vocabulary
-- **Brillo** (`inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px -10px var(--acento)`): el botón principal. La luz del campo reflejada en su borde.
+- **Brillo** (`inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 -1px 0 rgb(0 0 0 / 0.18)`): el botón principal. La luz del campo reflejada en su canto, sin halo de color alrededor.
 - **Panel** (`0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)`): paneles superpuestos como la vista rápida.
 - **Flotante** (`0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)`): la barra de pedido y el cajón, que suben desde abajo.
 
@@ -228,6 +228,9 @@ Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El
 ### Campo de luz
 La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de todo. Un filamento por nicho (núcleo fino, halo y partículas que solo se encienden cerca del filamento); el puntero los curva al pasar. Se funde al color del nicho al navegar. Presupuesto: 50 % de la resolución en escritorio y 35 % en celular, 30 cuadros en celular, congelado bajo la primera pantalla y con la pestaña oculta, una imagen quieta con el movimiento reducido, y póster CSS sin WebGL, con ahorro de datos o con poca memoria.
 
+### Titular animado
+Al cargar una portada, las letras del titular suben y se enderezan una a una (CSS puro, `letra-entra`), y la segunda línea entra justo después. El ritmo vive en tres variables de `globals.css`: `--letra-duracion` (760 ms), `--letra-paso` (26 ms entre letras) y `--linea-pausa` (140 ms). Con movimiento reducido el titular aparece entero de inmediato. Para los lectores de pantalla el título es una sola frase.
+
 ### Índice de portada
 Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a la izquierda del titular. En la portada general, pasar por una entrada enciende su filamento y la lectura del campo dice su nombre.
 
@@ -244,7 +247,8 @@ Franjas en el acento a 45°, 4 px de alto, sobre la portada del nicho de herrami
 - **Do** dejar el titular en dos líneas, con la segunda en el acento.
 - **Do** apoyar las fotos de producto en el panel de foto con mezcla multiplicar.
 - **Do** usar el contorno para "Agregar" en las grillas y el botón lleno solo en la ficha.
-- **Do** mantener el campo como el único movimiento autorado de la página.
+- **Do** mantener la entrada del titular y el campo como los únicos movimientos autorados de la página.
+- **Do** dar a todo control táctil al menos 44 px de alto, y a todo texto funcional al menos 11 px.
 
 ### Don't:
 - **Don't** poner un rótulo encima de un titular ni números de sección decorativos.

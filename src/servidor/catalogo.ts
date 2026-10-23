@@ -3,7 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { crearCatalogo } from "@/aplicacion/catalogo";
 import type { FuenteCatalogo } from "@/aplicacion/puertos";
-import { fuenteEjemplo, fuenteLocal } from "@/infraestructura/local/catalogo";
+import { fuenteEjemplo, fuenteExtremo, fuenteLocal } from "@/infraestructura/local/catalogo";
 import { crearFuenteSupabase } from "@/infraestructura/supabase/catalogo";
 import { getSupabase } from "@/infraestructura/supabase/servidor";
 
@@ -14,6 +14,8 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  *
  * - Con CATALOGO=ejemplo, se usan los datos locales más los nichos de
  *   ejemplo, aunque haya Supabase. Es para trabajar en tu equipo.
+ * - Con CATALOGO=extremo, el catálogo del peor caso, para revisar que la
+ *   interfaz aguante datos incómodos.
  * - Con Supabase configurado, se lee solo de ahí. Si no responde (ni al
  *   reintento, ver supabase/servidor.ts), la consulta falla: nunca se
  *   muestran productos de ejemplo como si fueran reales. Las páginas ya
@@ -29,6 +31,7 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  */
 function elegirFuente(): FuenteCatalogo {
   if (process.env.CATALOGO === "ejemplo") return fuenteEjemplo;
+  if (process.env.CATALOGO === "extremo") return fuenteExtremo;
   const sb = getSupabase();
   return sb ? crearFuenteSupabase(sb) : fuenteLocal;
 }

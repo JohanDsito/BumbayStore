@@ -5,7 +5,7 @@ import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
 export default function NoEncontrado() {
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 py-20 text-center">
-      <p className="rotulo text-[10px] text-marca-500">
+      <p className="rotulo text-[11px] text-marca-500">
         Error 404
       </p>
       <h1 className="mt-4 text-4xl font-extrabold tracking-[-0.04em] text-carbon-50 sm:text-5xl">

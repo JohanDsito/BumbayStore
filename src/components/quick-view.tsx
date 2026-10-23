@@ -138,7 +138,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
           {/* --- Galería --- */}
           <div className="relative border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
             {producto.agotado && (
-              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 rotulo text-[10px] font-semibold text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
+              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
                 Agotado
               </span>
             )}
@@ -172,7 +172,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               <span className="block font-mono text-3xl font-extrabold leading-none text-carbon-50">
                 {precio(producto.precioUnitario)}
               </span>
-              <span className="mt-1.5 block text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+              <span className="mt-1.5 block text-[11px] uppercase tracking-[0.14em] text-carbon-500">
                 Precio
               </span>
             </div>

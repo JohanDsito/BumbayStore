@@ -79,7 +79,7 @@ export function SelectorColor({
 
   return (
     <div className={compacto ? "mt-3" : "mt-6"}>
-      <p className="rotulo text-[10px] text-carbon-500">
+      <p className="rotulo text-[11px] text-carbon-500">
         Color
         {actual?.color && (
           <span className="ml-2 text-carbon-200">{actual.color}</span>
@@ -135,7 +135,7 @@ function Punto({ color, compacto }: { color: string | null; compacto: boolean })
 /** Marca de color para las tarjetas de la grilla. */
 export function EtiquetaColor({ color }: { color: string }) {
   return (
-    <span className="flex items-center gap-1.5 rotulo text-[10px] text-carbon-400">
+    <span className="flex items-center gap-1.5 rotulo text-[11px] text-carbon-400">
       <span
         aria-hidden
         className="block h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-carbon-950/40"

@@ -27,7 +27,7 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
         </div>
 
         {producto.agotado && (
-          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 rotulo text-[10px] font-semibold text-carbon-200 ring-1 ring-carbon-700">
+          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-carbon-200 ring-1 ring-carbon-700">
             Agotado
           </span>
         )}
@@ -36,7 +36,7 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
 
       <div className="esquinas-tecnicas flex flex-1 flex-col p-3.5 sm:p-4">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-[10px] tracking-[0.16em] text-carbon-500">
+          <span className="font-mono text-[11px] tracking-[0.16em] text-carbon-500">
             {producto.sku}
           </span>
           {producto.color && <EtiquetaColor color={producto.color} />}

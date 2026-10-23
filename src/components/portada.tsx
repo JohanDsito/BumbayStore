@@ -6,6 +6,7 @@ import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
 import { IndicePortal, type EntradaIndice } from "@/components/indice-portal";
 import { BOTON_PRINCIPAL, BOTON_SECUNDARIO } from "@/components/botones";
+import { TitularAnimado } from "@/components/titular-animado";
 
 /**
  * Piezas de portada que comparten la portada general y la de cada nicho.
@@ -13,9 +14,9 @@ import { BOTON_PRINCIPAL, BOTON_SECUNDARIO } from "@/components/botones";
  */
 
 /**
- * La primera pantalla de una portada, en tres columnas sobre el campo de
- * luz: el índice a la izquierda, el titular en el centro y la lectura del
- * campo a la derecha. En celular se apilan: titular, acciones e índice.
+ * La primera pantalla de una portada, sobre el campo de luz: a la izquierda
+ * el índice y, debajo, la lectura del campo; a la derecha el titular, con
+ * todo el ancho para él. En celular se apilan: titular, acciones e índice.
  *
  * El titular admite dos líneas separadas por un salto de línea; la segunda
  * va en el color del nicho.
@@ -43,23 +44,24 @@ export function Portico({
   /** Logo de la submarca, sobre el titular. */
   logo?: React.ReactNode;
 }) {
-  const [primera, ...resto] = titular.split("\n");
-  const segunda = resto.join(" ").trim();
-
   return (
     <section className="relative">
       {cinta && <div aria-hidden className="cinta-precaucion h-1 opacity-80" />}
       <div className="relative mx-auto grid max-w-[1400px] gap-10 px-4 pb-12 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-14 lg:pb-16 lg:pt-20">
+        {/* La lectura del campo va bajo el índice que la enciende. Flotando en
+            la esquina chocaba con titulares largos y nichos con muchas cifras. */}
         <div className="order-2 lg:order-1 lg:pt-3">
           <IndicePortal {...indice} />
+          <div className="mt-8 hidden lg:block">{lectura}</div>
         </div>
 
         <div className="order-1 lg:order-2">
           {logo && <div className="mb-8">{logo}</div>}
-          <h1 className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-carbon-50">
-            {primera}
-            {segunda && <span className="block text-marca-500">{segunda}</span>}
-          </h1>
+          <TitularAnimado
+            texto={titular}
+            className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-carbon-50"
+            acentoClassName="text-marca-500"
+          />
 
           <p className="rotulo mt-7 text-carbon-200">{lineaClave}</p>
 
@@ -85,9 +87,6 @@ export function Portico({
             </a>
           </div>
         </div>
-
-        {/* La lectura flota en la esquina, sobre el campo que describe. */}
-        <div className="absolute bottom-16 right-6 hidden w-52 lg:block">{lectura}</div>
       </div>
 
       <span id="contenido-catalogo" className="sr-only" />

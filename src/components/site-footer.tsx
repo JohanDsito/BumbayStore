@@ -40,17 +40,17 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                 <li key={nicho.slug}>
                   <Link
                     href={rutaNicho(nicho)}
-                    className="text-[13px] font-semibold text-carbon-200 transition-colors hover:text-marca-400"
+                    className="inline-block py-1.5 text-[13px] font-semibold text-carbon-200 transition-colors hover:text-marca-400"
                   >
                     {nicho.submarca ?? nicho.nombre}
                   </Link>
                   {/* Las primeras categorías bastan: la lista completa está en el menú. */}
-                  <ul className="mt-2.5 space-y-2">
+                  <ul className="mt-1">
                     {categorias.slice(0, 6).map((c) => (
                       <li key={c.slug}>
                         <Link
                           href={rutaCategoria(c)}
-                          className="text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
+                          className="inline-block py-1.5 text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
                         >
                           {c.nombre}
                         </Link>
@@ -96,7 +96,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       Instagram
                     </a>
@@ -108,7 +108,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       Facebook
                     </a>
@@ -120,7 +120,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo inline-block py-2 text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
                     >
                       TikTok
                     </a>

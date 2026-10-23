@@ -107,6 +107,7 @@ export default async function PaginaCategoria({ params }: Props) {
         </header>
 
         <div className="py-8">
+          <h2 className="sr-only">Productos</h2>
           <GrillaProductos productos={productos} prioritarias={4} />
         </div>
       </div>

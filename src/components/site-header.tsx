@@ -39,8 +39,8 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
           <LogoStore prioridad className="w-[108px] sm:w-[136px]" />
         </Link>
 
-        <nav aria-label="Nichos" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
+        <nav aria-label="Nichos" className="sin-scrollbar hidden min-w-0 flex-1 overflow-x-auto lg:block">
+          <ul className="flex w-max items-center gap-1">
             {menu.map(({ nicho }) => {
               const activo = actual?.nicho.slug === nicho.slug;
               return (
@@ -48,7 +48,8 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                   <Link
                     href={rutaNicho(nicho)}
                     aria-current={ruta === rutaNicho(nicho) ? "page" : undefined}
-                    className={`rotulo relative block whitespace-nowrap px-3 py-2 transition-colors ${
+                    title={nicho.nombre}
+                    className={`rotulo relative block max-w-[16rem] truncate whitespace-nowrap px-3 py-2 transition-colors ${
                       activo ? "text-carbon-50" : "text-carbon-300 hover:text-carbon-50"
                     }`}
                   >
@@ -66,7 +67,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
           </ul>
         </nav>
 
-        <Suspense fallback={<div className="hidden h-10 flex-1 md:block" />}>
+        <Suspense fallback={<div className="hidden h-11 flex-1 md:block" />}>
           <Buscador className="ml-auto hidden w-full max-w-sm md:block" />
         </Suspense>
 
@@ -76,7 +77,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Escribir por WhatsApp"
-            className="hidden h-10 w-10 items-center justify-center text-disponible transition-opacity hover:opacity-70 sm:flex"
+            className="hidden h-11 w-11 items-center justify-center text-disponible transition-opacity hover:opacity-70 sm:flex"
           >
             <IconoWhatsApp className="h-5 w-5" />
           </a>
@@ -86,7 +87,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
             onClick={() => setMenuAbierto((v) => !v)}
             aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú del catálogo"}
             aria-expanded={menuAbierto}
-            className="flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-carbon-50 lg:hidden"
+            className="flex h-11 w-11 items-center justify-center text-carbon-300 transition-colors hover:text-carbon-50 lg:hidden"
           >
             {menuAbierto ? <IconoCerrar className="h-5 w-5" /> : <IconoMenu className="h-5 w-5" />}
           </button>
@@ -95,7 +96,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
 
       {/* Buscador en celular: va en su propia fila para no comprimir la marca */}
       <div className="border-t border-carbon-800/70 px-4 py-2.5 md:hidden">
-        <Suspense fallback={<div className="h-10" />}>
+        <Suspense fallback={<div className="h-11" />}>
           <Buscador />
         </Suspense>
       </div>
@@ -149,7 +150,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                 >
                   {nicho.nombre}
                   {nicho.submarca && (
-                    <span className="rotulo text-[9.5px] text-carbon-400">{nicho.submarca}</span>
+                    <span className="rotulo text-[11px] text-carbon-400">{nicho.submarca}</span>
                   )}
                 </Link>
                 <ul>

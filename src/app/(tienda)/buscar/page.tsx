@@ -72,7 +72,10 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
             </a>
           </div>
         ) : consulta ? (
-          <GrillaProductos productos={resultados} prioritarias={4} />
+          <>
+            <h2 className="sr-only">Resultados</h2>
+            <GrillaProductos productos={resultados} prioritarias={4} />
+          </>
         ) : (
           <div>
             <h2 className="rotulo text-carbon-400">

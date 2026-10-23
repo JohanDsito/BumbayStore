@@ -28,7 +28,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
     return (
       <div
         className={`flex w-full items-center justify-center border border-carbon-700 bg-carbon-850 font-medium text-carbon-400 ${
-          grande ? "h-14 text-[15px]" : "h-10 text-[13px]"
+          grande ? "h-14 text-[15px]" : "h-11 text-[13px]"
         }`}
       >
         Agotado
@@ -48,7 +48,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         className={`group/btn flex w-full items-center justify-center gap-2 font-semibold tracking-tight transition-[background-color,color,transform] duration-200 active:scale-[0.98] ${
           grande
             ? "h-14 bg-marca-500 text-[15px] text-sobre-marca shadow-brillo hover:bg-marca-400"
-            : "h-10 border border-marca-500/70 text-[13px] text-marca-400 hover:bg-marca-500 hover:text-sobre-marca"
+            : "h-11 border border-marca-500/70 text-[13px] text-marca-400 hover:bg-marca-500 hover:text-sobre-marca"
         }`}
       >
         <IconoCarrito className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -60,7 +60,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
   return (
     <div
       className={`flex w-full items-stretch border border-marca-500 bg-marca-500/10 ${
-        grande ? "h-14" : "h-10"
+        grande ? "h-14" : "h-11"
       }`}
     >
       <button
@@ -85,7 +85,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
           {cantidad}
         </span>
         {grande && (
-          <span className="mt-0.5 text-[10px] uppercase tracking-[0.14em] text-marca-300">
+          <span className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-marca-300">
             {cantidad === 1 ? "unidad" : "unidades"}
           </span>
         )}

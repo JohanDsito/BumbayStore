@@ -368,6 +368,11 @@ CATALOGO=ejemplo
 Solo en tu equipo: con esa variable se ignora Supabase. Nunca la pongas en
 Vercel.
 
+Con `CATALOGO=extremo` se carga en cambio el **peor caso**
+(`src/data/extremo.seed.ts`): siete nichos, nombres y códigos larguísimos,
+precios extremos. Sirve para revisar que la interfaz no se rompa antes de
+cargar productos reales incómodos.
+
 ## Pruebas
 
 ```bash

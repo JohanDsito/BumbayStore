@@ -37,13 +37,13 @@ export function BarraPedido() {
             <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:px-6">
               <div className="relative shrink-0">
                 <IconoCarrito className="h-6 w-6 text-marca-500" />
-                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center bg-marca-500 px-1 font-mono text-[10px] font-bold text-sobre-marca">
+                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center bg-marca-500 px-1 font-mono text-[11px] font-bold text-sobre-marca">
                   {unidades}
                 </span>
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="rotulo text-[10px] text-carbon-500">
+                <p className="rotulo text-[11px] text-carbon-500">
                   Pedido en curso
                 </p>
                 <p className="font-mono text-base font-bold leading-tight text-carbon-50">
@@ -78,11 +78,11 @@ export function BotonPedidoHeader() {
       type="button"
       onClick={abrir}
       aria-label={`Ver pedido${unidades > 0 ? `, ${unidades} unidades` : ""}`}
-      className="relative flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400"
+      className="relative flex h-11 w-11 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400"
     >
       <IconoCarrito className="h-5 w-5" />
       {unidades > 0 && (
-        <span className="absolute right-0 top-0.5 flex h-4 min-w-4 items-center justify-center bg-marca-500 px-1 font-mono text-[9px] font-bold text-sobre-marca">
+        <span className="absolute right-0 top-0.5 flex h-4 min-w-4 items-center justify-center bg-marca-500 px-1 font-mono text-[11px] font-bold text-sobre-marca">
           {unidades}
         </span>
       )}
