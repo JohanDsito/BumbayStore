@@ -66,6 +66,7 @@ function aProducto(fila: Fila): Product {
     destacado: Boolean(fila.destacado),
     agotado: Boolean(fila.agotado),
     activo: fila.activo === undefined ? true : Boolean(fila.activo),
+    actualizadoEn: (fila.actualizado_en as string) ?? undefined,
   };
 }
 

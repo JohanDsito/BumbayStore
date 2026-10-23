@@ -77,11 +77,22 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
+/**
+ * Solo la familia Archivo, sin su respaldo ajustado a Arial. El titular la usa
+ * con respaldos condensados (ver `.titular` en globals.css): mientras la fuente
+ * llega, el titular ya se dibuja angosto y no salta al cambiar.
+ */
+const archivoSola = archivo.style.fontFamily.split(",")[0];
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-CO" className={`${archivo.variable} ${plexMono.variable}`}>
+    <html
+      lang="es-CO"
+      className={`${archivo.variable} ${plexMono.variable}`}
+      style={{ "--font-archivo-sola": archivoSola } as React.CSSProperties}
+    >
       {/*
         Varias extensiones del navegador (ColorZilla, Grammarly, gestores de
         contraseñas…) añaden atributos al <body> antes de que React hidrate, y

@@ -63,6 +63,8 @@ export type Product = {
    */
   agotado: boolean;
   activo: boolean;
+  /** Última vez que cambió en la base (ISO). Sin dato en los productos de ejemplo. */
+  actualizadoEn?: string;
 };
 
 /**
