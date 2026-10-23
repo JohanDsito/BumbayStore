@@ -356,6 +356,25 @@ Las direcciones viejas `/categoria/taladros` redirigen de forma permanente a la
 nueva. Todas se arman en `src/dominio/rutas.ts`; ningún componente las escribe
 a mano.
 
+## Demostración con nichos de ejemplo
+
+Para ver cómo quedará la tienda cuando lleguen otros nichos, hay una
+**demostración**: el catálogo real de Supabase más tres nichos de ejemplo
+(hogar, tecnología y belleza, en `src/data/ejemplo.seed.ts`, con fotos libres
+de Wikimedia Commons cuyos créditos están en `public/demo/credits.json`).
+
+- **En Vercel:** cualquier rama cuyo nombre empiece por `demo/` (por ejemplo
+  `demo/nichos`) se publica como vista previa en modo demostración, sin
+  configurar nada. Nunca se activa en producción.
+- **En tu equipo:** `CATALOGO=demo` en `.env.local`.
+
+En modo demostración una franja amarilla lo avisa en todas las páginas, y
+los pedidos y búsquedas de prueba **no** se guardan en la base real.
+
+Cuando lleguen los nichos de verdad, se crean desde el panel (pestaña
+"Nichos y categorías") y se cargan sus productos con el importador: el
+diseño no cambia.
+
 ## Ver la tienda con varios nichos
 
 Mientras los nichos reales no existan, se puede ver la tienda con dos nichos

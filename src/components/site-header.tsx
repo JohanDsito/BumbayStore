@@ -39,7 +39,12 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
           <LogoStore prioridad className="w-[108px] sm:w-[136px]" />
         </Link>
 
-        <nav aria-label="Nichos" className="sin-scrollbar hidden min-w-0 flex-1 overflow-x-auto lg:block">
+        {/* Si los nichos no caben, la fila se desliza y el borde derecho se
+            desvanece para avisar que hay más. */}
+        <nav
+          aria-label="Nichos"
+          className="sin-scrollbar hidden min-w-0 flex-1 overflow-x-auto [mask-image:linear-gradient(to_right,black_calc(100%_-_2.5rem),transparent)] lg:block"
+        >
           <ul className="flex w-max items-center gap-1">
             {menu.map(({ nicho }) => {
               const activo = actual?.nicho.slug === nicho.slug;
@@ -49,7 +54,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                     href={rutaNicho(nicho)}
                     aria-current={ruta === rutaNicho(nicho) ? "page" : undefined}
                     title={nicho.nombre}
-                    className={`rotulo relative block max-w-[16rem] truncate whitespace-nowrap px-3 py-2 transition-colors ${
+                    className={`rotulo relative block max-w-[20rem] truncate whitespace-nowrap px-3 py-2 transition-colors ${
                       activo ? "text-carbon-50" : "text-carbon-300 hover:text-carbon-50"
                     }`}
                   >
@@ -68,7 +73,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
         </nav>
 
         <Suspense fallback={<div className="hidden h-11 flex-1 md:block" />}>
-          <Buscador className="ml-auto hidden w-full max-w-sm md:block" />
+          <Buscador className="ml-auto hidden w-full max-w-sm md:block lg:max-w-60 xl:max-w-xs" />
         </Suspense>
 
         <div className="ml-auto flex items-center gap-1 md:ml-0">
