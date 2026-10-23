@@ -18,6 +18,7 @@ export const nichosEjemplo: Niche[] = [
     descripcion:
       "Ollas, utensilios y organizadores importados directamente, con envío a cualquier municipio de Colombia.",
     datos: [{ etiqueta: "Envío", valor: "Toda Colombia" }],
+    acento: "#ffb21a",
     orden: 2,
   },
   {
@@ -28,6 +29,7 @@ export const nichosEjemplo: Niche[] = [
     descripcion:
       "Cargadores, cables, audífonos y soportes para el día a día, importados sin intermediarios.",
     datos: [],
+    acento: "#2e9bff",
     orden: 3,
   },
 ];

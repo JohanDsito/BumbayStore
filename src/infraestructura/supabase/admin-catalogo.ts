@@ -21,6 +21,7 @@ export type NichoAdmin = {
   titular: string | null;
   descripcion: string | null;
   datos: DatoNicho[];
+  acento: string | null;
   orden: number;
   activo: boolean;
 };
@@ -38,7 +39,7 @@ type Resultado = { error: string | null };
 export async function listarNichos(sb: SupabaseClient): Promise<NichoAdmin[]> {
   const { data, error } = await sb
     .from("nichos")
-    .select("slug, nombre, submarca, titular, descripcion, datos, orden, activo")
+    .select("slug, nombre, submarca, titular, descripcion, datos, acento, orden, activo")
     .order("orden");
   if (error) throw new Error(error.message);
   return (data ?? []) as NichoAdmin[];

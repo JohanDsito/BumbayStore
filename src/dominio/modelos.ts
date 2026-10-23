@@ -84,6 +84,8 @@ export type Niche = {
   descripcion: string | null;
   /** Cifras cortas de la portada: "128V · Plataforma de batería". */
   datos: DatoNicho[];
+  /** Color propio del nicho en hexadecimal (#ec080f). null usa el de la tienda. */
+  acento: string | null;
   orden: number;
 };
 

@@ -14,6 +14,7 @@ import { SelectorColor } from "@/components/color-selector";
 import { IconoWhatsApp } from "@/components/icons";
 import { JsonLd } from "@/components/json-ld";
 import { Migas, type Paso } from "@/components/migas";
+import { ContextoNicho } from "@/components/contexto-nicho";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -141,7 +142,7 @@ export default async function FichaProducto({ params }: Props) {
       : null;
 
   return (
-    <>
+    <ContextoNicho acento={nicho?.acento ?? null} intensidad={0.45}>
       <JsonLd datos={datosProducto} />
       {datosFaq && (
         <JsonLd datos={datosFaq} />
@@ -176,7 +177,7 @@ export default async function FichaProducto({ params }: Props) {
               )}
             </p>
 
-            <h1 className="mt-2.5 text-2xl font-extrabold leading-[1.1] tracking-[-0.03em] text-carbon-50 sm:text-3xl lg:text-4xl">
+            <h1 className="condensada mt-2.5 text-3xl font-extrabold leading-[1.02] tracking-[-0.02em] text-carbon-50 sm:text-4xl lg:text-5xl">
               {producto.nombre}
             </h1>
 
@@ -188,7 +189,7 @@ export default async function FichaProducto({ params }: Props) {
                 }`}
               />
               <span
-                className={`font-mono text-[11px] uppercase tracking-[0.14em] ${
+                className={`rotulo text-[11px] ${
                   producto.agotado ? "text-carbon-400" : "text-disponible"
                 }`}
               >
@@ -197,14 +198,12 @@ export default async function FichaProducto({ params }: Props) {
             </div>
 
             {/* Precio único: Bumbay maneja una sola tarifa para todos. */}
-            <div className="mt-5 border border-carbon-800 bg-carbon-900 p-5">
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-                Precio
-              </p>
+            <div className="vidrio mt-5 border border-carbon-700 p-5">
+              <p className="rotulo text-carbon-400">Precio</p>
               <p className="mt-1.5 font-mono text-4xl font-extrabold leading-none text-carbon-50">
                 {precio(producto.precioUnitario)}
               </p>
-              <p className="mt-2.5 text-[12px] leading-relaxed text-carbon-400">
+              <p className="mt-2.5 text-[13px] leading-relaxed text-carbon-300">
                 Precio de distribuidor, igual para todos. Envíos a toda Colombia.
               </p>
             </div>
@@ -224,7 +223,7 @@ export default async function FichaProducto({ params }: Props) {
                 Más información por WhatsApp
               </a>
 
-              <p className="text-center font-mono text-[10px] text-carbon-500">
+              <p className="text-center text-[12px] text-carbon-400">
                 {producto.agotado
                   ? "Escríbenos y te avisamos cuando vuelva a entrar"
                   : "Agrega al pedido y envíanos todo junto por WhatsApp"}
@@ -290,13 +289,11 @@ export default async function FichaProducto({ params }: Props) {
           {/* Especificaciones: tabla fija, en monoespaciada, como una hoja de datos */}
           {producto.especificaciones.length > 0 && (
             <aside className="lg:sticky lg:top-44 lg:self-start">
-              <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-                Especificaciones
-              </h2>
-              <dl className="mt-4 divide-y divide-carbon-800 border border-carbon-800 bg-carbon-900">
+              <h2 className="rotulo text-carbon-300">Especificaciones</h2>
+              <dl className="vidrio mt-4 divide-y divide-carbon-800 border border-carbon-700">
                 {producto.especificaciones.map((e) => (
                   <div key={e.label} className="flex justify-between gap-4 px-4 py-2.5">
-                    <dt className="text-[12px] text-carbon-500">{e.label}</dt>
+                    <dt className="text-[12px] text-carbon-400">{e.label}</dt>
                     <dd className="text-right font-mono text-[12px] font-medium text-carbon-100">
                       {e.valor}
                     </dd>
@@ -316,14 +313,14 @@ export default async function FichaProducto({ params }: Props) {
               También te puede servir
             </h2>
             <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-              {relacionados.map((p, i) => (
-                <TarjetaProducto key={p.slug} producto={p} indice={i} />
+              {relacionados.map((p) => (
+                <TarjetaProducto key={p.slug} producto={p} />
               ))}
             </div>
           </section>
         )}
       </div>
-    </>
+    </ContextoNicho>
   );
 }
 

@@ -31,10 +31,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
         <RegistrarBusqueda consulta={consulta} resultados={resultados.length} />
       )}
       <header className="border-b border-carbon-800 py-8">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-          Búsqueda
-        </p>
-        <h1 className="mt-2.5 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl">
+        <h1 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl">
           {consulta ? (
             <>
               Resultados para{" "}
@@ -78,7 +75,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
           <GrillaProductos productos={resultados} prioritarias={4} />
         ) : (
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-carbon-500">
+            <h2 className="rotulo text-carbon-400">
               O explora por categoría
             </h2>
             <ul className="mt-4 flex flex-wrap gap-2">

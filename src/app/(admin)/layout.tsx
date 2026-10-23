@@ -21,7 +21,7 @@ export default function LayoutAdmin({ children }: { children: React.ReactNode })
               <span className="block text-[15px] font-extrabold tracking-[-0.03em] text-carbon-50">
                 BUMB<span className="text-marca-500">A</span>Y
               </span>
-              <span className="mt-0.5 block font-mono text-[9px] uppercase tracking-[0.24em] text-carbon-400">
+              <span className="mt-0.5 block rotulo text-[9px] text-carbon-400">
                 Administración
               </span>
             </div>
@@ -29,7 +29,7 @@ export default function LayoutAdmin({ children }: { children: React.ReactNode })
 
           <Link
             href="/"
-            className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-marca-400"
+            className="rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
           >
             Ver la tienda →
           </Link>

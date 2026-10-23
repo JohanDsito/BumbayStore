@@ -9,14 +9,11 @@ import { rutaProducto } from "@/dominio/rutas";
 type Props = {
   producto: Product;
   prioridad?: boolean;
-  /** Índice en la grilla, para escalonar la animación de entrada. */
-  indice?: number;
 };
 
-export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Props) {
+export function TarjetaProducto({ producto, prioridad = false }: Props) {
   return (
     <article
-      style={{ "--i": indice } as React.CSSProperties}
       className="group relative flex h-full min-w-0 flex-col border border-carbon-800 bg-carbon-900 transition-colors duration-300 hover:border-carbon-600"
     >
       <div className="relative">
@@ -30,7 +27,7 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
         </div>
 
         {producto.agotado && (
-          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-carbon-200 ring-1 ring-carbon-700">
+          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 rotulo text-[10px] font-semibold text-carbon-200 ring-1 ring-carbon-700">
             Agotado
           </span>
         )}

@@ -1,68 +1,79 @@
 import Link from "next/link";
 
-import type { Category, DatoNicho } from "@/dominio/modelos";
+import type { Category } from "@/dominio/modelos";
 import { rutaCategoria } from "@/dominio/rutas";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
+import { IndicePortal, type EntradaIndice } from "@/components/indice-portal";
 
 /**
  * Piezas de portada que comparten la portada general y la de cada nicho.
  * Reciben el contenido ya resuelto: no consultan nada por su cuenta.
  */
 
+/** Botón principal: el color del nicho con el brillo del campo en el borde. */
+export const BOTON_PRINCIPAL =
+  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-marca-300/40 bg-marca-500 px-7 text-sobre-marca shadow-brillo transition-[background-color,transform] duration-200 hover:bg-marca-400 active:scale-[0.98]";
+
+/** Botón secundario: borde fino sobre vidrio; se enciende en verde si lleva a WhatsApp. */
+export const BOTON_SECUNDARIO =
+  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-carbon-600 bg-carbon-950/40 px-7 text-carbon-100 transition-colors duration-200 hover:border-disponible hover:text-disponible";
+
 /**
- * Encabezado grande. Directo: qué se vende, a quién, y cómo se compra.
+ * La primera pantalla de una portada, en tres columnas sobre el campo de
+ * luz: el índice a la izquierda, el titular en el centro y la lectura del
+ * campo a la derecha. En celular se apilan: titular, acciones e índice.
  *
  * El titular admite dos líneas separadas por un salto de línea; la segunda
- * va en el color de la marca.
+ * va en el color del nicho.
  */
 export function Portico({
-  etiqueta,
   titular,
   descripcion,
-  datos,
+  lineaClave,
+  indice,
+  lectura,
   mensajeWhatsApp,
+  cinta = false,
 }: {
-  etiqueta: string;
   titular: string;
   descripcion: string | null;
-  datos: DatoNicho[];
+  /** Una línea corta y espaciada bajo el titular: lo que no se puede olvidar. */
+  lineaClave: string;
+  indice: { titulo: string; entradas: EntradaIndice[]; enciende: boolean };
+  /** La columna derecha: qué está mostrando el campo. */
+  lectura: React.ReactNode;
   mensajeWhatsApp: string;
+  /** La cinta de precaución de Bumbay Tools, solo en su nicho. */
+  cinta?: boolean;
 }) {
   const [primera, ...resto] = titular.split("\n");
   const segunda = resto.join(" ").trim();
 
   return (
-    <section className="relative overflow-hidden border-b border-carbon-800">
-      {/* Resplandor cálido detrás del texto, como la luz de un taller */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -left-40 -top-40 h-[420px] w-[420px] rounded-full bg-marca-500/[0.14] blur-[100px]"
-      />
+    <section className="relative">
+      {cinta && <div aria-hidden className="cinta-precaucion h-1 opacity-80" />}
+      <div className="relative mx-auto grid max-w-[1400px] gap-10 px-4 pb-12 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-14 lg:pb-16 lg:pt-20">
+        <div className="order-2 lg:order-1 lg:pt-3">
+          <IndicePortal {...indice} />
+        </div>
 
-      <div className="relative mx-auto max-w-[1400px] px-4 py-14 sm:px-6 sm:py-20">
-        <div className="max-w-3xl">
-          <p className="flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-            <span aria-hidden className="h-px w-8 bg-marca-500" />
-            {etiqueta}
-          </p>
-
-          <h1 className="mt-5 text-4xl font-extrabold leading-[0.95] tracking-[-0.04em] text-carbon-50 sm:text-6xl lg:text-7xl">
+        <div className="order-1 lg:order-2">
+          <h1 className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-carbon-50">
             {primera}
             {segunda && <span className="block text-marca-500">{segunda}</span>}
           </h1>
 
+          <p className="rotulo mt-7 text-carbon-200">{lineaClave}</p>
+
           {descripcion && (
-            <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-carbon-400 sm:text-base">
+            <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-carbon-300 sm:text-base">
               {descripcion}
             </p>
           )}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a
-              href="#contenido-catalogo"
-              className="flex h-12 items-center justify-center gap-2 bg-marca-500 px-7 text-sm font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
-            >
+            <a href="#contenido-catalogo" className={BOTON_PRINCIPAL}>
               Ver catálogo
               <IconoFlecha className="h-4 w-4" />
             </a>
@@ -70,41 +81,20 @@ export function Portico({
               href={enlaceGeneral(mensajeWhatsApp)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex h-12 items-center justify-center gap-2 border border-carbon-700 px-7 text-sm font-semibold tracking-tight text-carbon-100 transition-colors hover:border-disponible hover:text-disponible"
+              className={BOTON_SECUNDARIO}
             >
               <IconoWhatsApp className="h-4 w-4" />
-              Pedir lista de precios
+              Pedir por WhatsApp
             </a>
           </div>
-
-          {datos.length > 0 && (
-            <dl className="mt-12 flex flex-wrap gap-x-10 gap-y-5 border-t border-carbon-800 pt-6">
-              {datos.map((d) => (
-                <Dato key={d.etiqueta} valor={d.valor} etiqueta={d.etiqueta} />
-              ))}
-            </dl>
-          )}
         </div>
+
+        {/* La lectura flota en la esquina, sobre el campo que describe. */}
+        <div className="absolute bottom-16 right-6 hidden w-52 lg:block">{lectura}</div>
       </div>
 
       <span id="contenido-catalogo" className="sr-only" />
     </section>
-  );
-}
-
-function Dato({ valor, etiqueta }: DatoNicho) {
-  return (
-    <div>
-      <dt className="sr-only">{etiqueta}</dt>
-      <dd>
-        <span className="block font-mono text-xl font-bold leading-none text-carbon-50">
-          {valor}
-        </span>
-        <span className="mt-1.5 block text-[10px] uppercase tracking-[0.14em] text-carbon-500">
-          {etiqueta}
-        </span>
-      </dd>
-    </div>
   );
 }
 
@@ -119,10 +109,7 @@ export function ExplorarCategorias({
   if (categorias.length === 0) return null;
   return (
     <section aria-labelledby="titulo-categorias" className="pb-12">
-      <h2
-        id="titulo-categorias"
-        className="font-mono text-[10px] uppercase tracking-[0.2em] text-carbon-500"
-      >
+      <h2 id="titulo-categorias" className="rotulo text-carbon-400">
         {titulo}
       </h2>
       <ul className="mt-4 flex flex-wrap gap-2">
@@ -130,10 +117,10 @@ export function ExplorarCategorias({
           <li key={c.slug}>
             <Link
               href={rutaCategoria(c)}
-              className="group flex items-center gap-2 border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
+              className="group flex items-center gap-2 border border-carbon-700 bg-carbon-950/50 px-4 py-2.5 text-[13px] font-medium text-carbon-200 transition-colors hover:border-marca-400 hover:text-carbon-50"
             >
               {c.nombre}
-              <IconoFlecha className="h-3.5 w-3.5 text-carbon-500 transition-all group-hover:translate-x-0.5 group-hover:text-marca-500" />
+              <IconoFlecha className="h-3.5 w-3.5 text-carbon-500 transition-[transform,color] group-hover:translate-x-0.5 group-hover:text-marca-400" />
             </Link>
           </li>
         ))}
@@ -142,20 +129,16 @@ export function ExplorarCategorias({
   );
 }
 
-/** Llamado a la acción para el cliente mayorista, que es el que deja margen. */
+/** Llamado a la acción para el cliente que compra por volumen. */
 export function BloqueMayorista() {
   return (
-    <section className="relative my-8 overflow-hidden border border-carbon-800 bg-carbon-900">
-      <div aria-hidden className="absolute inset-x-0 top-0 h-1 cinta-precaucion" />
+    <section className="vidrio relative my-12 border border-carbon-700">
       <div className="grid gap-8 p-8 sm:p-12 lg:grid-cols-[1.5fr_1fr] lg:items-center">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-            Compra por volumen
-          </p>
-          <h2 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl">
-            ¿Tienes un negocio?
+          <h2 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl">
+            ¿Compras para tu negocio?
           </h2>
-          <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-carbon-400">
+          <p className="mt-4 max-w-[56ch] text-[15px] leading-relaxed text-carbon-300">
             Manejamos un solo precio, de distribuidor, igual para todos: el que
             ves en el catálogo. Arma tu pedido y escríbenos con las cantidades
             que necesitas para coordinar despacho a toda Colombia y respaldo de
@@ -168,7 +151,7 @@ export function BloqueMayorista() {
           )}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-14 items-center justify-center gap-2.5 bg-disponible px-8 text-sm font-semibold tracking-tight text-carbon-950 transition-opacity hover:opacity-90"
+          className="rotulo flex h-14 items-center justify-center gap-3 bg-disponible px-8 text-carbon-950 transition-opacity hover:opacity-90"
         >
           <IconoWhatsApp className="h-5 w-5" />
           Cotizar al por mayor
@@ -178,32 +161,25 @@ export function BloqueMayorista() {
   );
 }
 
-/** Encabezado de una sección de productos: etiqueta, título y conteo. */
+/** Encabezado de una sección de productos: título y conteo. */
 export function EncabezadoSeccion({
   id,
-  etiqueta,
   titulo,
   cantidad,
 }: {
   id: string;
-  etiqueta: string;
   titulo: string;
   cantidad: number;
 }) {
   return (
-    <div className="mb-5 flex items-end justify-between gap-4 border-t border-carbon-800 pt-8">
-      <div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-          {etiqueta}
-        </p>
-        <h2
-          id={id}
-          className="mt-1.5 text-2xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-3xl"
-        >
-          {titulo}
-        </h2>
-      </div>
-      <span className="shrink-0 font-mono text-xs text-carbon-500">
+    <div className="mb-6 flex items-end justify-between gap-4 border-t border-carbon-800 pt-10">
+      <h2
+        id={id}
+        className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl"
+      >
+        {titulo}
+      </h2>
+      <span className="shrink-0 font-mono text-xs text-carbon-400">
         {cantidad} {cantidad === 1 ? "producto" : "productos"}
       </span>
     </div>

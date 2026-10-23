@@ -87,6 +87,7 @@ function aNicho(fila: Fila): Niche {
     titular: (fila.titular as string) ?? null,
     descripcion: (fila.descripcion as string) ?? null,
     datos: (fila.datos as DatoNicho[]) ?? [],
+    acento: (fila.acento as string) ?? null,
     orden: Number(fila.orden ?? 0),
   };
 }

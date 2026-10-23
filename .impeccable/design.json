@@ -1,32 +1,35 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-22T00:00:00Z",
-  "title": "Design System: Bumbay Tools",
+  "generatedAt": "2026-10-23T00:00:00Z",
+  "title": "Design System: Bumbay Store",
   "extensions": {
     "colorMeta": {
-      "carbon-950": { "role": "neutral", "displayName": "Carbón profundo", "tonalRamp": ["#0a0a0b", "#0f0f11", "#1a1a1f", "#2e2e36", "#6b6b78", "#b4b4bf", "#ebebef", "#f6f6f8"] },
-      "carbon-50": { "role": "neutral", "displayName": "Blanco ficha", "tonalRamp": ["#0a0a0b", "#0f0f11", "#1a1a1f", "#2e2e36", "#6b6b78", "#b4b4bf", "#ebebef", "#f6f6f8"] },
-      "marca-500": { "role": "primary", "displayName": "Rojo Bumbay", "tonalRamp": ["#3d0204", "#8f0409", "#c2060c", "#ec080f", "#ff3b41", "#ff8a8e", "#ffc4c6", "#ffe8e9"] },
-      "marca-400": { "role": "primary", "displayName": "Rojo Bumbay claro", "tonalRamp": ["#3d0204", "#8f0409", "#c2060c", "#ec080f", "#ff3b41", "#ff8a8e", "#ffc4c6", "#ffe8e9"] },
-      "disponible": { "role": "secondary", "displayName": "Verde disponible", "tonalRamp": ["#0b3a22", "#135c36", "#1c8049", "#27a862", "#35d07f", "#6fe0a5", "#a8eec9", "#ddf8ea"] },
-      "alerta": { "role": "tertiary", "displayName": "Ámbar alerta", "tonalRamp": ["#4a3305", "#7a5509", "#a8770f", "#d69e1c", "#ffc53d", "#ffd773", "#ffe7a8", "#fff6dd"] }
+      "noche-950": { "role": "neutral", "displayName": "Noche vacío", "tonalRamp": ["#07080d", "#0c0e17", "#191c29", "#2c3043", "#7b81a0", "#bcc0d3", "#edeef4", "#f7f8fb"] },
+      "noche-100": { "role": "neutral", "displayName": "Blanco luna", "tonalRamp": ["#07080d", "#0c0e17", "#191c29", "#2c3043", "#7b81a0", "#bcc0d3", "#edeef4", "#f7f8fb"] },
+      "rojo-bumbay": { "role": "primary", "displayName": "Rojo Bumbay", "tonalRamp": ["#3d0204", "#8f0409", "#c2060c", "#ec080f", "#ff3b41", "#ff8a8e", "#ffc4c6", "#ffe8e9"] },
+      "ambar-hogar": { "role": "secondary", "displayName": "Ámbar de hogar (nicho de ejemplo)", "tonalRamp": ["#3d2a04", "#7a5508", "#b07a0f", "#e09a14", "#ffb21a", "#ffc95c", "#ffdf9e", "#fff3d9"] },
+      "cian-tecnologia": { "role": "secondary", "displayName": "Cian de tecnología (nicho de ejemplo)", "tonalRamp": ["#04213d", "#08427a", "#0e63b3", "#1a80e0", "#2e9bff", "#6cb9ff", "#a9d6ff", "#e0f0ff"] },
+      "panel-foto": { "role": "neutral", "displayName": "Panel de foto" },
+      "disponible": { "role": "secondary", "displayName": "Verde disponible" },
+      "alerta": { "role": "tertiary", "displayName": "Ámbar alerta" }
     },
     "typographyMeta": {
-      "display": { "displayName": "Titular", "purpose": "Titular de portada; la segunda línea en rojo Bumbay." },
-      "headline": { "displayName": "Título de sección", "purpose": "Encabezados de sección y de ficha." },
-      "title": { "displayName": "Nombre de producto", "purpose": "Nombre en la tarjeta de producto." },
-      "body": { "displayName": "Texto", "purpose": "Párrafos de presentación y fichas técnicas." },
-      "label": { "displayName": "Rótulo", "purpose": "Rótulos sobre títulos, SKU y etiquetas de campos." },
-      "price": { "displayName": "Precio", "purpose": "Precios con cifras tabulares." }
+      "display": { "displayName": "Titular del portal", "purpose": "Titular de cada portada y nombre de categoría; Archivo al 62 % de ancho." },
+      "headline": { "displayName": "Título de sección", "purpose": "Secciones y nombre del producto en la ficha; Archivo al 75 %." },
+      "title": { "displayName": "Nombre", "purpose": "Nombres en tarjetas e índice." },
+      "body": { "displayName": "Texto", "purpose": "Presentaciones y fichas técnicas." },
+      "label": { "displayName": "Rótulo", "purpose": "Navegación, rótulos de sección, lecturas; Archivo al 112 %, espaciado." },
+      "data": { "displayName": "Dato", "purpose": "Precios, SKU y conteos, en cifras tabulares." }
     },
     "shadows": [
-      { "name": "panel", "value": "0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)", "purpose": "Paneles superpuestos, como la vista rápida." },
-      { "name": "flotante", "value": "0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)", "purpose": "Barra de pedido y panel del carrito, que suben desde abajo." }
+      { "name": "brillo", "value": "inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px -10px var(--acento)", "purpose": "Botón principal: la luz del campo reflejada en su borde." },
+      { "name": "panel", "value": "0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)", "purpose": "Paneles superpuestos como la vista rápida." },
+      { "name": "flotante", "value": "0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)", "purpose": "Barra de pedido y cajón, que suben desde abajo." }
     ],
     "motion": [
-      { "name": "ease-salida", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Curva de salida para entradas y transiciones de estado." },
-      { "name": "aparecer", "value": "aparecer 0.5s var(--ease-salida) both", "purpose": "Entrada de elementos: sube 8 px mientras aparece." },
-      { "name": "subir", "value": "subir 0.32s var(--ease-salida) both", "purpose": "Paneles que entran desde abajo en celular." }
+      { "name": "campo-de-luz", "value": "WebGL, 50 % de resolución (35 % táctil), 30 fps táctil, fundido de color 1 - exp(-dt * 3.5)", "purpose": "El único movimiento autorado: filamentos por nicho detrás de la tienda." },
+      { "name": "ease-salida", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Transiciones de estado: raya del nicho activo, flechas del índice." },
+      { "name": "subir", "value": "subir 0.32s var(--ease-salida) both", "purpose": "Barra de pedido y cajón en celular." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -39,86 +42,87 @@
       "name": "Botón principal",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Acción principal: agregar al pedido, ver catálogo.",
-      "html": "<button class=\"ds-btn-primary\">Ver catálogo <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 28px; background: #ec080f; color: #fff; border: 0; border-radius: 0; font: 600 14px/1 Archivo, system-ui, sans-serif; letter-spacing: -0.01em; cursor: pointer; transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #ff3b41; } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #ec080f; outline-offset: 2px; }"
+      "description": "Acción principal de una portada o de la ficha, en el acento del nicho.",
+      "html": "<a class=\"ds-btn-principal\" href=\"#\">Ver catálogo <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-btn-principal { display: inline-flex; align-items: center; gap: 12px; height: 48px; padding: 0 28px; background: #ec080f; color: #fff; border: 1px solid rgb(255 138 142 / 0.4); text-decoration: none; font: 500 11px/1 Archivo, system-ui, sans-serif; font-stretch: 112%; letter-spacing: 0.22em; text-transform: uppercase; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px -10px #ec080f; transition: background-color 0.2s, transform 0.2s; } .ds-btn-principal:hover { background: #ff3b41; } .ds-btn-principal:active { transform: scale(0.98); } .ds-btn-principal:focus-visible { outline: 2px solid #ff3b41; outline-offset: 2px; }"
     },
     {
-      "name": "Botón WhatsApp",
+      "name": "Botón secundario",
       "kind": "button",
-      "refersTo": "button-whatsapp",
-      "description": "Cierre por WhatsApp: cotizar, pedir lista de precios.",
-      "html": "<button class=\"ds-btn-whatsapp\">Cotizar al por mayor</button>",
-      "css": ".ds-btn-whatsapp { height: 56px; padding: 0 32px; background: #35d07f; color: #0a0a0b; border: 0; border-radius: 0; font: 600 14px/1 Archivo, system-ui, sans-serif; cursor: pointer; transition: opacity 0.2s; } .ds-btn-whatsapp:hover { opacity: 0.9; } .ds-btn-whatsapp:focus-visible { outline: 2px solid #ec080f; outline-offset: 2px; }"
+      "refersTo": "button-secondary",
+      "description": "Acción secundaria; se enciende en verde si lleva a WhatsApp.",
+      "html": "<a class=\"ds-btn-secundario\" href=\"#\">Pedir por WhatsApp</a>",
+      "css": ".ds-btn-secundario { display: inline-flex; align-items: center; height: 48px; padding: 0 28px; background: rgb(7 8 13 / 0.4); color: #edeef4; border: 1px solid #444a63; text-decoration: none; font: 500 11px/1 Archivo, system-ui, sans-serif; font-stretch: 112%; letter-spacing: 0.22em; text-transform: uppercase; transition: border-color 0.2s, color 0.2s; } .ds-btn-secundario:hover { border-color: #35d07f; color: #35d07f; } .ds-btn-secundario:focus-visible { outline: 2px solid #ff3b41; outline-offset: 2px; }"
     },
     {
-      "name": "Botón de contorno",
+      "name": "Agregar en grilla",
       "kind": "button",
-      "refersTo": "button-outline",
-      "description": "Acción secundaria junto a la principal.",
-      "html": "<button class=\"ds-btn-outline\">Pedir lista de precios</button>",
-      "css": ".ds-btn-outline { height: 48px; padding: 0 28px; background: transparent; color: #ebebef; border: 1px solid #2e2e36; border-radius: 0; font: 600 14px/1 Archivo, system-ui, sans-serif; cursor: pointer; transition: border-color 0.2s, color 0.2s; } .ds-btn-outline:hover { border-color: #35d07f; color: #35d07f; } .ds-btn-outline:focus-visible { outline: 2px solid #ec080f; outline-offset: 2px; }"
-    },
-    {
-      "name": "Chip de categoría",
-      "kind": "chip",
-      "refersTo": "chip-category",
-      "description": "Salto a una categoría desde la portada.",
-      "html": "<a class=\"ds-chip\" href=\"#\">Pulidoras <span aria-hidden=\"true\">→</span></a>",
-      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #0f0f11; color: #b4b4bf; border: 1px solid #1a1a1f; font: 500 13px/1 Archivo, system-ui, sans-serif; text-decoration: none; transition: border-color 0.2s, color 0.2s; } .ds-chip span { color: #6b6b78; transition: transform 0.2s, color 0.2s; } .ds-chip:hover { border-color: #ec080f; color: #f6f6f8; } .ds-chip:hover span { transform: translateX(2px); color: #ec080f; } .ds-chip:focus-visible { outline: 2px solid #ec080f; outline-offset: 2px; }"
+      "refersTo": "button-add-grid",
+      "description": "Agregar al pedido desde una tarjeta: contorno que se llena al pasar.",
+      "html": "<button class=\"ds-btn-agregar\">Agregar</button>",
+      "css": ".ds-btn-agregar { width: 220px; height: 40px; background: transparent; color: #ff3b41; border: 1px solid rgb(236 8 15 / 0.7); font: 600 13px/1 Archivo, system-ui, sans-serif; cursor: pointer; transition: background-color 0.2s, color 0.2s; } .ds-btn-agregar:hover { background: #ec080f; color: #fff; } .ds-btn-agregar:focus-visible { outline: 2px solid #ff3b41; outline-offset: 2px; }"
     },
     {
       "name": "Tarjeta de producto",
       "kind": "card",
       "refersTo": "card-product",
-      "description": "Producto en la grilla: foto sobre panel claro, SKU, nombre, precio y botón.",
-      "html": "<article class=\"ds-card\"><div class=\"ds-card-foto\"></div><div class=\"ds-card-cuerpo\"><span class=\"ds-card-sku\">BT-PUL-4502</span><h3 class=\"ds-card-nombre\">Pulidora angular inalámbrica 20V</h3><span class=\"ds-card-precio\">$ 345.000</span></div></article>",
-      "css": ".ds-card { width: 240px; background: #0f0f11; border: 1px solid #1a1a1f; transition: border-color 0.3s; } .ds-card:hover { border-color: #454551; } .ds-card-foto { aspect-ratio: 1; background: #f6f6f8; } .ds-card-cuerpo { position: relative; padding: 16px; display: grid; gap: 6px; } .ds-card-cuerpo::before, .ds-card-cuerpo::after { content: ''; position: absolute; width: 10px; height: 10px; border-color: #454551; transition: border-color 0.25s; } .ds-card-cuerpo::before { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; } .ds-card-cuerpo::after { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; } .ds-card:hover .ds-card-cuerpo::before, .ds-card:hover .ds-card-cuerpo::after { border-color: #ec080f; } .ds-card-sku { font: 400 10px/1 'IBM Plex Mono', monospace; letter-spacing: 0.16em; color: #6b6b78; } .ds-card-nombre { margin: 0; font: 600 14px/1.375 Archivo, system-ui, sans-serif; color: #ebebef; } .ds-card-precio { margin-top: 8px; font: 600 18px/1 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; color: #f6f6f8; }"
+      "description": "Foto fundida en el panel de foto, SKU, nombre, precio y botón de contorno.",
+      "html": "<article class=\"ds-tarjeta\"><div class=\"ds-tarjeta-foto\"></div><div class=\"ds-tarjeta-cuerpo\"><span class=\"ds-tarjeta-sku\">BT-PUL-4502</span><h3 class=\"ds-tarjeta-nombre\">Pulidora angular inalámbrica 20V</h3><span class=\"ds-tarjeta-precio\">$ 345.000</span></div></article>",
+      "css": ".ds-tarjeta { width: 240px; background: #0c0e17; border: 1px solid #191c29; transition: border-color 0.3s; } .ds-tarjeta:hover { border-color: #444a63; } .ds-tarjeta-foto { aspect-ratio: 1; background: #e4e6ee; } .ds-tarjeta-cuerpo { padding: 16px; display: grid; gap: 6px; } .ds-tarjeta-sku { font: 400 10px/1 'IBM Plex Mono', monospace; letter-spacing: 0.16em; color: #7b81a0; } .ds-tarjeta-nombre { margin: 0; font: 600 14px/1.375 Archivo, system-ui, sans-serif; color: #edeef4; } .ds-tarjeta-precio { margin-top: 8px; font: 600 18px/1 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; color: #f7f8fb; }"
     },
     {
-      "name": "Campo de texto",
+      "name": "Campo de búsqueda",
       "kind": "input",
       "refersTo": "input-field",
-      "description": "Campos del pedido y del buscador.",
-      "html": "<input class=\"ds-input\" placeholder=\"Nombre y apellido\">",
-      "css": ".ds-input { height: 44px; width: 280px; padding: 0 12px; background: #141417; color: #ebebef; border: 1px solid #2e2e36; border-radius: 0; font: 400 14px/1 Archivo, system-ui, sans-serif; transition: border-color 0.2s; } .ds-input::placeholder { color: #6b6b78; } .ds-input:focus { outline: none; border-color: #ec080f; }"
+      "description": "Buscador del encabezado y campos del pedido.",
+      "html": "<input class=\"ds-campo\" placeholder=\"Buscar producto o código…\">",
+      "css": ".ds-campo { height: 40px; width: 300px; padding: 0 12px; background: rgb(7 8 13 / 0.6); color: #edeef4; caret-color: #ff3b41; border: 1px solid #2c3043; border-radius: 0; font: 400 13px/1 Archivo, system-ui, sans-serif; transition: border-color 0.2s; } .ds-campo::placeholder { color: #959bb5; } .ds-campo:focus { outline: none; border-color: #ff3b41; }"
+    },
+    {
+      "name": "Navegación de nichos",
+      "kind": "nav",
+      "description": "Fila de nichos del encabezado; raya en el acento bajo el activo.",
+      "html": "<nav class=\"ds-nav\"><a class=\"activo\" href=\"#\">Herramientas</a><a href=\"#\">Hogar y cocina</a><a href=\"#\">Tecnología</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; background: rgb(7 8 13 / 0.92); padding: 8px; } .ds-nav a { position: relative; padding: 8px 12px; color: #bcc0d3; text-decoration: none; font: 500 11px/1 Archivo, system-ui, sans-serif; font-stretch: 112%; letter-spacing: 0.22em; text-transform: uppercase; transition: color 0.2s; } .ds-nav a:hover, .ds-nav a.activo { color: #f7f8fb; } .ds-nav a::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 1px; background: #ff3b41; transform: scaleX(0); transform-origin: left; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav a.activo::after { transform: scaleX(1); }"
     },
     {
       "name": "Cinta de precaución",
       "kind": "custom",
-      "description": "Firma del sistema: filete de franjas rojas bajo el encabezado y sobre la barra del pedido.",
+      "description": "Firma de Bumbay Tools, solo dentro de su nicho.",
       "html": "<div class=\"ds-cinta\"></div>",
       "css": ".ds-cinta { width: 320px; height: 4px; background-image: repeating-linear-gradient(-45deg, #ec080f 0 8px, transparent 8px 16px); }"
     }
   ],
   "narrative": {
-    "northStar": "El catálogo técnico de taller",
-    "overview": "La tienda se lee como una lista de precios profesional colgada en la pared de un taller: seria, precisa y sin adornos que no informen. El cromo es oscuro e industrial, y el producto aparece sobre un panel claro, como una pieza sobre la mesa de trabajo. Los datos que importan para comprar (código, precio, especificaciones) van en letra monoespaciada y cifras tabulares, alineados en columna como en una hoja técnica.\n\nLa densidad es media-alta: el visitante viene a comparar y armar un pedido, no a pasear. La marca habla con pocos elementos repetidos con disciplina: el rojo Bumbay en acciones y acentos, la cinta de precaución como firma, las esquinas de plano técnico en las tarjetas y una retícula de papel milimetrado apenas perceptible en el fondo.",
+    "northStar": "El portal vivo",
+    "overview": "La tienda es un portal: detrás del catálogo respira un campo de luz, y cada línea de negocio es un filamento de su propio color. En la portada general los filamentos conviven y el índice de nichos enciende el suyo al pasar; al entrar en un nicho, el campo entero se funde a su color sin recargar la página. La interfaz flota encima en tipografía condensada y fina, con mucho fondo noche alrededor.\n\nEl campo es el único momento de movimiento autorado del sitio, y está gobernado por el rendimiento: se dibuja a fracción de resolución, se congela al pasar la primera pantalla, se queda quieto con el movimiento reducido y se reemplaza por un póster en CSS cuando el equipo no da. El contenido nunca lo espera. Bajo la primera pantalla la tienda es un catálogo sobrio y denso: productos sobre un panel claro y suave, datos en mono, acciones de contorno.\n\nBumbay Tools conserva su firma de taller dentro de su nicho: la cinta de precaución, las esquinas técnicas de las tarjetas y el rojo exacto del logotipo.",
     "keyCharacteristics": [
-      "Fondo carbón casi negro con retícula milimetrada sutil (72 px).",
-      "Rojo Bumbay reservado para acción, acento y estado activo.",
-      "Esquinas rectas: nada redondeado, todo cortado como lámina.",
-      "Cifras y códigos en IBM Plex Mono tabular; títulos en Archivo extra negrita y apretada.",
-      "Verde de disponibilidad exclusivo de WhatsApp y del estado \"Disponible\"."
+      "Fondo noche casi negro azulado, sin retícula; el campo de luz es la única textura.",
+      "El color de marca cambia con el nicho: rojo Bumbay, ámbar, cian. Todo lo demás es noche.",
+      "Titulares en Archivo al 62 % de ancho, en mayúsculas y enormes; rótulos al 112 % de ancho, diminutos y espaciados.",
+      "Esquinas rectas en todo; el vidrio oscuro solo donde hay texto sobre el campo.",
+      "Fotos de producto fundidas sobre un panel gris azulado, nunca sobre blanco puro."
     ],
     "rules": [
-      { "name": "La Regla del Rojo con Propósito", "body": "El rojo marca lo que se puede hacer (comprar, ver, enviar) o dónde se está (pestaña activa). Un rojo que no es acción ni estado sobra.", "section": "colors" },
-      { "name": "La Regla del Verde de WhatsApp", "body": "El verde existe para un solo destino: hablar por WhatsApp o confirmar que algo está disponible. Cualquier otro uso confunde la llamada principal del negocio.", "section": "colors" },
-      { "name": "La Regla del Dato en Mono", "body": "Todo lo que se compara o se copia (precio, SKU, cantidades, especificaciones) va en Plex Mono con cifras tabulares. Los nombres y las frases van en Archivo.", "section": "typography" },
-      { "name": "La Regla de la Lámina", "body": "Las superficies en reposo son planas. Una sombra significa \"esto flota sobre la página\", nunca \"esto es importante\".", "section": "elevation" }
+      { "name": "La Regla del Filamento Propio", "body": "Un color saturado en pantalla pertenece a un nicho. Si no es el acento de la página ni el verde de WhatsApp, no va.", "section": "colors" },
+      { "name": "La Regla de la Tinta Calculada", "body": "Nunca se escribe text-white sobre el acento: la tinta sale de --acento-tinta, que el servidor calcula por contraste para cada nicho.", "section": "colors" },
+      { "name": "La Regla del Rótulo Encabezado", "body": "Un rótulo puede encabezar una lista o una sección, nunca ir encima de un titular como etiqueta. El titular habla solo.", "section": "typography" },
+      { "name": "La Regla del Dato en Mono", "body": "Plex Mono solo para lo que se compara o se copia. Una etiqueta escrita en mono para parecer técnica es un disfraz.", "section": "typography" },
+      { "name": "La Regla del Vidrio con Motivo", "body": "El desenfoque existe solo donde hay texto sobre el campo. Un panel de vidrio sobre fondo liso es adorno.", "section": "elevation" }
     ],
     "dos": [
-      "Do usar Plex Mono tabular para todo precio, SKU y cifra.",
-      "Do dejar la foto del producto sobre el panel blanco ficha (carbon-50).",
-      "Do usar marca-400, no marca-500, para texto rojo pequeño sobre carbón.",
-      "Do mantener las esquinas rectas y las marcas de esquina técnicas en las tarjetas de producto.",
-      "Do respetar prefers-reduced-motion: el sistema ya reduce todas las animaciones a casi cero."
+      "Do sacar el color de una página del nicho al que pertenece, con ContextoNicho, nunca escribirlo a mano.",
+      "Do dejar el titular en dos líneas, con la segunda en el acento.",
+      "Do apoyar las fotos de producto en el panel de foto con mezcla multiplicar.",
+      "Do usar el contorno para \"Agregar\" en las grillas y el botón lleno solo en la ficha.",
+      "Do mantener el campo como el único movimiento autorado de la página."
     ],
     "donts": [
-      "Don't redondear botones, tarjetas ni campos.",
-      "Don't usar el verde fuera de WhatsApp y del estado \"Disponible\".",
-      "Don't usar sombras para jerarquía; solo para lo que flota.",
-      "Don't extender la cinta de precaución a superficies grandes: es un filete, no un fondo."
+      "Don't poner un rótulo encima de un titular ni números de sección decorativos.",
+      "Don't escribir text-white sobre el acento: usa la tinta calculada.",
+      "Don't usar la cinta de precaución fuera de Bumbay Tools.",
+      "Don't agregar un segundo efecto animado de fondo o entradas escalonadas en cada grilla.",
+      "Don't poner una pantalla de carga ni hacer esperar el contenido al campo."
     ]
   }
 }

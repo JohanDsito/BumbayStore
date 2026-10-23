@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { imagenUrl } from "@/infraestructura/imagen-url";
 import { IconoFlecha } from "@/components/icons";
+import { ImagenProducto } from "@/components/product-image";
 
 type Props = {
   /** Rutas de las imágenes, en orden. La primera es la portada. */
@@ -67,13 +68,26 @@ export function GaleriaProducto({
     el?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
   }, [activa]);
 
-  if (total === 0) return null;
+  // Sin fotos todavía: el mismo marcador de las tarjetas, para que la ficha
+  // no quede con un hueco donde va la imagen.
+  if (total === 0) {
+    return (
+      <div className="border border-carbon-800">
+        <ImagenProducto
+          imagen={null}
+          nombre={nombre}
+          sku={sku}
+          aspecto={compacto ? "h-[30vh] sm:h-auto sm:aspect-square" : "aspect-square"}
+        />
+      </div>
+    );
+  }
 
   const url = imagenUrl(imagenes[activa]);
 
   return (
     <div>
-      <div className="relative border border-carbon-800 bg-carbon-50">
+      <div className="relative border border-carbon-800 bg-[#e4e6ee]">
         <div
           className={
             compacto
@@ -93,7 +107,7 @@ export function GaleriaProducto({
               fill
               sizes={compacto ? "(max-width: 640px) 100vw, 400px" : "(max-width: 1024px) 100vw, 640px"}
               priority={activa === 0}
-              className="animate-[aparecer_0.3s_var(--ease-salida)] object-contain"
+              className="animate-[aparecer_0.3s_var(--ease-salida)] object-contain mix-blend-multiply"
             />
           )}
         </div>
@@ -104,7 +118,7 @@ export function GaleriaProducto({
               type="button"
               onClick={() => ir(activa - 1)}
               aria-label="Imagen anterior"
-              className={`absolute left-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 ${
+              className={`absolute left-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
                 compacto ? "h-8 w-8" : "h-10 w-10"
               }`}
             >
@@ -114,7 +128,7 @@ export function GaleriaProducto({
               type="button"
               onClick={() => ir(activa + 1)}
               aria-label="Imagen siguiente"
-              className={`absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 ${
+              className={`absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
                 compacto ? "h-8 w-8" : "h-10 w-10"
               }`}
             >
@@ -145,7 +159,7 @@ export function GaleriaProducto({
                 aria-selected={activaEsta}
                 aria-label={`Ver imagen ${i + 1}`}
                 onClick={() => ir(i)}
-                className={`relative shrink-0 overflow-hidden border bg-carbon-50 transition-colors ${
+                className={`relative shrink-0 overflow-hidden border bg-[#e4e6ee] transition-colors ${
                   compacto ? "h-11 w-11" : "h-16 w-16"
                 } ${
                   activaEsta
@@ -159,7 +173,7 @@ export function GaleriaProducto({
                     alt=""
                     fill
                     sizes={compacto ? "44px" : "64px"}
-                    className="object-contain p-0.5"
+                    className="object-contain p-0.5 mix-blend-multiply"
                   />
                 )}
               </button>

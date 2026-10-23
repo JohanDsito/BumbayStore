@@ -13,10 +13,14 @@ import { site } from "@/config/sitio";
  * y los metadatos que comparten.
  */
 
+// Variable en peso y en ancho: el mismo Archivo da el titular ultracondensado
+// del portal (62 %) y los rótulos anchos y espaciados (112 %), sin cargar
+// una segunda familia.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
+  axes: ["wdth"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -69,7 +73,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: "#07080d",
   colorScheme: "dark",
 };
 

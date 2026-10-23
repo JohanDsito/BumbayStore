@@ -95,7 +95,7 @@ export function PanelPedido() {
       />
 
       <div className="relative flex h-full w-full max-w-md flex-col border-l border-carbon-800 bg-carbon-900 shadow-flotante animate-[subir_0.3s_var(--ease-salida)] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
-        <div aria-hidden className="h-1 shrink-0 cinta-precaucion" />
+        <div aria-hidden className="h-px shrink-0 bg-marca-500/70" />
 
         <header className="flex shrink-0 items-center justify-between border-b border-carbon-800 px-5 py-4">
           <div>
@@ -136,7 +136,7 @@ export function PanelPedido() {
                   const url = imagenUrl(linea.imagen);
                   return (
                     <li key={linea.slug} className="flex gap-3 p-4">
-                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-carbon-50">
+                      <div className="h-16 w-16 shrink-0 overflow-hidden bg-[#e4e6ee]">
                         {url ? (
                           // Miniatura del carrito: img nativo basta y evita
                           // reservar layout de next/image en una lista dinámica.
@@ -144,10 +144,10 @@ export function PanelPedido() {
                           <img
                             src={url}
                             alt=""
-                            className="h-full w-full object-contain p-1"
+                            className="h-full w-full object-contain p-1 mix-blend-multiply"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center bg-carbon-100">
+                          <div className="flex h-full w-full items-center justify-center bg-[#e4e6ee]">
                             <span className="font-mono text-[8px] text-carbon-500">
                               {linea.sku.slice(-4)}
                             </span>
@@ -217,7 +217,7 @@ export function PanelPedido() {
               </ul>
 
               <div className="space-y-4 border-t border-carbon-800 p-4">
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">
+                <p className="rotulo text-[10px] text-marca-400">
                   Datos para calcular el envío
                 </p>
 
@@ -248,7 +248,7 @@ export function PanelPedido() {
                 <div>
                   <label
                     htmlFor="comentario-pedido"
-                    className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+                    className="block rotulo text-[10px] text-carbon-500"
                   >
                     Comentarios <span className="text-carbon-600">(opcional)</span>
                   </label>
@@ -267,7 +267,7 @@ export function PanelPedido() {
 
             <footer className="shrink-0 border-t border-carbon-800 bg-carbon-900 p-4">
               <div className="mb-3 flex items-end justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-carbon-500">
+                <span className="rotulo text-[11px] text-carbon-500">
                   Total
                 </span>
                 <span className="font-mono text-2xl font-extrabold leading-none text-carbon-50">
@@ -280,7 +280,7 @@ export function PanelPedido() {
                 onClick={alEnviar}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-white transition-colors hover:bg-marca-400"
+                className="flex h-14 w-full items-center justify-center gap-2.5 bg-marca-500 font-semibold tracking-tight text-sobre-marca transition-colors hover:bg-marca-400"
               >
                 <IconoWhatsApp className="h-5 w-5" />
                 Enviar pedido por WhatsApp
@@ -290,7 +290,7 @@ export function PanelPedido() {
                 <button
                   type="button"
                   onClick={vaciar}
-                  className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500 transition-colors hover:text-carbon-300"
+                  className="rotulo text-[10px] text-carbon-500 transition-colors hover:text-carbon-300"
                 >
                   Vaciar pedido
                 </button>
@@ -337,7 +337,7 @@ function Campo({
     <div>
       <label
         htmlFor={id}
-        className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+        className="block rotulo text-[10px] text-carbon-500"
       >
         {etiqueta}
       </label>

@@ -16,6 +16,7 @@ export const nichosSeed: Niche[] = [
       { etiqueta: "Meses de garantía", valor: "6" },
       { etiqueta: "Plataforma de batería", valor: "128V" },
     ],
+    acento: "#ec080f",
     orden: 1,
   },
 ];

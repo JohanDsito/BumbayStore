@@ -36,7 +36,7 @@ export function BarraGuardado({
           <button
             type="button"
             onClick={alDescartar}
-            className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-carbon-100"
+            className="px-3 py-1.5 rotulo text-[10px] text-carbon-400 transition-colors hover:text-carbon-100"
           >
             Descartar
           </button>
@@ -44,7 +44,7 @@ export function BarraGuardado({
             type="button"
             onClick={alGuardar}
             disabled={guardando}
-            className="bg-marca-500 px-4 py-1.5 text-[12px] font-semibold text-white transition-colors hover:bg-marca-400 disabled:opacity-50"
+            className="bg-marca-500 px-4 py-1.5 text-[12px] font-semibold text-sobre-marca transition-colors hover:bg-marca-400 disabled:opacity-50"
           >
             {guardando ? "Guardando…" : "Guardar"}
           </button>
@@ -74,7 +74,7 @@ export function Interruptor({
       type="button"
       onClick={() => alCambiar(!activo)}
       aria-pressed={activo}
-      className={`border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
+      className={`border px-3 py-1.5 rotulo text-[10px] transition-colors ${
         activo ? encendido : "border-carbon-700 text-carbon-500 hover:text-carbon-300"
       }`}
     >
@@ -96,7 +96,7 @@ export function Campo({
 }) {
   return (
     <div>
-      <label className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+      <label className="block rotulo text-[10px] text-carbon-500">
         {etiqueta}
         <input
           type="text"
@@ -126,7 +126,7 @@ export function AreaTexto({
 }) {
   return (
     <div>
-      <label className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+      <label className="block rotulo text-[10px] text-carbon-500">
         {etiqueta}
         {ayuda && (
           <span className="ml-2 normal-case tracking-normal text-carbon-600">{ayuda}</span>

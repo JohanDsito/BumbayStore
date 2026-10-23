@@ -32,18 +32,18 @@ export function BarraPedido() {
     <>
       {visible && (
         <div className="fixed inset-x-0 bottom-0 z-40 animate-[subir_0.32s_var(--ease-salida)] pb-[env(safe-area-inset-bottom,0px)]">
-          <div aria-hidden className="h-1 cinta-precaucion" />
+          <div aria-hidden className="h-px bg-marca-500/70" />
           <div className="border-t border-carbon-800 bg-carbon-900/95 backdrop-blur-md shadow-flotante">
             <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:px-6">
               <div className="relative shrink-0">
                 <IconoCarrito className="h-6 w-6 text-marca-500" />
-                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center bg-marca-500 px-1 font-mono text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center bg-marca-500 px-1 font-mono text-[10px] font-bold text-sobre-marca">
                   {unidades}
                 </span>
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+                <p className="rotulo text-[10px] text-carbon-500">
                   Pedido en curso
                 </p>
                 <p className="font-mono text-base font-bold leading-tight text-carbon-50">
@@ -54,7 +54,7 @@ export function BarraPedido() {
               <button
                 type="button"
                 onClick={abrir}
-                className="flex h-11 shrink-0 items-center gap-2 bg-marca-500 px-4 text-[13px] font-semibold tracking-tight text-white transition-colors hover:bg-marca-400 sm:px-6"
+                className="flex h-11 shrink-0 items-center gap-2 bg-marca-500 px-4 text-[13px] font-semibold tracking-tight text-sobre-marca transition-colors hover:bg-marca-400 sm:px-6"
               >
                 Ver pedido
                 <IconoFlecha className="h-4 w-4" />
@@ -82,7 +82,7 @@ export function BotonPedidoHeader() {
     >
       <IconoCarrito className="h-5 w-5" />
       {unidades > 0 && (
-        <span className="absolute right-0 top-0.5 flex h-4 min-w-4 items-center justify-center bg-marca-500 px-1 font-mono text-[9px] font-bold text-white">
+        <span className="absolute right-0 top-0.5 flex h-4 min-w-4 items-center justify-center bg-marca-500 px-1 font-mono text-[9px] font-bold text-sobre-marca">
           {unidades}
         </span>
       )}

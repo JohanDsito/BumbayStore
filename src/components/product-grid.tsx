@@ -20,13 +20,13 @@ export function GrillaProductos({ productos, prioritarias = 4 }: Props) {
   }
 
   return (
-    <div className="escalonar grid grid-cols-2 gap-px bg-carbon-800 sm:gap-3 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px bg-carbon-800 sm:gap-3 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
       {productos.map((producto, i) => (
         <TarjetaProducto
           key={producto.slug}
           producto={producto}
           prioridad={i < prioritarias}
-          indice={i}
+         
         />
       ))}
     </div>

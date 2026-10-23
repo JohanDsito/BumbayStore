@@ -8,6 +8,7 @@ import { rutaCategoria, rutaNicho, rutaProducto } from "@/dominio/rutas";
 import { GrillaProductos } from "@/components/product-grid";
 import { JsonLd } from "@/components/json-ld";
 import { Migas } from "@/components/migas";
+import { ContextoNicho } from "@/components/contexto-nicho";
 
 type Props = { params: Promise<{ nicho: string; categoria: string }> };
 
@@ -80,7 +81,7 @@ export default async function PaginaCategoria({ params }: Props) {
   };
 
   return (
-    <>
+    <ContextoNicho acento={nicho?.acento ?? null} intensidad={0.55}>
       <JsonLd datos={datosLista} />
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
@@ -91,19 +92,16 @@ export default async function PaginaCategoria({ params }: Props) {
           ]}
         />
 
-        <header className="border-b border-carbon-800 pb-8">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-marca-500">
-            {nicho?.submarca ?? nicho?.nombre ?? "Categoría"}
-          </p>
-          <h1 className="mt-2.5 text-3xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-4xl lg:text-5xl">
+        <header className="border-b border-carbon-800 pb-8 pt-4">
+          <h1 className="titular text-[clamp(2.75rem,7vw,4.75rem)] text-carbon-50">
             {categoria.nombre}
           </h1>
           {categoria.descripcion && (
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-carbon-400">
+            <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-carbon-300">
               {categoria.descripcion}
             </p>
           )}
-          <p className="mt-5 font-mono text-xs text-carbon-500">
+          <p className="mt-5 font-mono text-xs text-carbon-400">
             {productos.length} {productos.length === 1 ? "producto" : "productos"}
           </p>
         </header>
@@ -112,6 +110,6 @@ export default async function PaginaCategoria({ params }: Props) {
           <GrillaProductos productos={productos} prioritarias={4} />
         </div>
       </div>
-    </>
+    </ContextoNicho>
   );
 }

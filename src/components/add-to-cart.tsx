@@ -41,10 +41,14 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
       <button
         type="button"
         onClick={() => agregar(producto)}
-        className={`group/btn flex w-full items-center justify-center gap-2 bg-marca-500 font-semibold text-white transition-all duration-200 hover:bg-marca-400 active:scale-[0.98] ${
+        // En la ficha el botón va lleno: es la acción de la página. En las
+        // grillas va de contorno y se llena al pasar el cursor; veinte
+        // botones llenos seguidos hacen una pared de color de tienda de
+        // descuentos.
+        className={`group/btn flex w-full items-center justify-center gap-2 font-semibold tracking-tight transition-[background-color,color,transform] duration-200 active:scale-[0.98] ${
           grande
-            ? "h-14 text-[15px] tracking-tight"
-            : "h-10 text-[13px] tracking-tight"
+            ? "h-14 bg-marca-500 text-[15px] text-sobre-marca shadow-brillo hover:bg-marca-400"
+            : "h-10 border border-marca-500/70 text-[13px] text-marca-400 hover:bg-marca-500 hover:text-sobre-marca"
         }`}
       >
         <IconoCarrito className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -63,7 +67,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad - 1)}
         aria-label={cantidad === 1 ? "Quitar del pedido" : "Quitar una unidad"}
-        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-white"
+        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-sobre-marca"
       >
         {cantidad === 1 ? (
           <IconoBasura className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -91,7 +95,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad + 1)}
         aria-label="Agregar una unidad"
-        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-white"
+        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-sobre-marca"
       >
         <IconoMas className={grande ? "h-5 w-5" : "h-4 w-4"} />
       </button>

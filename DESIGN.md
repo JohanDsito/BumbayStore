@@ -1,241 +1,249 @@
 ---
-name: Bumbay Tools
-description: Catálogo técnico de taller. Chrome oscuro industrial, producto sobre panel claro, datos en monoespaciada.
+name: Bumbay Store
+description: Un portal vivo. Un campo de luz con un filamento por nicho respira detrás del catálogo.
 colors:
-  carbon-950: "#0a0a0b"
-  carbon-900: "#0f0f11"
-  carbon-850: "#141417"
-  carbon-800: "#1a1a1f"
-  carbon-750: "#232329"
-  carbon-700: "#2e2e36"
-  carbon-600: "#454551"
-  carbon-500: "#6b6b78"
-  carbon-400: "#8e8e9c"
-  carbon-300: "#b4b4bf"
-  carbon-200: "#d6d6dd"
-  carbon-100: "#ebebef"
-  carbon-50: "#f6f6f8"
-  marca-700: "#8f0409"
-  marca-600: "#c2060c"
-  marca-500: "#ec080f"
-  marca-400: "#ff3b41"
-  marca-300: "#ff8a8e"
+  noche-950: "#07080d"
+  noche-900: "#0c0e17"
+  noche-850: "#11141f"
+  noche-800: "#191c29"
+  noche-750: "#212534"
+  noche-700: "#2c3043"
+  noche-600: "#444a63"
+  noche-500: "#7b81a0"
+  noche-400: "#959bb5"
+  noche-300: "#bcc0d3"
+  noche-200: "#d9dbe6"
+  noche-100: "#edeef4"
+  noche-50: "#f7f8fb"
+  rojo-bumbay: "#ec080f"
+  ambar-hogar: "#ffb21a"
+  cian-tecnologia: "#2e9bff"
+  panel-foto: "#e4e6ee"
   disponible: "#35d07f"
   alerta: "#ffc53d"
 typography:
   display:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, 7vw, 4.5rem)"
-    fontWeight: 800
-    lineHeight: 0.95
-    letterSpacing: "-0.04em"
+    fontSize: "clamp(2.75rem, 11.5vw, 6rem)"
+    fontWeight: 700
+    lineHeight: 0.86
+    letterSpacing: "-0.01em"
+    fontVariation: "\"wdth\" 62"
   headline:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.875rem"
+    fontSize: "2.25rem"
     fontWeight: 800
-    lineHeight: 1.1
-    letterSpacing: "-0.03em"
+    lineHeight: 1.02
+    letterSpacing: "-0.02em"
+    fontVariation: "\"wdth\" 75"
   title:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 600
     lineHeight: 1.375
-    letterSpacing: "-0.01em"
   body:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 400
     lineHeight: 1.625
   label:
-    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "0.625rem"
-    fontWeight: 400
-    letterSpacing: "0.2em"
-  price:
+    fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.6875rem"
+    fontWeight: 500
+    letterSpacing: "0.22em"
+    fontVariation: "\"wdth\" 112"
+  data:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: 1
     fontFeature: "tnum"
 rounded:
-  panel: "2px"
   none: "0px"
+  panel: "2px"
 spacing:
   gutter-mobile: "16px"
   gutter-desktop: "24px"
   container: "1400px"
 components:
   button-primary:
-    backgroundColor: "{colors.marca-500}"
+    backgroundColor: "{colors.rojo-bumbay}"
     textColor: "#ffffff"
     rounded: "{rounded.none}"
     height: "48px"
     padding: "0 28px"
-  button-primary-hover:
-    backgroundColor: "{colors.marca-400}"
-  button-whatsapp:
-    backgroundColor: "{colors.disponible}"
-    textColor: "{colors.carbon-950}"
-    rounded: "{rounded.none}"
-    height: "56px"
-    padding: "0 32px"
-  button-outline:
+  button-secondary:
     backgroundColor: "transparent"
-    textColor: "{colors.carbon-100}"
+    textColor: "{colors.noche-100}"
     rounded: "{rounded.none}"
     height: "48px"
     padding: "0 28px"
-  chip-category:
-    backgroundColor: "{colors.carbon-900}"
-    textColor: "{colors.carbon-300}"
+  button-add-grid:
+    backgroundColor: "transparent"
+    textColor: "{colors.rojo-bumbay}"
     rounded: "{rounded.none}"
-    padding: "10px 16px"
+    height: "40px"
+  button-whatsapp:
+    backgroundColor: "{colors.disponible}"
+    textColor: "{colors.noche-950}"
+    rounded: "{rounded.none}"
+    height: "56px"
+    padding: "0 32px"
   card-product:
-    backgroundColor: "{colors.carbon-900}"
-    textColor: "{colors.carbon-100}"
+    backgroundColor: "{colors.noche-900}"
+    textColor: "{colors.noche-100}"
     rounded: "{rounded.none}"
     padding: "16px"
   input-field:
-    backgroundColor: "{colors.carbon-850}"
-    textColor: "{colors.carbon-100}"
+    backgroundColor: "{colors.noche-950}"
+    textColor: "{colors.noche-100}"
     rounded: "{rounded.none}"
-    height: "44px"
+    height: "40px"
     padding: "0 12px"
 ---
 
-# Design System: Bumbay Tools
+# Design System: Bumbay Store
 
 <!--
-  Documenta el diseño que la tienda tiene hoy, el del nicho de herramientas.
-  Es la referencia de partida para Bumbay Store: lo que aquí es "el mundo de
-  Bumbay Tools" se conserva como acento de su nicho aunque la tienda general
-  cambie de piel.
+  Construido el 2026-10-22 a partir de la dirección elegida por el dueño
+  (portal con campo de luz). Los nombres de los tokens en el código siguen
+  siendo `carbon-*` y `marca-*`; aquí van con su nombre de diseño (`noche-*`,
+  y el color de acento de cada nicho). La identidad anterior, "catálogo
+  técnico de taller", sigue viva como submarca dentro de herramientas.
 -->
 
 ## Overview
 
-**Creative North Star: "El catálogo técnico de taller"**
+**Creative North Star: "El portal vivo"**
 
-La tienda se lee como una lista de precios profesional colgada en la pared de un taller: seria, precisa y sin adornos que no informen. El cromo es oscuro e industrial, y el producto aparece sobre un panel claro, como una pieza sobre la mesa de trabajo. Los datos que importan para comprar (código, precio, especificaciones) van en letra monoespaciada y cifras tabulares, alineados en columna como en una hoja técnica.
+La tienda es un portal: detrás del catálogo respira un campo de luz, y cada línea de negocio es un filamento de su propio color. En la portada general los filamentos conviven y el índice de nichos enciende el suyo al pasar; al entrar en un nicho, el campo entero se funde a su color sin recargar la página. La interfaz flota encima en tipografía condensada y fina, con mucho fondo noche alrededor.
 
-La densidad es media-alta: el visitante viene a comparar y armar un pedido, no a pasear. La marca habla con pocos elementos repetidos con disciplina: el rojo Bumbay en acciones y acentos, la cinta de precaución como firma, las esquinas de plano técnico en las tarjetas y una retícula de papel milimetrado apenas perceptible en el fondo.
+El campo es el único momento de movimiento autorado del sitio, y está gobernado por el rendimiento: se dibuja a fracción de resolución, se congela al pasar la primera pantalla, se queda quieto con el movimiento reducido y se reemplaza por un póster en CSS cuando el equipo no da. El contenido nunca lo espera. Bajo la primera pantalla la tienda es un catálogo sobrio y denso: productos sobre un panel claro y suave, datos en mono, acciones de contorno.
+
+Bumbay Tools conserva su firma de taller dentro de su nicho: la cinta de precaución, las esquinas técnicas de las tarjetas y el rojo exacto del logotipo.
 
 **Key Characteristics:**
-- Fondo carbón casi negro con retícula milimetrada sutil (72 px).
-- Rojo Bumbay reservado para acción, acento y estado activo.
-- Esquinas rectas: nada redondeado, todo cortado como lámina.
-- Cifras y códigos en IBM Plex Mono tabular; títulos en Archivo extra negrita y apretada.
-- Verde de disponibilidad exclusivo de WhatsApp y del estado "Disponible".
+- Fondo noche casi negro azulado, sin retícula; el campo de luz es la única textura.
+- El color de marca cambia con el nicho: rojo Bumbay, ámbar, cian. Todo lo demás es noche.
+- Titulares en Archivo al 62 % de ancho, en mayúsculas y enormes; rótulos al 112 % de ancho, diminutos y espaciados.
+- Esquinas rectas en todo; el vidrio oscuro solo donde hay texto sobre el campo.
+- Fotos de producto fundidas sobre un panel gris azulado, nunca sobre blanco puro.
 
 ## Colors
 
-Una escala de grises fríos que va del negro de la herramienta al blanco de la ficha técnica, un rojo de marca y dos colores de estado.
+Una escala de noche azulada casi sin color, para que los filamentos de cada nicho sean lo único saturado de la pantalla.
 
 ### Primary
-- **Rojo Bumbay** (marca-500): el rojo exacto del logotipo. Botones de acción principal ("Agregar", "Ver catálogo"), la segunda línea de los titulares, la cinta de precaución, la selección de texto y el anillo de foco.
-- **Rojo Bumbay claro** (marca-400): el mismo rojo levantado para texto pequeño y enlaces activos sobre fondo oscuro, donde marca-500 se queda corto de contraste; también el hover del botón principal.
-- **Rojo profundo** (marca-600, marca-700): reservas para estados presionados y fondos teñidos.
+- **Rojo Bumbay** (rojo-bumbay): el color de la tienda y el de su logotipo. Es el acento de la portada general, del encabezado, del pie y del pedido, y el de Bumbay Tools.
 
 ### Secondary
-- **Verde disponible** (disponible): WhatsApp y el indicador "Disponible". Nunca decora.
+- **Acento de nicho** (ámbar-hogar, cian-tecnologia y los que se creen): cada nicho trae su color desde la base de datos. Dentro del nicho reemplaza al rojo en botones, enlaces, titulares y en el campo. La tinta sobre el acento se calcula: blanca sobre rojo, oscura sobre ámbar o cian.
+- **Verde disponible** (disponible): WhatsApp y el estado "Disponible". Nunca decora.
 
 ### Tertiary
 - **Ámbar alerta** (alerta): avisos. Uso mínimo.
 
 ### Neutral
-- **Carbón profundo** (carbon-950): fondo de página.
-- **Carbón panel** (carbon-900, carbon-850): superficies de tarjetas, encabezado, pie y campos de formulario.
-- **Carbón línea** (carbon-800, carbon-700): bordes de tarjeta, divisores y contorno de botones secundarios.
-- **Gris acero** (carbon-500, carbon-400): etiquetas, códigos y texto secundario.
-- **Gris claro** (carbon-300, carbon-200): texto de párrafo y navegación.
-- **Blanco ficha** (carbon-100, carbon-50): texto principal, titulares, y el panel claro donde se apoya la foto del producto.
+- **Noche vacío** (noche-950): el fondo y el campo.
+- **Noche panel** (noche-900, noche-850): tarjetas, cajones, campos de formulario.
+- **Noche línea** (noche-800, noche-700, noche-600): bordes de 1 px y divisores.
+- **Gris lavanda** (noche-500, noche-400): texto secundario y rótulos. noche-500 es el más tenue que cumple 4.5:1 sobre el fondo.
+- **Niebla** (noche-300, noche-200): párrafos.
+- **Blanco luna** (noche-100, noche-50): titulares y texto principal.
+- **Panel de foto** (panel-foto): el fondo donde se apoyan las fotos de producto.
 
 ### Named Rules
-**La Regla del Rojo con Propósito.** El rojo marca lo que se puede hacer (comprar, ver, enviar) o dónde se está (pestaña activa). Un rojo que no es acción ni estado sobra.
+**La Regla del Filamento Propio.** Un color saturado en pantalla pertenece a un nicho. Si no es el acento de la página ni el verde de WhatsApp, no va.
 
-**La Regla del Verde de WhatsApp.** El verde existe para un solo destino: hablar por WhatsApp o confirmar que algo está disponible. Cualquier otro uso confunde la llamada principal del negocio.
+**La Regla de la Tinta Calculada.** Nunca se escribe `text-white` sobre el acento: la tinta sale de `--acento-tinta`, que el servidor calcula por contraste para cada nicho.
 
 ## Typography
 
-**Display Font:** Archivo (con ui-sans-serif, system-ui)
-**Body Font:** Archivo (con ui-sans-serif, system-ui)
-**Label/Mono Font:** IBM Plex Mono (con ui-monospace)
+**Display Font:** Archivo variable, ancho 62 % (con ui-sans-serif, system-ui)
+**Body Font:** Archivo, ancho 100 %
+**Label Font:** Archivo, ancho 112 %
+**Data Font:** IBM Plex Mono (con ui-monospace)
 
-**Character:** Archivo en extra negrita y apretada hace de señalética de taller; IBM Plex Mono hace de etiqueta de inventario. La sans habla, la mono informa.
+**Character:** Una sola familia variable hace tres voces: el titular estrecho y alto del portal, el texto normal y el rótulo ancho y espaciado. El mono queda para datos que se comparan o se copian.
 
 ### Hierarchy
-- **Display** (800, 36 → 72 px según pantalla, interlínea 0.95, tracking -0.04em): titular de portada. Admite dos líneas; la segunda va en rojo Bumbay.
-- **Headline** (800, 24 → 30 px, tracking -0.03em): títulos de sección ("Todos los productos", "Destacados", "Ficha técnica").
-- **Title** (600, 13–14 px, interlínea 1.375): nombre del producto en la tarjeta.
-- **Body** (400, 15 px, interlínea 1.625): párrafos de presentación y fichas; máximo unos 70 caracteres por línea.
-- **Label** (Plex Mono 400, 10 px, mayúsculas, tracking 0.2em): rótulos sobre los títulos, SKU, etiquetas de campos y cifras pequeñas.
-- **Price** (Plex Mono 600, 18 px en tarjeta y 36 px en ficha, cifras tabulares): precio.
+- **Display** (700, 44 → 96 px, interlínea 0.86, mayúsculas, ancho 62 %): el titular de cada portada y el nombre de una categoría. Dos líneas; la segunda va en el acento.
+- **Headline** (800, 30 → 48 px, ancho 75 %): títulos de sección y nombre del producto en su ficha. Sin mayúsculas.
+- **Title** (600, 14–15 px): nombres en tarjetas y en el índice.
+- **Body** (400, 15–16 px, interlínea 1.625): presentaciones y fichas técnicas; máximo 52–60 caracteres por línea.
+- **Label** (500, 11 px, tracking 0.22em, mayúsculas, ancho 112 %): navegación, rótulos de sección, etiquetas de campo, lecturas del campo.
+- **Data** (Plex Mono 600, cifras tabulares): precios, SKU, conteos.
 
 ### Named Rules
-**La Regla del Dato en Mono.** Todo lo que se compara o se copia (precio, SKU, cantidades, especificaciones) va en Plex Mono con cifras tabulares. Los nombres y las frases van en Archivo.
+**La Regla del Rótulo Encabezado.** Un rótulo puede encabezar una lista o una sección, nunca ir encima de un titular como etiqueta. El titular habla solo.
+
+**La Regla del Dato en Mono.** Plex Mono solo para lo que se compara o se copia. Una etiqueta escrita en mono para parecer técnica es un disfraz.
 
 ## Layout
 
-Contenedor centrado de 1400 px como máximo, con margen lateral de 16 px en celular y 24 px desde 640 px. Las grillas de productos van a 2 columnas en celular y suben a 3–4 en escritorio; los carruseles usan desplazamiento nativo con anclaje para que funcionen con el dedo. Las secciones se separan con bordes finos (carbon-800) y bloques de 32–64 px de aire vertical. La barra de pedido queda fija abajo y el pie reserva su alto para no quedar tapado.
+Contenedor de 1400 px como máximo, margen lateral de 16 px en celular y 24 px desde 640 px. La primera pantalla de cada portada es una retícula de dos columnas: el índice (200 px) y el titular; la lectura del campo flota en la esquina inferior derecha. En celular se apila: titular, línea clave, acciones, índice. Bajo la primera pantalla, grillas de 2 columnas en celular y 3–4 en escritorio, con secciones separadas por un borde fino y 40–64 px de aire. El encabezado tiene una fila de nichos y, dentro de un nicho, una segunda fila con sus categorías.
 
 ## Elevation & Depth
 
-Sistema plano: la profundidad se da por capas tonales del carbón (950 de fondo, 900 de panel, 850 de campo) y bordes finos, no por sombras. Hay solo dos sombras, ambas para piezas que flotan sobre el contenido.
+Profundidad por capas tonales de la noche y por el campo detrás de todo. Los paneles que flotan sobre el campo con texto encima (precio, especificaciones, bloque mayorista) son vidrio oscuro: noche al 72 % con desenfoque de 14 px, porque es lo que deja leer sobre los filamentos. El encabezado es casi opaco (92 %) para que las fotos claras no se transparenten al bajar.
 
 ### Shadow Vocabulary
+- **Brillo** (`inset 0 1px 0 rgb(255 255 255 / 0.18), 0 8px 24px -10px var(--acento)`): el botón principal. La luz del campo reflejada en su borde.
 - **Panel** (`0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)`): paneles superpuestos como la vista rápida.
-- **Flotante** (`0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)`): la barra de pedido y el panel del carrito, que suben desde abajo.
+- **Flotante** (`0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)`): la barra de pedido y el cajón, que suben desde abajo.
 
 ### Named Rules
-**La Regla de la Lámina.** Las superficies en reposo son planas. Una sombra significa "esto flota sobre la página", nunca "esto es importante".
+**La Regla del Vidrio con Motivo.** El desenfoque existe solo donde hay texto sobre el campo. Un panel de vidrio sobre fondo liso es adorno.
 
 ## Shapes
 
-Esquinas rectas en todo: botones, tarjetas, campos y chips usan 0 px (2 px como máximo en paneles). Las tarjetas de producto llevan marcas de esquina de plano técnico (10 px, 1 px de trazo) que se vuelven rojas al pasar el cursor. La cinta de precaución (franjas a 45°, 8 px) corona el encabezado, la barra del pedido y los bloques de llamada a la acción.
+Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El único círculo es el punto de estado (disponible, línea activa). Las tarjetas de producto de Bumbay Tools llevan las esquinas técnicas, que se encienden en el acento al pasar.
 
 ## Components
 
 ### Buttons
-- **Shape:** rectos (0 px).
-- **Primary:** fondo rojo Bumbay, texto blanco en Archivo seminegrita de 14 px, alto 48 px (40–44 px en tarjetas). Hover a marca-400; al presionar se reduce a 0.98.
-- **WhatsApp:** fondo verde disponible con texto carbón y el ícono de WhatsApp; alto 56 px en los bloques de cierre.
-- **Outline:** borde carbon-700 sin relleno; el hover cambia borde y texto al verde si lleva a WhatsApp, o al rojo si es navegación.
-
-### Chips
-- **Style:** fondo carbón panel, borde carbon-800, texto gris claro de 13 px y flecha a la derecha.
-- **State:** el hover enciende el borde en rojo Bumbay y mueve la flecha 2 px.
+- **Shape:** rectos.
+- **Primary:** fondo del acento, tinta calculada, rótulo de 11 px, alto 48 px (56 px en la ficha), sombra de brillo. Hover al acento aclarado; al presionar, 0.98.
+- **Secondary:** borde noche-600 sobre noche al 40 %; se enciende en verde si lleva a WhatsApp.
+- **Agregar en grillas:** contorno del acento al 70 %, texto en el acento aclarado; se llena al pasar el cursor. Lleno solo en la ficha: veinte botones llenos seguidos son una pared de color.
+- **WhatsApp:** verde disponible con tinta noche; alto 56 px en los bloques de cierre.
 
 ### Cards / Containers
-- **Corner Style:** rectas, con marcas de esquina técnicas.
-- **Background:** carbón panel; la foto del producto va sobre un panel blanco ficha.
-- **Shadow Strategy:** ninguna (ver La Regla de la Lámina).
-- **Border:** 1 px carbon-800, a carbon-600 en hover.
+- **Corner Style:** rectas.
+- **Background:** noche panel; la foto va sobre el panel de foto, fundida con `mix-blend-mode: multiply`.
+- **Border:** 1 px noche-800, a noche-600 al pasar.
 - **Internal Padding:** 14–16 px.
 
 ### Inputs / Fields
-- **Style:** fondo carbon-850, borde 1 px carbon-700, rectos, alto 40–44 px.
-- **Focus:** el borde pasa a rojo Bumbay.
-- **Error:** borde rojo y fondo teñido de rojo al 10 %, con el mensaje debajo del campo; el tinte se mantiene sin foco para no confundirse con un campo seleccionado.
+- **Style:** noche al 60 %, borde 1 px noche-700, alto 40–44 px, rectos.
+- **Focus:** borde en el acento aclarado; el cursor de texto también.
+- **Error:** borde en el acento y fondo teñido al 10 %, mensaje bajo el campo.
 
 ### Navigation
-- **Style:** franja superior de contacto en Plex Mono 11 px; fila de catálogo en Archivo 12.5 px gris. Los nichos van en blanco seminegrita y sus categorías en gris.
-- **States:** la página activa se pinta en marca-400 con una barra roja de 2 px abajo.
-- **Mobile:** buscador en su propia fila y menú desplegable agrupado por nicho.
+- **Style:** encabezado casi opaco; nichos en rótulo, con una raya de 1 px en el acento bajo el activo que crece desde la izquierda.
+- **Mobile:** buscador en su fila; menú desplegable agrupado por nicho.
 
-### Cinta de precaución
-La firma del sistema: franjas rojas a 45° sobre transparente. Aparece bajo el encabezado, sobre la barra del pedido y en el borde superior de los bloques de llamada a la acción. Nunca como fondo de un área grande.
+### Campo de luz
+La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de todo. Un filamento por nicho (núcleo fino, halo y partículas que solo se encienden cerca del filamento); el puntero los curva al pasar. Se funde al color del nicho al navegar. Presupuesto: 50 % de la resolución en escritorio y 35 % en celular, 30 cuadros en celular, congelado bajo la primera pantalla y con la pestaña oculta, una imagen quieta con el movimiento reducido, y póster CSS sin WebGL, con ahorro de datos o con poca memoria.
+
+### Índice de portada
+Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a la izquierda del titular. En la portada general, pasar por una entrada enciende su filamento y la lectura del campo dice su nombre.
+
+### Cinta de precaución (Bumbay Tools)
+Franjas en el acento a 45°, 4 px de alto, sobre la portada del nicho de herramientas. Solo ahí.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** usar Plex Mono tabular para todo precio, SKU y cifra.
-- **Do** dejar la foto del producto sobre el panel blanco ficha (carbon-50).
-- **Do** usar marca-400, no marca-500, para texto rojo pequeño sobre carbón.
-- **Do** mantener las esquinas rectas y las marcas de esquina técnicas en las tarjetas de producto.
-- **Do** respetar `prefers-reduced-motion`: el sistema ya reduce todas las animaciones a casi cero.
+- **Do** sacar el color de una página del nicho al que pertenece, con `ContextoNicho`, nunca escribirlo a mano.
+- **Do** dejar el titular en dos líneas, con la segunda en el acento.
+- **Do** apoyar las fotos de producto en el panel de foto con mezcla multiplicar.
+- **Do** usar el contorno para "Agregar" en las grillas y el botón lleno solo en la ficha.
+- **Do** mantener el campo como el único movimiento autorado de la página.
 
 ### Don't:
-- **Don't** redondear botones, tarjetas ni campos.
-- **Don't** usar el verde fuera de WhatsApp y del estado "Disponible".
-- **Don't** usar sombras para jerarquía; solo para lo que flota.
-- **Don't** extender la cinta de precaución a superficies grandes: es un filete, no un fondo.
+- **Don't** poner un rótulo encima de un titular ni números de sección decorativos.
+- **Don't** escribir `text-white` sobre el acento: usa la tinta calculada.
+- **Don't** usar la cinta de precaución fuera de Bumbay Tools.
+- **Don't** agregar un segundo efecto animado de fondo o entradas escalonadas en cada grilla.
+- **Don't** poner una pantalla de carga ni hacer esperar el contenido al campo.

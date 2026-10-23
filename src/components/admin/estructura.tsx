@@ -108,7 +108,7 @@ export function AdminEstructura() {
             const propias = categorias.filter((c) => c.nicho_slug === n.slug);
             return (
               <div key={n.slug}>
-                <h3 className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-carbon-400">
+                <h3 className="mb-2 rotulo text-[11px] text-carbon-400">
                   {n.nombre}
                   <span className="ml-2 text-carbon-600">/{n.slug}</span>
                 </h3>
@@ -159,9 +159,13 @@ type BorradorNicho = {
   titular: string;
   descripcion: string;
   datos: string;
+  acento: string;
   orden: string;
   activo: boolean;
 };
+
+/** Color que propone el panel mientras el nicho no tenga uno propio. */
+const ACENTO_INICIAL = "#ec080f";
 
 const aBorradorNicho = (n: NichoAdmin): BorradorNicho => ({
   nombre: n.nombre,
@@ -169,6 +173,7 @@ const aBorradorNicho = (n: NichoAdmin): BorradorNicho => ({
   titular: n.titular ?? "",
   descripcion: n.descripcion ?? "",
   datos: datosATexto(n.datos ?? []),
+  acento: n.acento ?? "",
   orden: String(n.orden),
   activo: n.activo,
 });
@@ -204,6 +209,7 @@ function FilaNicho({
       titular: b.titular.trim() || null,
       descripcion: b.descripcion.trim() || null,
       datos: textoADatos(b.datos),
+      acento: /^#[0-9a-f]{6}$/i.test(b.acento) ? b.acento.toLowerCase() : null,
       orden: Number.parseInt(b.orden, 10) || 0,
       activo: b.activo,
     });
@@ -247,6 +253,20 @@ function FilaNicho({
               alCambiar={(v) => cambiar("submarca", v)}
             />
             <Campo etiqueta="Orden" valor={b.orden} alCambiar={(v) => cambiar("orden", v)} mono />
+          </div>
+          <div>
+            <label className="flex items-center gap-3 rotulo text-[10px] text-carbon-500">
+              Color del nicho
+              <input
+                type="color"
+                value={b.acento || ACENTO_INICIAL}
+                onChange={(e) => cambiar("acento", e.target.value)}
+                className="h-9 w-14 cursor-pointer border border-carbon-700 bg-carbon-850 p-0.5"
+              />
+              <span className="normal-case tracking-normal text-carbon-600">
+                {b.acento ? b.acento : "sin color propio: usa el de la tienda"}
+              </span>
+            </label>
           </div>
           <AreaTexto
             etiqueta="Titular de la portada"
@@ -501,7 +521,7 @@ function SelectorNicho({
 }) {
   return (
     <div>
-      <label className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+      <label className="block rotulo text-[10px] text-carbon-500">
         Nicho
         <select
           value={valor}
@@ -530,7 +550,7 @@ function Formulario({
 }) {
   return (
     <div className="mt-4 border border-dashed border-carbon-700 p-4">
-      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-marca-400">{titulo}</p>
+      <p className="rotulo text-[10px] text-marca-400">{titulo}</p>
       <div className="mt-3 grid items-end gap-4 sm:grid-cols-[2fr_2fr_auto]">{children}</div>
       {mensaje && <p className="mt-3 text-[12px] text-carbon-300">{mensaje}</p>}
     </div>
@@ -543,7 +563,7 @@ function BotonCrear({ ocupado, alPulsar }: { ocupado: boolean; alPulsar: () => v
       type="button"
       onClick={alPulsar}
       disabled={ocupado}
-      className="h-10 bg-marca-500 px-5 text-[13px] font-semibold text-white transition-colors hover:bg-marca-400 disabled:opacity-50"
+      className="h-10 bg-marca-500 px-5 text-[13px] font-semibold text-sobre-marca transition-colors hover:bg-marca-400 disabled:opacity-50"
     >
       {ocupado ? "Creando…" : "Crear"}
     </button>
@@ -562,7 +582,7 @@ function BotonEditar({
       type="button"
       onClick={() => alCambiar(!abierto)}
       aria-expanded={abierto}
-      className="shrink-0 border border-carbon-700 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+      className="shrink-0 border border-carbon-700 px-3 py-2 rotulo text-[10px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
     >
       {abierto ? "Cerrar" : "Editar"}
     </button>

@@ -9,8 +9,8 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
   const anio = new Date().getFullYear();
 
   return (
-    <footer className="mt-20 border-t border-carbon-800 bg-carbon-900">
-      <div aria-hidden className="h-[3px] cinta-precaucion opacity-70" />
+    <footer className="mt-20 border-t border-carbon-800 bg-carbon-950">
+      
 
       <div className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
@@ -21,7 +21,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                 <span className="text-lg font-extrabold tracking-[-0.03em] text-carbon-50">
                   BUMB<span className="text-marca-500">A</span>Y
                 </span>
-                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
+                <span className="rotulo mt-1 text-[8.5px] tracking-[0.42em] text-carbon-300">
                   Store
                 </span>
               </span>
@@ -41,7 +41,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
           </div>
 
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
+            <h2 className="rotulo text-carbon-400">
               Catálogo
             </h2>
             <ul className="mt-4 space-y-5">
@@ -72,7 +72,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
           </div>
 
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
+            <h2 className="rotulo text-carbon-400">
               Contacto
             </h2>
             <dl className="mt-4 space-y-3 text-[13px]">
@@ -105,7 +105,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       Instagram
                     </a>
@@ -117,7 +117,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       Facebook
                     </a>
@@ -129,7 +129,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
                       href={site.redes.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-500 transition-colors hover:text-marca-400"
+                      className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-marca-400"
                     >
                       TikTok
                     </a>

@@ -51,6 +51,7 @@ const nicho = (slug: string, orden: number): Niche => ({
   titular: null,
   descripcion: null,
   datos: [],
+  acento: null,
   orden,
 });
 

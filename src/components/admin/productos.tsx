@@ -254,7 +254,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
           type="button"
           onClick={() => setAbierto((v) => !v)}
           aria-expanded={abierto}
-          className="shrink-0 border border-carbon-700 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="shrink-0 border border-carbon-700 px-3 py-2 rotulo text-[10px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
         >
           {abierto ? "Cerrar" : "Editar"}
         </button>
@@ -290,7 +290,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
 
           {fila.imagenes.length > 1 && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500">
+              <p className="rotulo text-[10px] text-carbon-500">
                 Foto de portada
                 <span className="ml-2 normal-case tracking-normal text-carbon-600">
                   la que se ve en la grilla y al compartir

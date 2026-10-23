@@ -26,4 +26,9 @@ export const site = {
     tiktok: process.env.NEXT_PUBLIC_TIKTOK ?? "",
   },
   moneda: "COP",
+  /**
+   * Nicho que conserva la identidad de taller de Bumbay Tools (la cinta de
+   * precaución). Los demás nichos usan solo el mundo de Bumbay Store.
+   */
+  nichoTaller: "herramientas",
 } as const;

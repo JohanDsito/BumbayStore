@@ -62,3 +62,8 @@ vercel-variables.txt
 
 # cache de Python de las skills
 __pycache__/
+
+# impeccable: capturas de revisión y la ronda de direcciones (material de trabajo)
+.impeccable/review/
+.impeccable/decision/
+.impeccable/mocks/

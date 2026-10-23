@@ -85,7 +85,7 @@ export function PanelAdmin() {
         <button
           type="button"
           onClick={() => sb.auth.signOut()}
-          className="mt-4 block w-full border border-carbon-700 py-2 font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="mt-4 block w-full border border-carbon-700 py-2 rotulo text-[11px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
         >
           Salir
         </button>
@@ -121,7 +121,7 @@ export function PanelAdmin() {
           <button
             type="button"
             onClick={() => sb.auth.signOut()}
-            className="font-mono text-[11px] uppercase tracking-[0.12em] text-carbon-400 transition-colors hover:text-marca-400"
+            className="rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
           >
             Salir
           </button>
@@ -180,7 +180,7 @@ function FormularioAcceso() {
         <div>
           <label
             htmlFor="admin-correo"
-            className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+            className="block rotulo text-[10px] text-carbon-500"
           >
             Correo
           </label>
@@ -198,7 +198,7 @@ function FormularioAcceso() {
         <div>
           <label
             htmlFor="admin-clave"
-            className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+            className="block rotulo text-[10px] text-carbon-500"
           >
             Contraseña
           </label>
@@ -218,7 +218,7 @@ function FormularioAcceso() {
         <button
           type="submit"
           disabled={enviando}
-          className="h-12 w-full bg-marca-500 text-[14px] font-semibold text-white transition-colors hover:bg-marca-400 disabled:opacity-50"
+          className="h-12 w-full bg-marca-500 text-[14px] font-semibold text-sobre-marca transition-colors hover:bg-marca-400 disabled:opacity-50"
         >
           {enviando ? "Entrando…" : "Entrar"}
         </button>

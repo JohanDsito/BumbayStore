@@ -3,16 +3,13 @@ import { notFound } from "next/navigation";
 
 import { catalogo } from "@/servidor/catalogo";
 import { site } from "@/config/sitio";
-import { rutaNicho } from "@/dominio/rutas";
+import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
+import type { DatoNicho } from "@/dominio/modelos";
 import { CarruselDestacados } from "@/components/featured-carousel";
 import { GrillaProductos } from "@/components/product-grid";
 import { Migas } from "@/components/migas";
-import {
-  BloqueMayorista,
-  EncabezadoSeccion,
-  ExplorarCategorias,
-  Portico,
-} from "@/components/portada";
+import { ContextoNicho } from "@/components/contexto-nicho";
+import { BloqueMayorista, EncabezadoSeccion, Portico } from "@/components/portada";
 
 type Props = { params: Promise<{ nicho: string }> };
 
@@ -20,9 +17,9 @@ type Props = { params: Promise<{ nicho: string }> };
  * Portada de un nicho: /herramientas.
  *
  * Todo lo que muestra sale de los datos del nicho —titular, descripción,
- * cifras— y de sus productos. Un nicho nuevo se presenta solo, sin programar
- * su página. Los que se creen después del build se generan en la primera
- * visita.
+ * cifras, color— y de sus productos. Un nicho nuevo se presenta solo, sin
+ * programar su página. Los que se creen después del build se generan en la
+ * primera visita.
  */
 export async function generateStaticParams() {
   const nichos = await catalogo.nichos();
@@ -64,38 +61,46 @@ export default async function PortadaNicho({ params }: Props) {
   ]);
 
   const marca = nicho.submarca ?? nicho.nombre;
+  const conteo = (n: number) => `${n} ${n === 1 ? "producto" : "productos"}`;
 
   return (
-    <>
+    <ContextoNicho acento={nicho.acento} intensidad={1}>
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         <Migas pasos={[{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }]} />
       </div>
 
       <Portico
-        etiqueta={nicho.submarca ? `${nicho.submarca} · ${nicho.nombre}` : nicho.nombre}
         titular={nicho.titular ?? nicho.nombre}
+        lineaClave={nicho.submarca ? `${nicho.submarca} · ${nicho.nombre}` : nicho.nombre}
         descripcion={nicho.descripcion}
-        datos={[
-          { etiqueta: "Productos en catálogo", valor: String(productos.length) },
-          { etiqueta: "Categorías", valor: String(categorias.length) },
-          ...nicho.datos,
-        ]}
+        cinta={nicho.slug === site.nichoTaller}
+        indice={{
+          titulo: "Categorías",
+          enciende: false,
+          entradas: categorias.map((c) => ({
+            nombre: c.nombre,
+            detalle: conteo(productos.filter((p) => p.categoriaSlug === c.slug).length),
+            href: rutaCategoria(c),
+          })),
+        }}
+        lectura={
+          <LecturaNicho
+            datos={[{ etiqueta: "En catálogo", valor: conteo(productos.length) }, ...nicho.datos]}
+          />
+        }
         mensajeWhatsApp={`Hola, quisiera la lista de precios de ${marca}.`}
       />
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
         {destacados.length > 0 && (
-          <div className="py-12 sm:py-16">
+          <div className="pb-12 sm:pb-16">
             <CarruselDestacados productos={destacados} />
           </div>
         )}
 
-        <ExplorarCategorias titulo="Explorar por categoría" categorias={categorias} />
-
         <section aria-labelledby="titulo-catalogo" className="pb-8">
           <EncabezadoSeccion
             id="titulo-catalogo"
-            etiqueta={marca}
             titulo={`Todo en ${nicho.nombre.toLowerCase()}`}
             cantidad={productos.length}
           />
@@ -104,6 +109,20 @@ export default async function PortadaNicho({ params }: Props) {
 
         <BloqueMayorista />
       </div>
-    </>
+    </ContextoNicho>
+  );
+}
+
+/** Los datos del nicho como lectura: etiqueta espaciada, valor en mono. */
+function LecturaNicho({ datos }: { datos: DatoNicho[] }) {
+  return (
+    <dl className="space-y-4">
+      {datos.map((d) => (
+        <div key={d.etiqueta}>
+          <dt className="rotulo text-carbon-400">{d.etiqueta}</dt>
+          <dd className="mt-1 font-mono text-sm text-carbon-50">{d.valor}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

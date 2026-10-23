@@ -121,7 +121,7 @@ export function CampoCiudad({ id, valor, alCambiar, error }: Props) {
     <div ref={contenedor} className="relative">
       <label
         htmlFor={id}
-        className="block font-mono text-[10px] uppercase tracking-[0.14em] text-carbon-500"
+        className="block rotulo text-[10px] text-carbon-500"
       >
         Ciudad o municipio
       </label>
