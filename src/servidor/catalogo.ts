@@ -4,7 +4,6 @@ import { cache } from "react";
 import { crearCatalogo } from "@/aplicacion/catalogo";
 import type { FuenteCatalogo } from "@/aplicacion/puertos";
 import { fuenteEjemplo, fuenteLocal } from "@/infraestructura/local/catalogo";
-import { conRespaldo } from "@/infraestructura/respaldo";
 import { crearFuenteSupabase } from "@/infraestructura/supabase/catalogo";
 import { getSupabase } from "@/infraestructura/supabase/servidor";
 
@@ -15,7 +14,12 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  *
  * - Con CATALOGO=ejemplo, se usan los datos locales más los nichos de
  *   ejemplo, aunque haya Supabase. Es para trabajar en tu equipo.
- * - Con Supabase configurado, se lee de ahí y, si falla, de los datos locales.
+ * - Con Supabase configurado, se lee solo de ahí. Si no responde (ni al
+ *   reintento, ver supabase/servidor.ts), la consulta falla: nunca se
+ *   muestran productos de ejemplo como si fueran reales. Las páginas ya
+ *   generadas conservan su última versión buena, una publicación fallida
+ *   deja en línea la anterior, y las que se arman en cada visita muestran
+ *   el aviso de app/(tienda)/error.tsx.
  * - Sin Supabase, se usan los datos locales directamente.
  *
  * Cada consulta va envuelta en `cache` de React: una página pide productos
@@ -26,7 +30,7 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
 function elegirFuente(): FuenteCatalogo {
   if (process.env.CATALOGO === "ejemplo") return fuenteEjemplo;
   const sb = getSupabase();
-  return sb ? conRespaldo(crearFuenteSupabase(sb), fuenteLocal) : fuenteLocal;
+  return sb ? crearFuenteSupabase(sb) : fuenteLocal;
 }
 
 const fuente = elegirFuente();

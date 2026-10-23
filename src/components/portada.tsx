@@ -5,19 +5,12 @@ import { rutaCategoria } from "@/dominio/rutas";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp, IconoFlecha } from "@/components/icons";
 import { IndicePortal, type EntradaIndice } from "@/components/indice-portal";
+import { BOTON_PRINCIPAL, BOTON_SECUNDARIO } from "@/components/botones";
 
 /**
  * Piezas de portada que comparten la portada general y la de cada nicho.
  * Reciben el contenido ya resuelto: no consultan nada por su cuenta.
  */
-
-/** Botón principal: el color del nicho con el brillo del campo en el borde. */
-export const BOTON_PRINCIPAL =
-  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-marca-300/40 bg-marca-500 px-7 text-sobre-marca shadow-brillo transition-[background-color,transform] duration-200 hover:bg-marca-400 active:scale-[0.98]";
-
-/** Botón secundario: borde fino sobre vidrio; se enciende en verde si lleva a WhatsApp. */
-export const BOTON_SECUNDARIO =
-  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-carbon-600 bg-carbon-950/40 px-7 text-carbon-100 transition-colors duration-200 hover:border-disponible hover:text-disponible";
 
 /**
  * La primera pantalla de una portada, en tres columnas sobre el campo de

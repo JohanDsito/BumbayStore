@@ -9,7 +9,7 @@ import type { Category, DatoNicho, Faq, Niche, Product, Spec } from "@/dominio/m
  *
  * Aquí, y solo aquí, se sabe que las tablas usan snake_case y cómo se llama
  * cada columna. Si una consulta falla lanza el error: decidir qué hacer
- * entonces no es asunto de este archivo (ver `respaldo.ts`).
+ * entonces no es asunto de este archivo (ver servidor/catalogo.ts).
  */
 export function crearFuenteSupabase(sb: SupabaseClient): FuenteCatalogo {
   return {

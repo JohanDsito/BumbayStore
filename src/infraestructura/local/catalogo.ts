@@ -7,8 +7,9 @@ import { categoriasEjemplo, nichosEjemplo, productosEjemplo } from "@/data/ejemp
 /**
  * El catálogo de ejemplo que vive en `src/data`.
  *
- * Sirve para trabajar sin base de datos y como respaldo: si Supabase no
- * responde en producción, la tienda muestra esto en vez de quedar en blanco.
+ * Sirve para trabajar sin base de datos. No es respaldo de Supabase: si
+ * Supabase está configurado y falla, la consulta falla (ver
+ * servidor/catalogo.ts), porque estos productos son de ejemplo.
  */
 export const fuenteLocal: FuenteCatalogo = {
   productos: async () => productosSeed.filter((p) => p.activo),

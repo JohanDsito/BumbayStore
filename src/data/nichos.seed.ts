@@ -2,7 +2,7 @@ import type { Niche } from "@/dominio/modelos";
 
 /**
  * Nichos de Bumbay Store. En Supabase viven en la tabla `nichos`; aquí quedan
- * como respaldo y como referencia del orden del menú.
+ * para trabajar sin base de datos.
  */
 export const nichosSeed: Niche[] = [
   {

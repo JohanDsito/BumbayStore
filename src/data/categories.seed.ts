@@ -2,7 +2,7 @@ import type { Category } from "@/dominio/modelos";
 
 /**
  * Categorías del catálogo. Al migrar a Supabase esto vive en la tabla
- * `categorias`; aquí queda como respaldo y como orden de referencia del menú.
+ * `categorias`; aquí quedan para trabajar sin base de datos.
  */
 export const categoriasSeed: Category[] = [
   {

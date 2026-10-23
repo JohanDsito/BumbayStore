@@ -5,7 +5,7 @@ import type { Category, Niche, Product } from "@/dominio/modelos";
  *
  * No son productos reales ni nichos decididos: los nichos de verdad los
  * define el negocio. Solo se cargan con CATALOGO=ejemplo en .env.local, nunca
- * en la tienda publicada ni como respaldo de Supabase, porque mostrarle a un
+ * en la tienda publicada, porque mostrarle a un
  * cliente algo que no se vende sería peor que no mostrarle nada.
  */
 

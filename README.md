@@ -20,8 +20,14 @@ npm run dev                  # http://localhost:3000
 ```
 
 El sitio **funciona sin Supabase**: si no hay credenciales usa los productos de
-`src/data/products.seed.ts`. Así puedes trabajar en el diseño sin depender de
-la base de datos, y si Supabase se cae en producción el catálogo no desaparece.
+ejemplo de `src/data`, para trabajar en el diseño sin depender de la base de
+datos.
+
+Con Supabase configurado, el catálogo sale solo de ahí. Si Supabase no
+responde (cada consulta espera 8 segundos y se reintenta una vez), **no** se
+muestran productos de ejemplo como si fueran reales: las páginas ya generadas
+conservan su última versión buena, una publicación fallida en Vercel deja en
+línea la anterior, y la búsqueda muestra un aviso para reintentar.
 
 ---
 
@@ -293,12 +299,12 @@ src/
   infraestructura/    quién cumple esos contratos: Supabase, los datos
                       locales, WhatsApp, las URLs de imagen
   servidor/           el punto de armado: elige la fuente y le pone caché
-                      y respaldo. Las páginas importan `catalogo` de aquí.
+                      por visita. Las páginas importan `catalogo` de aquí.
   cliente/            estado que vive en el navegador (el pedido)
   config/sitio.ts     datos de la marca
   app/                rutas de Next (ver abajo), panel, sitemap y robots
   components/         piezas de interfaz
-  data/               catálogo de ejemplo y respaldo, municipios del DANE
+  data/               catálogo de ejemplo, municipios del DANE
 supabase/
   migrations/         la base de datos, cambio por cambio
   config.toml         configuración del CLI de Supabase

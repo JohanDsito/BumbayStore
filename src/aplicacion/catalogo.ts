@@ -22,11 +22,26 @@ import type { FuenteCatalogo } from "./puertos";
 export type Catalogo = ReturnType<typeof crearCatalogo>;
 
 export function crearCatalogo(fuente: FuenteCatalogo) {
-  const categorias = async (): Promise<Category[]> =>
-    categoriasConProductos(await fuente.categorias(), await fuente.productos());
+  // Las consultas a la fuente se lanzan juntas y no una tras otra: así una
+  // página espera lo que tarde la más lenta, no la suma de las tres.
+  const todo = async () => {
+    const [productos, categorias, nichos] = await Promise.all([
+      fuente.productos(),
+      fuente.categorias(),
+      fuente.nichos(),
+    ]);
+    return { productos, categorias, nichos };
+  };
 
-  const nichos = async (): Promise<Niche[]> =>
-    nichosConProductos(await fuente.nichos(), await categorias());
+  const categorias = async (): Promise<Category[]> => {
+    const t = await todo();
+    return categoriasConProductos(t.categorias, t.productos);
+  };
+
+  const nichos = async (): Promise<Niche[]> => {
+    const t = await todo();
+    return nichosConProductos(t.nichos, categoriasConProductos(t.categorias, t.productos));
+  };
 
   return {
     productos: (): Promise<Product[]> => fuente.productos(),
@@ -50,20 +65,25 @@ export function crearCatalogo(fuente: FuenteCatalogo) {
       (await nichos()).find((n) => n.slug === slug) ?? null,
 
     /** Cada nicho visible con sus categorías: lo que pinta la navegación. */
-    menu: async (): Promise<SeccionMenu[]> =>
-      menuPorNicho(await nichos(), await categorias(), await fuente.productos()),
+    menu: async (): Promise<SeccionMenu[]> => {
+      const [n, c, t] = await Promise.all([nichos(), categorias(), todo()]);
+      return menuPorNicho(n, c, t.productos);
+    },
 
     categoriasDeNicho: async (slug: string): Promise<Category[]> =>
       (await categorias()).filter((c) => c.nichoSlug === slug),
 
-    productosDeNicho: async (slug: string): Promise<Product[]> =>
-      productosDeNicho(slug, await fuente.categorias(), await fuente.productos()),
+    productosDeNicho: async (slug: string): Promise<Product[]> => {
+      const t = await todo();
+      return productosDeNicho(slug, t.categorias, t.productos);
+    },
 
     /** Destacados de toda la tienda o, si se indica, de un solo nicho. */
     destacados: async (limite: number, nichoSlug?: string): Promise<Product[]> => {
+      const t = await todo();
       const productos = nichoSlug
-        ? productosDeNicho(nichoSlug, await fuente.categorias(), await fuente.productos())
-        : await fuente.productos();
+        ? productosDeNicho(nichoSlug, t.categorias, t.productos)
+        : t.productos;
       return elegirDestacados(productos, limite);
     },
 
