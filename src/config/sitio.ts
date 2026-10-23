@@ -14,7 +14,7 @@ export const site = {
   ciudad: process.env.NEXT_PUBLIC_CIUDAD ?? "Pasto",
   pais: "Colombia",
   /** Se configura en Vercel como NEXT_PUBLIC_SITE_URL. */
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://bumbaytools.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://bumbaystore.vercel.app",
   /** Formato internacional sin + ni espacios. Ej: 573001234567 */
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP ?? "573000000000",
   email: process.env.NEXT_PUBLIC_EMAIL ?? "ventas@bumbaytools.com",
