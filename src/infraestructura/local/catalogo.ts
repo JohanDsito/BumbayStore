@@ -29,6 +29,13 @@ export const fuenteEjemplo: FuenteCatalogo = {
   nichos: async () => [...(await fuenteLocal.nichos()), ...nichosEjemplo],
 };
 
+/** Solo los nichos de ejemplo, para sumarlos al catálogo real en la demostración. */
+export const fuenteSoloEjemplo: FuenteCatalogo = {
+  productos: async () => [...productosEjemplo],
+  categorias: async () => [...categoriasEjemplo],
+  nichos: async () => [...nichosEjemplo],
+};
+
 /**
  * El peor caso de `src/data/extremo.seed.ts`: nombres larguísimos, muchos
  * nichos, precios extremos. Para revisar que la interfaz no se rompa. Se

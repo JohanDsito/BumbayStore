@@ -3,7 +3,13 @@ import "server-only";
 import { cache } from "react";
 import { crearCatalogo } from "@/aplicacion/catalogo";
 import type { FuenteCatalogo } from "@/aplicacion/puertos";
-import { fuenteEjemplo, fuenteExtremo, fuenteLocal } from "@/infraestructura/local/catalogo";
+import {
+  fuenteEjemplo,
+  fuenteExtremo,
+  fuenteLocal,
+  fuenteSoloEjemplo,
+} from "@/infraestructura/local/catalogo";
+import { sumarFuentes } from "@/infraestructura/combinar";
 import { crearFuenteSupabase } from "@/infraestructura/supabase/catalogo";
 import { getSupabase } from "@/infraestructura/supabase/servidor";
 
@@ -16,6 +22,8 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  *   ejemplo, aunque haya Supabase. Es para trabajar en tu equipo.
  * - Con CATALOGO=extremo, el catálogo del peor caso, para revisar que la
  *   interfaz aguante datos incómodos.
+ * - En modo demostración (ver `modoDemo`), el catálogo real de Supabase más
+ *   los nichos de ejemplo, para ver cómo quedará la tienda con más líneas.
  * - Con Supabase configurado, se lee solo de ahí. Si no responde (ni al
  *   reintento, ver supabase/servidor.ts), la consulta falla: nunca se
  *   muestran productos de ejemplo como si fueran reales. Las páginas ya
@@ -29,11 +37,23 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  * esto cada uno descargaba la tabla entera. Así se consulta una vez por
  * visita y el resto reutiliza el resultado. La memoria dura solo esa visita.
  */
+/**
+ * La demostración: el catálogo real más los nichos de ejemplo. Se activa con
+ * CATALOGO=demo en tu equipo, o sola en Vercel en las ramas `demo/...`
+ * (Vercel pone el nombre de la rama en VERCEL_GIT_COMMIT_REF). Nunca en
+ * producción, aunque alguien publique una rama con ese nombre.
+ */
+export const modoDemo =
+  process.env.VERCEL_ENV !== "production" &&
+  (process.env.CATALOGO === "demo" ||
+    Boolean(process.env.VERCEL_GIT_COMMIT_REF?.startsWith("demo/")));
+
 function elegirFuente(): FuenteCatalogo {
   if (process.env.CATALOGO === "ejemplo") return fuenteEjemplo;
   if (process.env.CATALOGO === "extremo") return fuenteExtremo;
   const sb = getSupabase();
-  return sb ? crearFuenteSupabase(sb) : fuenteLocal;
+  const real = sb ? crearFuenteSupabase(sb) : fuenteLocal;
+  return modoDemo ? sumarFuentes(real, fuenteSoloEjemplo) : real;
 }
 
 const fuente = elegirFuente();

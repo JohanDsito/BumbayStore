@@ -1,5 +1,5 @@
 import { site } from "@/config/sitio";
-import { catalogo } from "@/servidor/catalogo";
+import { catalogo, modoDemo } from "@/servidor/catalogo";
 import { EncabezadoSitio } from "@/components/site-header";
 import { PieSitio } from "@/components/site-footer";
 import { BarraPedido } from "@/components/cart-bar";
@@ -48,6 +48,16 @@ export default async function LayoutTienda({
         colores={menu.map((s) => s.nicho.acento ?? site.acento)}
         acentoTienda={site.acento}
       />
+      {modoDemo && (
+        // `data-modo-demo` también le dice al registro que no guarde pedidos
+        // ni búsquedas de prueba en la base real (ver infraestructura/supabase/registro.ts).
+        <p
+          data-modo-demo
+          className="rotulo bg-alerta px-4 py-2 text-center text-[11px] text-carbon-950"
+        >
+          Demostración · Hogar, tecnología y belleza son nichos de ejemplo · Los pedidos no se guardan
+        </p>
+      )}
       <EncabezadoSitio menu={menu} />
       <main id="contenido">{children}</main>
       {/* Vista previa del producto: solo se llena al navegar desde el catálogo */}

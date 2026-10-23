@@ -25,6 +25,9 @@ const llave = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 async function insertar(tabla: string, fila: unknown): Promise<void> {
   if (!url || !llave) return;
+  // En la demostración (rama demo/... o CATALOGO=demo) no se guardan pedidos
+  // ni búsquedas de prueba en la base real.
+  if (document.querySelector("[data-modo-demo]")) return;
   try {
     await fetch(`${url}/rest/v1/${tabla}`, {
       method: "POST",
