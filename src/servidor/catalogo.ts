@@ -3,7 +3,7 @@ import "server-only";
 import { cache } from "react";
 import { crearCatalogo } from "@/aplicacion/catalogo";
 import type { FuenteCatalogo } from "@/aplicacion/puertos";
-import { fuenteLocal } from "@/infraestructura/local/catalogo";
+import { fuenteEjemplo, fuenteLocal } from "@/infraestructura/local/catalogo";
 import { conRespaldo } from "@/infraestructura/respaldo";
 import { crearFuenteSupabase } from "@/infraestructura/supabase/catalogo";
 import { getSupabase } from "@/infraestructura/supabase/servidor";
@@ -13,6 +13,8 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  * se usa. Las páginas importan `catalogo` de aquí y no saben si los datos
  * vienen de Supabase o de los datos locales.
  *
+ * - Con CATALOGO=ejemplo, se usan los datos locales más los nichos de
+ *   ejemplo, aunque haya Supabase. Es para trabajar en tu equipo.
  * - Con Supabase configurado, se lee de ahí y, si falla, de los datos locales.
  * - Sin Supabase, se usan los datos locales directamente.
  *
@@ -22,6 +24,7 @@ import { getSupabase } from "@/infraestructura/supabase/servidor";
  * visita y el resto reutiliza el resultado. La memoria dura solo esa visita.
  */
 function elegirFuente(): FuenteCatalogo {
+  if (process.env.CATALOGO === "ejemplo") return fuenteEjemplo;
   const sb = getSupabase();
   return sb ? conRespaldo(crearFuenteSupabase(sb), fuenteLocal) : fuenteLocal;
 }

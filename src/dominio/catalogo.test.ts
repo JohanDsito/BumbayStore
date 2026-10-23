@@ -4,7 +4,9 @@ import {
   buscar,
   categoriasConProductos,
   elegirDestacados,
+  menuPorNicho,
   nichosConProductos,
+  productosDeNicho,
   relacionadosDe,
   variantesDe,
 } from "./catalogo";
@@ -46,7 +48,9 @@ const nicho = (slug: string, orden: number): Niche => ({
   slug,
   nombre: slug,
   submarca: null,
+  titular: null,
   descripcion: null,
+  datos: [],
   orden,
 });
 
@@ -69,6 +73,38 @@ describe("nichosConProductos", () => {
     const nichos = [nicho("hogar", 2), nicho("herramientas", 1)];
     const visibles = [categoria("taladros", 1, "herramientas")];
     expect(nichosConProductos(nichos, visibles).map((n) => n.slug)).toEqual(["herramientas"]);
+  });
+});
+
+describe("menuPorNicho", () => {
+  it("agrupa las categorías bajo su nicho y cuenta sus productos", () => {
+    const nichos = [nicho("herramientas", 1), nicho("hogar", 2)];
+    const categorias = [
+      categoria("taladros", 1, "herramientas"),
+      categoria("cocina", 1, "hogar"),
+      categoria("pulidoras", 2, "herramientas"),
+    ];
+    const productos = [
+      producto({ slug: "a", categoriaSlug: "taladros" }),
+      producto({ slug: "b", categoriaSlug: "pulidoras" }),
+      producto({ slug: "c", categoriaSlug: "cocina" }),
+    ];
+    const menu = menuPorNicho(nichos, categorias, productos);
+    expect(menu.map((s) => [s.nicho.slug, s.categorias.map((c) => c.slug), s.totalProductos])).toEqual([
+      ["herramientas", ["taladros", "pulidoras"], 2],
+      ["hogar", ["cocina"], 1],
+    ]);
+  });
+});
+
+describe("productosDeNicho", () => {
+  it("devuelve solo los productos de las categorías del nicho", () => {
+    const categorias = [categoria("taladros", 1, "herramientas"), categoria("cocina", 1, "hogar")];
+    const productos = [
+      producto({ slug: "a", categoriaSlug: "taladros" }),
+      producto({ slug: "c", categoriaSlug: "cocina" }),
+    ];
+    expect(productosDeNicho("hogar", categorias, productos).map((p) => p.slug)).toEqual(["c"]);
   });
 });
 

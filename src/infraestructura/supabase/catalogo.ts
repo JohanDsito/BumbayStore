@@ -2,7 +2,7 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { FuenteCatalogo } from "@/aplicacion/puertos";
-import type { Category, Faq, Niche, Product, Spec } from "@/dominio/modelos";
+import type { Category, DatoNicho, Faq, Niche, Product, Spec } from "@/dominio/modelos";
 
 /**
  * El catálogo leído de Supabase.
@@ -84,7 +84,9 @@ function aNicho(fila: Fila): Niche {
     slug: String(fila.slug ?? ""),
     nombre: String(fila.nombre ?? ""),
     submarca: (fila.submarca as string) ?? null,
+    titular: (fila.titular as string) ?? null,
     descripcion: (fila.descripcion as string) ?? null,
+    datos: (fila.datos as DatoNicho[]) ?? [],
     orden: Number(fila.orden ?? 0),
   };
 }

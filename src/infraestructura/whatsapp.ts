@@ -2,6 +2,7 @@ import { site } from "@/config/sitio";
 import { precio } from "@/dominio/formato";
 import type { CartLine, Product } from "@/dominio/modelos";
 import { totalesPedido } from "@/dominio/pedido";
+import { rutaProducto } from "@/dominio/rutas";
 
 /**
  * Arma el enlace de WhatsApp con el pedido ya redactado.
@@ -55,7 +56,7 @@ export function enlaceConsulta(producto: Product): string {
     "",
     `*${producto.nombre}*`,
     `Código: ${producto.sku}`,
-    `${site.url}/producto/${producto.slug}`,
+    `${site.url}${rutaProducto(producto)}`,
   ].join("\n");
   return construirEnlace(texto);
 }

@@ -29,12 +29,14 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.nombre} — Herramientas inalámbricas al por mayor en ${site.ciudad}`,
+    default: `${site.nombre} — Importador directo con envío a toda Colombia`,
     template: `%s | ${site.nombre}`,
   },
   description: site.descripcion,
   applicationName: site.nombre,
   keywords: [
+    "importador directo Colombia",
+    "tienda mayorista",
     "herramientas inalámbricas",
     "taladros inalámbricos",
     "pulidoras",
@@ -44,13 +46,14 @@ export const metadata: Metadata = {
     "ferretería mayorista",
     site.ciudad,
   ],
-  alternates: { canonical: "/" },
+  // Sin canonical aquí: lo hereda cada página que no declare el suyo, y
+  // apuntarlas todas a "/" le diría a Google que son la misma portada.
   openGraph: {
     type: "website",
     locale: "es_CO",
     url: site.url,
     siteName: site.nombre,
-    title: `${site.nombre} — Herramientas inalámbricas al por mayor`,
+    title: `${site.nombre} — Importador directo con envío a toda Colombia`,
     description: site.descripcion,
   },
   twitter: {

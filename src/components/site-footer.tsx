@@ -2,9 +2,10 @@ import Link from "next/link";
 import { site } from "@/config/sitio";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Logotipo, IconoWhatsApp } from "@/components/icons";
-import type { Category } from "@/dominio/modelos";
+import type { SeccionMenu } from "@/dominio/catalogo";
+import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
-export function PieSitio({ categorias }: { categorias: Category[] }) {
+export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
   const anio = new Date().getFullYear();
 
   return (
@@ -21,7 +22,7 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
                   BUMB<span className="text-marca-500">A</span>Y
                 </span>
                 <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
-                  Tools
+                  Store
                 </span>
               </span>
             </div>
@@ -41,17 +42,30 @@ export function PieSitio({ categorias }: { categorias: Category[] }) {
 
           <div>
             <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-carbon-500">
-              Categorías
+              Catálogo
             </h2>
-            <ul className="mt-4 space-y-2.5">
-              {categorias.slice(0, 8).map((c) => (
-                <li key={c.slug}>
+            <ul className="mt-4 space-y-5">
+              {menu.map(({ nicho, categorias }) => (
+                <li key={nicho.slug}>
                   <Link
-                    href={`/categoria/${c.slug}`}
-                    className="text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
+                    href={rutaNicho(nicho)}
+                    className="text-[13px] font-semibold text-carbon-200 transition-colors hover:text-marca-400"
                   >
-                    {c.nombre}
+                    {nicho.submarca ?? nicho.nombre}
                   </Link>
+                  {/* Las primeras categorías bastan: la lista completa está en el menú. */}
+                  <ul className="mt-2.5 space-y-2">
+                    {categorias.slice(0, 6).map((c) => (
+                      <li key={c.slug}>
+                        <Link
+                          href={rutaCategoria(c)}
+                          className="text-[13px] text-carbon-400 transition-colors hover:text-marca-400"
+                        >
+                          {c.nombre}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>

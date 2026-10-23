@@ -10,10 +10,10 @@ export default async function LayoutTienda({
   children,
   modal,
 }: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
-  const categorias = await catalogo.categorias();
+  const menu = await catalogo.menu();
 
   // Datos estructurados del negocio: le dicen a Google y a los asistentes de IA
-  // qué es Bumbay Tools, dónde está y cómo contactarlo.
+  // qué es Bumbay Store, dónde está y cómo contactarlo.
   const datosNegocio = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -41,11 +41,11 @@ export default async function LayoutTienda({
       >
         Saltar al contenido
       </a>
-      <EncabezadoSitio categorias={categorias} />
+      <EncabezadoSitio menu={menu} />
       <main id="contenido">{children}</main>
       {/* Vista previa del producto: solo se llena al navegar desde el catálogo */}
       {modal}
-      <PieSitio categorias={categorias} />
+      <PieSitio menu={menu} />
       {/* Espacio para que la barra fija no tape el final del pie */}
       <div aria-hidden className="h-20" />
       <BarraPedido />

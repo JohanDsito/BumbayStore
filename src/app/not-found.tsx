@@ -13,8 +13,8 @@ export default function NoEncontrado() {
       </h1>
       <p className="mt-4 text-[15px] leading-relaxed text-carbon-400">
         Puede que el producto ya no esté en el catálogo o que la dirección esté
-        mal escrita. Si sabes qué herramienta buscas, escríbenos y te decimos si
-        la tenemos.
+        mal escrita. Si sabes qué producto buscas, escríbenos y te decimos si
+        lo tenemos.
       </p>
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Link

@@ -33,6 +33,38 @@ export function nichosConProductos(
     .sort((a, b) => a.orden - b.orden);
 }
 
+/** Un nicho con sus categorías visibles: lo que muestra el menú. */
+export type SeccionMenu = {
+  nicho: Niche;
+  categorias: Category[];
+  totalProductos: number;
+};
+
+/** El menú de la tienda: cada nicho visible con sus categorías, en orden. */
+export function menuPorNicho(
+  nichosVisibles: readonly Niche[],
+  categoriasVisibles: readonly Category[],
+  productos: readonly Product[],
+): SeccionMenu[] {
+  return nichosVisibles.map((nicho) => ({
+    nicho,
+    categorias: categoriasVisibles.filter((c) => c.nichoSlug === nicho.slug),
+    totalProductos: productosDeNicho(nicho.slug, categoriasVisibles, productos).length,
+  }));
+}
+
+/** Productos de un nicho: los de cualquiera de sus categorías. */
+export function productosDeNicho(
+  nichoSlug: string,
+  categorias: readonly Category[],
+  productos: readonly Product[],
+): Product[] {
+  const delNicho = new Set(
+    categorias.filter((c) => c.nichoSlug === nichoSlug).map((c) => c.slug),
+  );
+  return productos.filter((p) => delNicho.has(p.categoriaSlug));
+}
+
 /**
  * Productos para el carrusel de la portada. Un agotado no entra: es el mejor
  * espacio del sitio y se desperdicia en algo que nadie puede comprar. Si no

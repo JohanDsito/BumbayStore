@@ -18,6 +18,7 @@ import {
 } from "@/components/icons";
 import { SelectorColor } from "@/components/color-selector";
 import type { Product, Category } from "@/dominio/modelos";
+import { rutaProducto } from "@/dominio/rutas";
 
 type Props = {
   producto: Product;
@@ -70,7 +71,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
         ? [producto.imagen]
         : [];
 
-  const url = `${site.url}/producto/${producto.slug}`;
+  const url = `${site.url}${rutaProducto(producto)}`;
 
   const copiarEnlace = async () => {
     try {
@@ -238,7 +239,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
             )}
 
             <Link
-              href={`/producto/${producto.slug}`}
+              href={rutaProducto(producto)}
               className="group mt-4 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-marca-400 transition-colors hover:text-marca-300"
             >
               Ver ficha completa

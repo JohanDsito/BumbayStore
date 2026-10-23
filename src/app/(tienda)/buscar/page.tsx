@@ -6,6 +6,7 @@ import { GrillaProductos } from "@/components/product-grid";
 import { RegistrarBusqueda } from "@/components/search-logger";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { IconoWhatsApp } from "@/components/icons";
+import { rutaCategoria } from "@/dominio/rutas";
 
 type Props = { searchParams: Promise<{ q?: string }> };
 
@@ -40,7 +41,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
               <span className="font-mono text-marca-400">{consulta}</span>
             </>
           ) : (
-            "¿Qué herramienta necesitas?"
+            "¿Qué estás buscando?"
           )}
         </h1>
         {consulta && (
@@ -84,7 +85,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
               {categorias.map((c) => (
                 <li key={c.slug}>
                   <Link
-                    href={`/categoria/${c.slug}`}
+                    href={rutaCategoria(c)}
                     className="block border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
                   >
                     {c.nombre}

@@ -4,6 +4,7 @@ import { AgregarAlPedido } from "@/components/add-to-cart";
 import { EtiquetaColor } from "@/components/color-selector";
 import { precio } from "@/dominio/formato";
 import type { Product } from "@/dominio/modelos";
+import { rutaProducto } from "@/dominio/rutas";
 
 type Props = {
   producto: Product;
@@ -46,7 +47,7 @@ export function TarjetaProducto({ producto, prioridad = false, indice = 0 }: Pro
 
         <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-carbon-100 sm:text-sm">
           {/* El enlace cubre toda la tarjeta salvo el botón, que va por encima. */}
-          <Link href={`/producto/${producto.slug}`} className="before:absolute before:inset-0">
+          <Link href={rutaProducto(producto)} className="before:absolute before:inset-0">
             {producto.nombre}
           </Link>
         </h3>

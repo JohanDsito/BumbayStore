@@ -7,11 +7,13 @@ import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
 import { AdminProductos } from "@/components/admin/productos";
 import { AdminPedidos } from "@/components/admin/pedidos";
 import { AdminBusquedas } from "@/components/admin/busquedas";
+import { AdminEstructura } from "@/components/admin/estructura";
 
-type Pestana = "productos" | "pedidos" | "busquedas";
+type Pestana = "productos" | "estructura" | "pedidos" | "busquedas";
 
 const PESTANAS: { id: Pestana; titulo: string }[] = [
   { id: "productos", titulo: "Productos" },
+  { id: "estructura", titulo: "Nichos y categorías" },
   { id: "pedidos", titulo: "Pedidos" },
   { id: "busquedas", titulo: "Búsquedas" },
 ];
@@ -94,14 +96,14 @@ export function PanelAdmin() {
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-carbon-800 pb-3">
-        <nav className="flex gap-1" aria-label="Secciones">
+        <nav className="sin-scrollbar flex max-w-full gap-1 overflow-x-auto" aria-label="Secciones">
           {PESTANAS.map((p) => (
             <button
               key={p.id}
               type="button"
               onClick={() => setPestana(p.id)}
               aria-current={pestana === p.id ? "page" : undefined}
-              className={`px-4 py-2 text-[13px] font-medium transition-colors ${
+              className={`whitespace-nowrap px-4 py-2 text-[13px] font-medium transition-colors ${
                 pestana === p.id
                   ? "border-b-2 border-marca-500 text-carbon-50"
                   : "text-carbon-400 hover:text-carbon-100"
@@ -127,6 +129,7 @@ export function PanelAdmin() {
       </div>
 
       {pestana === "productos" && <AdminProductos />}
+      {pestana === "estructura" && <AdminEstructura />}
       {pestana === "pedidos" && <AdminPedidos />}
       {pestana === "busquedas" && <AdminBusquedas />}
     </div>

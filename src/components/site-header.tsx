@@ -8,9 +8,10 @@ import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Buscador } from "@/components/search-box";
 import { BotonPedidoHeader } from "@/components/cart-bar";
 import { Logotipo, IconoWhatsApp, IconoMenu, IconoCerrar } from "@/components/icons";
-import type { Category } from "@/dominio/modelos";
+import type { SeccionMenu } from "@/dominio/catalogo";
+import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
-export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
+export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const ruta = usePathname();
 
@@ -49,7 +50,7 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
               BUMB<span className="text-marca-500">A</span>Y
             </span>
             <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-carbon-400">
-              Tools
+              Store
             </span>
           </span>
         </Link>
@@ -72,7 +73,7 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
           <button
             type="button"
             onClick={() => setMenuAbierto((v) => !v)}
-            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú de categorías"}
+            aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú del catálogo"}
             aria-expanded={menuAbierto}
             className="flex h-10 w-10 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400 lg:hidden"
           >
@@ -92,26 +93,38 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
         </Suspense>
       </div>
 
-      {/* Categorías: carrusel horizontal en celular, fila completa en escritorio */}
-      <nav
-        aria-label="Categorías"
-        className="hidden border-t border-carbon-850 lg:block"
-      >
+      {/* Catálogo por nicho: cada nicho seguido de sus categorías. Si no caben,
+          la fila se desplaza de lado en vez de partirse en dos. */}
+      <nav aria-label="Catálogo" className="hidden border-t border-carbon-850 lg:block">
         <div className="mx-auto max-w-[1400px] px-6">
           <ul className="sin-scrollbar flex items-center gap-1 overflow-x-auto">
             <li>
               <EnlaceCategoria href="/" activo={ruta === "/"}>
-                Todo el catálogo
+                Inicio
               </EnlaceCategoria>
             </li>
-            {categorias.map((c) => (
-              <li key={c.slug}>
+            {menu.map(({ nicho, categorias }) => (
+              <li key={nicho.slug} className="flex items-center gap-1">
+                <span aria-hidden className="mx-1 h-4 w-px bg-carbon-800" />
                 <EnlaceCategoria
-                  href={`/categoria/${c.slug}`}
-                  activo={ruta === `/categoria/${c.slug}`}
+                  href={rutaNicho(nicho)}
+                  activo={ruta === rutaNicho(nicho)}
+                  destacado
                 >
-                  {c.nombre}
+                  {nicho.nombre}
                 </EnlaceCategoria>
+                <ul className="flex items-center gap-1">
+                  {categorias.map((c) => (
+                    <li key={c.slug}>
+                      <EnlaceCategoria
+                        href={rutaCategoria(c)}
+                        activo={ruta === rutaCategoria(c)}
+                      >
+                        {c.nombre}
+                      </EnlaceCategoria>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
@@ -120,10 +133,7 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
 
       {/* Menú desplegable en celular */}
       {menuAbierto && (
-        <nav
-          aria-label="Categorías"
-          className="border-t border-carbon-850 bg-carbon-900 lg:hidden"
-        >
+        <nav aria-label="Catálogo" className="border-t border-carbon-850 bg-carbon-900 lg:hidden">
           <ul className="max-h-[60vh] overflow-y-auto">
             <li>
               <Link
@@ -131,18 +141,36 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
                 onClick={() => setMenuAbierto(false)}
                 className="block border-b border-carbon-850 px-5 py-3 text-sm font-medium text-carbon-100"
               >
-                Todo el catálogo
+                Inicio
               </Link>
             </li>
-            {categorias.map((c) => (
-              <li key={c.slug}>
+            {menu.map(({ nicho, categorias }) => (
+              <li key={nicho.slug}>
                 <Link
-                  href={`/categoria/${c.slug}`}
+                  href={rutaNicho(nicho)}
                   onClick={() => setMenuAbierto(false)}
-                  className="flex items-center justify-between border-b border-carbon-850 px-5 py-3 text-sm text-carbon-300 transition-colors active:bg-carbon-850"
+                  className="flex items-baseline justify-between border-b border-carbon-850 px-5 py-3 text-sm font-semibold text-carbon-50"
                 >
-                  {c.nombre}
+                  {nicho.nombre}
+                  {nicho.submarca && (
+                    <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-marca-500">
+                      {nicho.submarca}
+                    </span>
+                  )}
                 </Link>
+                <ul>
+                  {categorias.map((c) => (
+                    <li key={c.slug}>
+                      <Link
+                        href={rutaCategoria(c)}
+                        onClick={() => setMenuAbierto(false)}
+                        className="block border-b border-carbon-850 py-3 pl-9 pr-5 text-sm text-carbon-300 transition-colors active:bg-carbon-850"
+                      >
+                        {c.nombre}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
@@ -157,10 +185,13 @@ export function EncabezadoSitio({ categorias }: { categorias: Category[] }) {
 function EnlaceCategoria({
   href,
   activo,
+  destacado = false,
   children,
 }: {
   href: string;
   activo: boolean;
+  /** El nombre de un nicho va más marcado que sus categorías. */
+  destacado?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -170,7 +201,9 @@ function EnlaceCategoria({
       className={`relative block whitespace-nowrap px-3 py-2.5 text-[12.5px] font-medium tracking-tight transition-colors ${
         activo
           ? "text-marca-400"
-          : "text-carbon-400 hover:text-carbon-100"
+          : destacado
+            ? "font-semibold text-carbon-100 hover:text-marca-400"
+            : "text-carbon-400 hover:text-carbon-100"
       }`}
     >
       {children}

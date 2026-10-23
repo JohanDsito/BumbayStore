@@ -3,10 +3,13 @@
  * vive aquí, no disperso por los componentes.
  */
 export const site = {
-  nombre: "Bumbay Tools",
-  nombreLargo: "Bumbay Tools — Herramientas inalámbricas",
+  nombre: "Bumbay Store",
+  /**
+   * Lo que es la tienda entera, no un nicho: sale en Google, en el pie y en
+   * los datos del negocio. Lo propio de cada nicho vive en su tabla.
+   */
   descripcion:
-    "Importador y distribuidor de herramientas inalámbricas profesionales de 128V. Taladros, pulidoras, llaves de impacto, combos y herramienta manual a precio de distribuidor, con envío a toda Colombia.",
+    "Importador directo con envío a toda Colombia. Herramienta inalámbrica profesional y nuevas líneas en un solo catálogo: arma tu pedido y lo cerramos por WhatsApp.",
   /** Ciudad de operación. Sale del mismo sitio que la dirección del pie. */
   ciudad: process.env.NEXT_PUBLIC_CIUDAD ?? "Pasto",
   pais: "Colombia",
@@ -17,10 +20,6 @@ export const site = {
   email: process.env.NEXT_PUBLIC_EMAIL ?? "ventas@bumbaytools.com",
   direccion: process.env.NEXT_PUBLIC_DIRECCION ?? "Bogotá, Colombia",
   horario: "Lunes a sábado, 9:00 am a 6:00 pm",
-  /** Meses de garantía que se anuncian en la portada. */
-  garantiaMeses: 6,
-  /** Plataforma de batería de la línea inalámbrica. */
-  plataforma: "128V",
   redes: {
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM ?? "",
     facebook: process.env.NEXT_PUBLIC_FACEBOOK ?? "",

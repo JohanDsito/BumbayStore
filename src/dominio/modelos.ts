@@ -75,8 +75,21 @@ export type Niche = {
   nombre: string;
   /** Marca con la que se presenta el nicho. null si usa solo Bumbay Store. */
   submarca: string | null;
+  /**
+   * Título grande de la portada del nicho. Si trae dos líneas (separadas por
+   * un salto de línea), la segunda se resalta. null usa el nombre.
+   */
+  titular: string | null;
+  /** Párrafo de presentación, bajo el titular. */
   descripcion: string | null;
+  /** Cifras cortas de la portada: "128V · Plataforma de batería". */
+  datos: DatoNicho[];
   orden: number;
+};
+
+export type DatoNicho = {
+  etiqueta: string;
+  valor: string;
 };
 
 export type Category = {

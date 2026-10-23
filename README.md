@@ -212,6 +212,7 @@ Providers** → desactiva *Allow new users to sign up*.
 | Sección | Para qué |
 |---|---|
 | **Productos** | Precio, foto de portada, marcar agotado o destacado, y editar ficha técnica, especificaciones, modo de uso, beneficios y preguntas frecuentes. |
+| **Nichos y categorías** | Crear nichos y categorías, mover una categoría de nicho y editar lo que muestra la portada de cada nicho: titular, presentación y cifras. Un nicho nuevo nace oculto; se muestra cuando lo marcas visible y tiene productos. |
 | **Pedidos** | Cada pedido que alguien inició, aunque nunca te haya escrito. Con nombre, ciudad, productos y total, más las ciudades que más piden. |
 | **Búsquedas** | Lo que la gente busca. Lo importante es la columna de las que **no** encontraron nada: es demanda medida. |
 
@@ -295,8 +296,7 @@ src/
                       y respaldo. Las páginas importan `catalogo` de aquí.
   cliente/            estado que vive en el navegador (el pedido)
   config/sitio.ts     datos de la marca
-  app/                rutas de Next: portada, categoría, producto, buscar,
-                      panel, sitemap y robots
+  app/                rutas de Next (ver abajo), panel, sitemap y robots
   components/         piezas de interfaz
   data/               catálogo de ejemplo y respaldo, municipios del DANE
 supabase/
@@ -336,6 +336,31 @@ ejecutaba a mano y es idempotente: aplicarla sobre una base que ya lo tenía no
 cambia nada.
 
 ---
+
+## Direcciones
+
+| Página | Dirección |
+|---|---|
+| Portada de la tienda | `/` |
+| Portada de un nicho | `/herramientas` |
+| Categoría | `/herramientas/taladros` |
+| Ficha de producto | `/producto/taladro-percutor-…` (sin nicho: si el producto cambia de categoría, su dirección no cambia) |
+
+Las direcciones viejas `/categoria/taladros` redirigen de forma permanente a la
+nueva. Todas se arman en `src/dominio/rutas.ts`; ningún componente las escribe
+a mano.
+
+## Ver la tienda con varios nichos
+
+Mientras los nichos reales no existan, se puede ver la tienda con dos nichos
+de ejemplo (`src/data/ejemplo.seed.ts`) agregando a `.env.local`:
+
+```
+CATALOGO=ejemplo
+```
+
+Solo en tu equipo: con esa variable se ignora Supabase. Nunca la pongas en
+Vercel.
 
 ## Pruebas
 

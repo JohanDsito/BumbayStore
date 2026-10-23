@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { catalogo } from "@/servidor/catalogo";
 import { imagenUrl } from "@/infraestructura/imagen-url";
 import { site } from "@/config/sitio";
 import { precio } from "@/dominio/formato";
+import { rutaCategoria, rutaNicho, rutaProducto } from "@/dominio/rutas";
 import { enlaceConsulta } from "@/infraestructura/whatsapp";
 import { GaleriaProducto } from "@/components/product-gallery";
 import { AgregarAlPedido } from "@/components/add-to-cart";
@@ -13,6 +13,7 @@ import { TarjetaProducto } from "@/components/product-card";
 import { SelectorColor } from "@/components/color-selector";
 import { IconoWhatsApp } from "@/components/icons";
 import { JsonLd } from "@/components/json-ld";
+import { Migas, type Paso } from "@/components/migas";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -40,12 +41,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${producto.nombre} — ${producto.sku}`,
     description: descripcion,
-    alternates: { canonical: `/producto/${producto.slug}` },
+    alternates: { canonical: rutaProducto(producto) },
     openGraph: {
       type: "website",
       title: producto.nombre,
       description: descripcion,
-      url: `${site.url}/producto/${producto.slug}`,
+      url: `${site.url}${rutaProducto(producto)}`,
       siteName: site.nombre,
       locale: "es_CO",
       ...(imagen ? { images: [{ url: imagen, alt: producto.nombre }] } : {}),
@@ -68,6 +69,7 @@ export default async function FichaProducto({ params }: Props) {
     catalogo.relacionadosDe(producto, 4),
     catalogo.variantesDe(producto),
   ]);
+  const nicho = categoria ? await catalogo.nicho(categoria.nichoSlug) : null;
 
   // La galería usa la secuencia completa de piezas; si un producto solo tiene
   // portada, cae a esa sola imagen.
@@ -108,7 +110,7 @@ export default async function FichaProducto({ params }: Props) {
       : {}),
     offers: {
       "@type": "Offer",
-      url: `${site.url}/producto/${producto.slug}`,
+      url: `${site.url}${rutaProducto(producto)}`,
       priceCurrency: site.moneda,
       price: producto.precioUnitario,
       availability: producto.agotado
@@ -119,29 +121,11 @@ export default async function FichaProducto({ params }: Props) {
     },
   };
 
-  const datosMigas = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: site.url },
-      ...(categoria
-        ? [
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: categoria.nombre,
-              item: `${site.url}/categoria/${categoria.slug}`,
-            },
-          ]
-        : []),
-      {
-        "@type": "ListItem",
-        position: categoria ? 3 : 2,
-        name: producto.nombre,
-        item: `${site.url}/producto/${producto.slug}`,
-      },
-    ],
-  };
+  const migas: Paso[] = [
+    ...(nicho ? [{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }] : []),
+    ...(categoria ? [{ nombre: categoria.nombre, ruta: rutaCategoria(categoria) }] : []),
+    { nombre: producto.nombre, ruta: rutaProducto(producto), etiqueta: producto.sku },
+  ];
 
   const datosFaq =
     producto.faq.length > 0
@@ -159,36 +143,12 @@ export default async function FichaProducto({ params }: Props) {
   return (
     <>
       <JsonLd datos={datosProducto} />
-      <JsonLd datos={datosMigas} />
       {datosFaq && (
         <JsonLd datos={datosFaq} />
       )}
 
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <nav aria-label="Ruta de navegación" className="py-4">
-          <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-carbon-500">
-            <li>
-              <Link href="/" className="transition-colors hover:text-marca-400">
-                Inicio
-              </Link>
-            </li>
-            {categoria && (
-              <>
-                <li aria-hidden>/</li>
-                <li>
-                  <Link
-                    href={`/categoria/${categoria.slug}`}
-                    className="transition-colors hover:text-marca-400"
-                  >
-                    {categoria.nombre}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li aria-hidden>/</li>
-            <li className="text-carbon-300">{producto.sku}</li>
-          </ol>
-        </nav>
+        <Migas pasos={migas} />
 
         <div className="grid gap-8 pb-12 lg:grid-cols-2 lg:gap-12">
           {/* --- Imagen --- */}

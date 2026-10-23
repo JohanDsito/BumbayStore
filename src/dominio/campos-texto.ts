@@ -1,4 +1,4 @@
-import type { Spec, Faq } from "@/dominio/modelos";
+import type { DatoNicho, Faq, Spec } from "@/dominio/modelos";
 
 /**
  * Conversión entre los campos estructurados y el texto plano que se edita en
@@ -52,6 +52,15 @@ export function textoAFaq(texto: string): Faq[] {
       return pregunta && respuesta ? { pregunta, respuesta } : null;
     })
     .filter((x): x is Faq => x !== null);
+}
+
+/** Datos de la portada de un nicho: "Plataforma de batería: 128V | Meses de garantía: 6". */
+export function datosATexto(datos: readonly DatoNicho[]): string {
+  return especificacionesATexto(datos.map((d) => ({ label: d.etiqueta, valor: d.valor })));
+}
+
+export function textoADatos(texto: string): DatoNicho[] {
+  return textoAEspecificaciones(texto).map((e) => ({ etiqueta: e.label, valor: e.valor }));
 }
 
 /**

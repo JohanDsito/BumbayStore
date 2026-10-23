@@ -24,11 +24,9 @@ export async function POST(peticion: Request) {
     return Response.json({ error: "Sin permiso" }, { status: 403 });
   }
 
-  // Las rutas con segmento dinámico necesitan el patrón y el tipo, no una URL
-  // concreta: así se refrescan todas las fichas de una vez.
-  revalidatePath("/", "page");
-  revalidatePath("/producto/[slug]", "page");
-  revalidatePath("/categoria/[slug]", "page");
+  // El layout de la tienda lleva el menú de nichos y categorías: refrescarlo
+  // regenera todas las páginas que cuelgan de él.
+  revalidatePath("/", "layout");
   revalidatePath("/sitemap.xml");
 
   return Response.json({ ok: true, momento: new Date().toISOString() });
