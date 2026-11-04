@@ -223,7 +223,8 @@ Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El
 
 ### Navigation
 - **Style:** encabezado casi opaco; nichos en rótulo, con una raya de 1 px en el acento bajo el activo que crece desde la izquierda.
-- **Mobile:** buscador en su fila; menú desplegable agrupado por nicho.
+- **Mobile (bajo 1024 px):** tres columnas: menú a la izquierda, logo centrado de 148 px, pedido a la derecha; el buscador va en su propia fila. El menú despliega bajo la cabecera, fuera del flujo, con un velo noche al 75 % detrás: solo los nichos, uno por fila (56 px de alto), y al tocar uno se abren sus categorías y "Ver todo en {nicho} →", uno abierto a la vez. Al final, las redes configuradas y WhatsApp. Se cierra al navegar, al tocar fuera y con Escape, y devuelve el foco al botón.
+- **Footer:** en celular, logo y WhatsApp en una fila, los nichos en línea (sin categorías) y el contacto en tres renglones con las redes como íconos. En computador, los nichos van en columnas de dos o tres, para que el pie crezca hacia el costado y no hacia abajo.
 
 ### Campo de luz
 La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de todo. Un filamento por nicho (núcleo fino, halo y partículas que solo se encienden cerca del filamento); el puntero los curva al pasar. Se funde al color del nicho al navegar. Presupuesto: 50 % de la resolución en escritorio y 35 % en celular, 30 cuadros en celular, congelado bajo la primera pantalla y con la pestaña oculta, una imagen quieta con el movimiento reducido, y póster CSS sin WebGL, con ahorro de datos o con poca memoria.
@@ -232,7 +233,7 @@ La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de
 Al cargar una portada, las letras del titular suben y se enderezan una a una (CSS puro, `letra-entra`), y la segunda línea entra justo después. El ritmo vive en tres variables de `globals.css`: `--letra-duracion` (760 ms), `--letra-paso` (26 ms entre letras) y `--linea-pausa` (140 ms). Con movimiento reducido el titular aparece entero de inmediato. Para los lectores de pantalla el título es una sola frase.
 
 ### Índice de portada
-Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a la izquierda del titular. En la portada general, pasar por una entrada enciende su filamento y la lectura del campo dice su nombre.
+Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a la izquierda del titular. En la portada general, pasar por una entrada enciende su filamento y la lectura del campo dice su nombre. Solo en computador: en celular repetía lo que ya está en el menú.
 
 ### Logos
 Los dos logos son imágenes del negocio, recortadas sobre fondo transparente en `public/marca/` y nunca redibujadas: Bumbay Store (letra manuscrita blanca con sombra turquesa) en el encabezado, el pie y el panel; Bumbay Tools (bloque blanco con la "A" roja) sobre el titular de su nicho.

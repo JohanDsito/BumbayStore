@@ -87,3 +87,32 @@ export function IconoWhatsApp(props: Props) {
     </svg>
   );
 }
+
+/* Redes sociales: de trazo, como el resto, para no romper la familia. */
+
+export function IconoInstagram(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
+      <circle cx="12" cy="12" r="3.8" />
+      <circle cx="17.2" cy="6.8" r="0.4" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function IconoFacebook(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="M16 3.5h-2.2A3.8 3.8 0 0 0 10 7.3v13.2M7 11h8" />
+    </svg>
+  );
+}
+
+export function IconoTiktok(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="M13.5 3.5v11.2a3.3 3.3 0 1 1-3.3-3.3" />
+      <path d="M13.5 3.5c.4 2.5 2.2 4.3 5 4.6" />
+    </svg>
+  );
+}

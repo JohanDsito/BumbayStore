@@ -19,7 +19,7 @@ export const ANCLA_CATALOGO = "catalogo";
 /**
  * La primera pantalla de una portada, sobre el campo de luz: a la izquierda
  * el índice y, debajo, la lectura del campo; a la derecha el titular, con
- * todo el ancho para él. En celular se apilan: titular, acciones e índice.
+ * todo el ancho para él. En celular van solo el titular y las acciones.
  *
  * El titular admite dos líneas separadas por un salto de línea; la segunda
  * va en el color del nicho.
@@ -48,8 +48,10 @@ export function Portico({
     <section className="relative">
       <div className="relative mx-auto grid max-w-[1400px] gap-10 px-4 pb-12 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-14 lg:pb-16 lg:pt-20">
         {/* La lectura del campo va bajo el índice que la enciende. Flotando en
-            la esquina chocaba con titulares largos y nichos con muchas cifras. */}
-        <div className="order-2 lg:order-1 lg:pt-3">
+            la esquina chocaba con titulares largos y nichos con muchas cifras.
+            En celular no se muestra: nichos y categorías ya están en el menú.
+            Los enlaces siguen en el HTML y en el pie, así que Google los ve. */}
+        <div className="hidden lg:order-1 lg:block lg:pt-3">
           <IndicePortal {...indice} />
           <div className="mt-8 hidden lg:block">{lectura}</div>
         </div>
