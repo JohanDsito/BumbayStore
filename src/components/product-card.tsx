@@ -43,7 +43,9 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
         </div>
 
         <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-carbon-100 sm:text-sm">
-          {/* El enlace cubre toda la tarjeta salvo el botón, que va por encima. */}
+          {/* El enlace cubre toda la tarjeta, foto incluida, salvo el botón, que va
+              por encima. Por eso entre él y el <article> no puede haber otro
+              bloque posicionado (ver .esquinas-tecnicas en globals.css). */}
           <Link href={rutaProducto(producto)} className="before:absolute before:inset-0">
             {producto.nombre}
           </Link>

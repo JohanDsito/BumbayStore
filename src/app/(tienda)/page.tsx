@@ -6,7 +6,12 @@ import { rutaNicho } from "@/dominio/rutas";
 import { CarruselDestacados } from "@/components/featured-carousel";
 import { GrillaProductos } from "@/components/product-grid";
 import { LecturaCampo } from "@/components/indice-portal";
-import { BloqueMayorista, EncabezadoSeccion, Portico } from "@/components/portada";
+import {
+  ANCLA_CATALOGO,
+  BloqueMayorista,
+  EncabezadoSeccion,
+  Portico,
+} from "@/components/portada";
 
 export const metadata: Metadata = {
   title: { absolute: `${site.nombre} — Importador directo con envío a toda Colombia` },
@@ -59,7 +64,7 @@ export default async function Portada() {
           </div>
         )}
 
-        <section aria-labelledby="titulo-catalogo" className="pb-8">
+        <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
           <EncabezadoSeccion
             id="titulo-catalogo"
             titulo="Todo el catálogo"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useCarrito } from "@/cliente/carrito/use-carrito";
@@ -238,13 +237,16 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               </dl>
             )}
 
-            <Link
+            {/* <a> y no <Link>: un <Link> a esta misma dirección se vuelve a
+                interceptar y deja al cliente en la vista previa. Solo una carga
+                completa sale de la ruta interceptada y trae la ficha entera. */}
+            <a
               href={rutaProducto(producto)}
               className="group mt-4 flex items-center gap-1.5 rotulo text-[11px] text-marca-400 transition-colors hover:text-marca-300"
             >
               Ver ficha completa
               <IconoFlecha className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

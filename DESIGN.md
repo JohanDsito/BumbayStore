@@ -121,7 +121,7 @@ La tienda es un portal: detrás del catálogo respira un campo de luz, y cada l�
 
 El campo es el único momento de movimiento autorado del sitio, y está gobernado por el rendimiento: se dibuja a fracción de resolución, se congela al pasar la primera pantalla, se queda quieto con el movimiento reducido y se reemplaza por un póster en CSS cuando el equipo no da. El contenido nunca lo espera. Bajo la primera pantalla la tienda es un catálogo sobrio y denso: productos sobre un panel claro y suave, datos en mono, acciones de contorno.
 
-Bumbay Tools conserva su firma de taller dentro de su nicho: la cinta de precaución, las esquinas técnicas de las tarjetas y el rojo exacto del logotipo.
+Bumbay Tools conserva su firma dentro de su nicho: su logotipo sobre el titular y el rojo exacto del logotipo como acento. La cinta de precaución que llevaba su portada se quitó a pedido del equipo (noviembre de 2026).
 
 **Key Characteristics:**
 - Fondo noche casi negro azulado, sin retícula; el campo de luz es la única textura.
@@ -199,7 +199,7 @@ Profundidad por capas tonales de la noche y por el campo detrás de todo. Los pa
 
 ## Shapes
 
-Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El único círculo es el punto de estado (disponible, línea activa). Las tarjetas de producto de Bumbay Tools llevan las esquinas técnicas, que se encienden en el acento al pasar.
+Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El único círculo es el punto de estado (disponible, línea activa). Las tarjetas de producto llevan las esquinas técnicas, que se encienden en el acento al pasar. Se dibujan con fondos y no con pseudoelementos: así el bloque no queda posicionado y el enlace del nombre puede cubrir la tarjeta entera, foto incluida.
 
 ## Components
 
@@ -237,9 +237,6 @@ Lista de nichos (o de categorías, dentro de un nicho) con su conteo en mono, a 
 ### Logos
 Los dos logos son imágenes del negocio, recortadas sobre fondo transparente en `public/marca/` y nunca redibujadas: Bumbay Store (letra manuscrita blanca con sombra turquesa) en el encabezado, el pie y el panel; Bumbay Tools (bloque blanco con la "A" roja) sobre el titular de su nicho.
 
-### Cinta de precaución (Bumbay Tools)
-Franjas en el acento a 45°, 4 px de alto, sobre la portada del nicho de herramientas. Solo ahí.
-
 ## Do's and Don'ts
 
 ### Do:
@@ -253,6 +250,6 @@ Franjas en el acento a 45°, 4 px de alto, sobre la portada del nicho de herrami
 ### Don't:
 - **Don't** poner un rótulo encima de un titular ni números de sección decorativos.
 - **Don't** escribir `text-white` sobre el acento: usa la tinta calculada.
-- **Don't** usar la cinta de precaución fuera de Bumbay Tools.
+- **Don't** posicionar (`relative`) ningún bloque de la tarjeta de producto entre el `<article>` y el enlace del nombre: el enlace dejaría de cubrir la foto.
 - **Don't** agregar un segundo efecto animado de fondo o entradas escalonadas en cada grilla.
 - **Don't** poner una pantalla de carga ni hacer esperar el contenido al campo.

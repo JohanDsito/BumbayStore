@@ -10,7 +10,12 @@ import { GrillaProductos } from "@/components/product-grid";
 import { Migas } from "@/components/migas";
 import { ContextoNicho } from "@/components/contexto-nicho";
 import { LogoTools } from "@/components/logos";
-import { BloqueMayorista, EncabezadoSeccion, Portico } from "@/components/portada";
+import {
+  ANCLA_CATALOGO,
+  BloqueMayorista,
+  EncabezadoSeccion,
+  Portico,
+} from "@/components/portada";
 
 type Props = { params: Promise<{ nicho: string }> };
 
@@ -62,7 +67,7 @@ export default async function PortadaNicho({ params }: Props) {
   ]);
 
   const marca = nicho.submarca ?? nicho.nombre;
-  // Herramientas es Bumbay Tools: lleva su logo y su cinta de taller.
+  // Herramientas es Bumbay Tools: lleva su logo sobre el titular.
   const esTaller = nicho.slug === site.nichoTaller;
   const conteo = (n: number) => `${n} ${n === 1 ? "producto" : "productos"}`;
 
@@ -78,7 +83,6 @@ export default async function PortadaNicho({ params }: Props) {
           nicho.submarca && !esTaller ? `${nicho.submarca} · ${nicho.nombre}` : nicho.nombre
         }
         descripcion={nicho.descripcion}
-        cinta={esTaller}
         logo={esTaller ? <LogoTools className="w-[240px] sm:w-[320px]" /> : undefined}
         indice={{
           titulo: "Categorías",
@@ -104,7 +108,7 @@ export default async function PortadaNicho({ params }: Props) {
           </div>
         )}
 
-        <section aria-labelledby="titulo-catalogo" className="pb-8">
+        <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
           <EncabezadoSeccion
             id="titulo-catalogo"
             titulo={`Todo en ${nicho.nombre.toLowerCase()}`}

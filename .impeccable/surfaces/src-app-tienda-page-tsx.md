@@ -7,7 +7,7 @@ related_targets: ["src/app/(tienda)/[nicho]/page.tsx","src/app/(tienda)/layout.t
 
 # Portada de Bumbay Store (y su mundo, que hereda toda la tienda)
 
-Modo: Persuade. Audiencia: cliente final y negocios en Colombia, casi siempre en celular de gama media. Acción: agregar productos al pedido y enviarlo por WhatsApp. Prueba: catálogo real con precio único; fotos de bodega y despachos cuando el negocio las entregue (hoy no hay: no inventarlas). Restricciones: la velocidad en celular manda sobre el efecto (PRODUCT.md); Bumbay Tools conserva su rojo y su cinta de precaución dentro de su nicho; no verse plantilla, barata ni poco profesional.
+Modo: Persuade. Audiencia: cliente final y negocios en Colombia, casi siempre en celular de gama media. Acción: agregar productos al pedido y enviarlo por WhatsApp. Prueba: catálogo real con precio único; fotos de bodega y despachos cuando el negocio las entregue (hoy no hay: no inventarlas). Restricciones: la velocidad en celular manda sobre el efecto (PRODUCT.md); Bumbay Tools conserva su rojo y su logo dentro de su nicho; no verse plantilla, barata ni poco profesional.
 
 Rendimiento obligatorio del campo de luz: WebGL a resolución reducida (0.5 en escritorio, 0.35 en celular), 30 fps en celular, arranca después de pintar el contenido, se congela al pasar la primera pantalla y con la pestaña oculta; sin WebGL, con ahorro de datos, poca memoria o movimiento reducido, se muestra un póster CSS con el mismo aspecto. Sin pantalla de carga con porcentaje.
 
