@@ -152,9 +152,10 @@ necesario.
 
 ## Departamentos y municipios
 
-El campo de ciudad del pedido autocompleta sobre la division politico-
-administrativa oficial (**Divipola** del DANE): 33 departamentos y 1.122
-municipios.
+El pedido pide el departamento (lista de los 33) y despues la ciudad o
+municipio, que se busca solo dentro de ese departamento. Las dos listas salen
+de la division politico-administrativa oficial (**Divipola** del DANE): 33
+departamentos y 1.122 municipios.
 
 La lista vive en `src/data/municipios.ts` como archivo del proyecto, no como
 llamada a una API. Son 20 KB, la division cambia cada varios anos, y asi el
@@ -169,8 +170,10 @@ curl "https://www.datos.gov.co/resource/gdxc-w37w.json?\$limit=1500" -o divipola
 y regenerar el archivo con los nombres capitalizados. El encabezado de
 `src/data/municipios.ts` documenta la fuente y la fecha de descarga.
 
-El campo exige que la ciudad salga de esa lista: asi llega siempre escrita
-igual y los pedidos se pueden agrupar por zona para cotizar el envio.
+El formulario exige que el municipio salga de esa lista y pertenezca al
+departamento elegido: asi llega siempre escrito igual y los pedidos se pueden
+agrupar por zona para cotizar el envio. Departamento y municipio se guardan en
+columnas separadas de `pedidos`.
 
 ---
 
@@ -219,7 +222,7 @@ Providers** → desactiva *Allow new users to sign up*.
 |---|---|
 | **Productos** | Precio, foto de portada, marcar agotado o destacado, y editar ficha técnica, especificaciones, modo de uso, beneficios y preguntas frecuentes. |
 | **Nichos y categorías** | Crear nichos y categorías, mover una categoría de nicho y editar lo que muestra la portada de cada nicho: titular, presentación y cifras. Un nicho nuevo nace oculto; se muestra cuando lo marcas visible y tiene productos. |
-| **Pedidos** | Cada pedido que alguien inició, aunque nunca te haya escrito. Con nombre, ciudad, productos y total, más las ciudades que más piden. |
+| **Pedidos** | Cada pedido que alguien inició, aunque nunca te haya escrito. Con nombre y apellido, celular, departamento y municipio, forma de pago, productos y total. Se filtra por forma de pago y por departamento, y muestra las zonas que más piden. |
 | **Búsquedas** | Lo que la gente busca. Lo importante es la columna de las que **no** encontraron nada: es demanda medida. |
 
 Los campos largos usan el mismo formato del CSV, para no tener dos

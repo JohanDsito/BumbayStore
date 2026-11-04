@@ -38,4 +38,9 @@ export const site = {
    * precaución). Los demás nichos usan solo el mundo de Bumbay Store.
    */
   nichoTaller: "herramientas",
+  /**
+   * Nota bajo "Pago anticipado" en el pedido. El descuento lo calcula el
+   * asesor al cotizar; la página solo lo anuncia, por eso no lleva valor.
+   */
+  notaPagoAnticipado: "Si eliges pago anticipado tienes un descuento en tu producto.",
 } as const;

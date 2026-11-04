@@ -1,7 +1,12 @@
 "use client";
 
 import type { CartLine } from "@/dominio/modelos";
-import { busquedaRegistrable, totalesPedido } from "@/dominio/pedido";
+import {
+  busquedaRegistrable,
+  normalizarCelular,
+  totalesPedido,
+  type DatosCliente,
+} from "@/dominio/pedido";
 
 /**
  * Registro de lo que hace el cliente en el catálogo, para que el panel de
@@ -54,16 +59,22 @@ async function insertar(tabla: string, fila: unknown): Promise<void> {
  * salga hacia WhatsApp. Así quedan también los pedidos que nunca llegaron al
  * chat porque se arrepintieron en el último paso.
  */
-export async function registrarPedido(datos: {
-  nombre: string;
-  ciudad: string;
-  comentario: string;
-  total: number;
-  lineas: CartLine[];
-}): Promise<void> {
+export async function registrarPedido(
+  datos: DatosCliente & {
+    comentario: string;
+    total: number;
+    lineas: CartLine[];
+  },
+): Promise<void> {
   await insertar("pedidos", {
     nombre: datos.nombre.trim(),
-    ciudad: datos.ciudad.trim(),
+    apellido: datos.apellido.trim(),
+    // Solo los 10 dígitos: así se busca y se agrupa igual lo que se escribió
+    // "300 123 4567" o "+57 300-123-4567".
+    celular: normalizarCelular(datos.celular),
+    departamento: datos.departamento,
+    municipio: datos.municipio,
+    forma_pago: datos.formaPago,
     comentario: datos.comentario.trim() || null,
     total: datos.total,
     unidades: totalesPedido(datos.lineas).unidades,

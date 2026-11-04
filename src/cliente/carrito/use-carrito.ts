@@ -22,8 +22,14 @@ export function useCarrito() {
     const { unidades, total } = totalesPedido(estado.lineas);
     return {
       lineas: estado.lineas as CartLine[],
-      nombre: estado.nombre,
-      ciudad: estado.ciudad,
+      cliente: {
+        nombre: estado.nombre,
+        apellido: estado.apellido,
+        celular: estado.celular,
+        departamento: estado.departamento,
+        municipio: estado.municipio,
+        formaPago: estado.formaPago,
+      },
       comentario: estado.comentario,
       abierto: estado.abierto,
       unidades,
@@ -36,8 +42,7 @@ export function useCarrito() {
       quitar: almacen.quitar,
       vaciar: almacen.vaciar,
       fijarComentario: almacen.fijarComentario,
-      fijarNombre: almacen.fijarNombre,
-      fijarCiudad: almacen.fijarCiudad,
+      fijarDato: almacen.fijarDato,
       abrir: almacen.abrir,
       cerrar: almacen.cerrar,
     };

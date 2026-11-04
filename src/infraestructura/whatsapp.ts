@@ -1,7 +1,12 @@
 import { site } from "@/config/sitio";
 import { precio } from "@/dominio/formato";
 import type { CartLine, Product } from "@/dominio/modelos";
-import { totalesPedido } from "@/dominio/pedido";
+import {
+  formatearCelular,
+  nombreFormaPago,
+  totalesPedido,
+  type DatosCliente,
+} from "@/dominio/pedido";
 import { rutaProducto } from "@/dominio/rutas";
 
 /**
@@ -11,11 +16,7 @@ import { rutaProducto } from "@/dominio/rutas";
  * la venta se cierra hablando. Por eso el mensaje tiene que leerse bien en el
  * celular, sin tablas ni caracteres raros.
  */
-type DatosPedido = {
-  nombre: string;
-  ciudad: string;
-  comentario: string;
-};
+type DatosPedido = DatosCliente & { comentario: string };
 
 export function enlacePedido(
   lineas: CartLine[],
@@ -31,8 +32,10 @@ export function enlacePedido(
   const partes = [
     `*Nuevo pedido — ${site.nombre}*`,
     "",
-    `*Cliente:* ${datos.nombre.trim()}`,
-    `*Ciudad:* ${datos.ciudad.trim()}`,
+    `*Cliente:* ${datos.nombre.trim()} ${datos.apellido.trim()}`,
+    `*Celular:* ${formatearCelular(datos.celular)}`,
+    `*Municipio:* ${datos.municipio}, ${datos.departamento}`,
+    `*Forma de pago:* ${nombreFormaPago(datos.formaPago)}`,
     "",
     items.join("\n"),
     "",
