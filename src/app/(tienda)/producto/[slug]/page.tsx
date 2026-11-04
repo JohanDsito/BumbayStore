@@ -5,6 +5,7 @@ import { catalogo } from "@/servidor/catalogo";
 import { imagenUrl } from "@/infraestructura/imagen-url";
 import { site } from "@/config/sitio";
 import { precio } from "@/dominio/formato";
+import { resumir } from "@/dominio/texto";
 import { rutaCategoria, rutaNicho, rutaProducto } from "@/dominio/rutas";
 import { enlaceConsulta } from "@/infraestructura/whatsapp";
 import { GaleriaProducto } from "@/components/product-gallery";
@@ -34,13 +35,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // Descripción corta y con el dato que importa: qué es y cuánto cuesta.
   const descripcion = producto.fichaTecnica
-    ? `${producto.fichaTecnica.slice(0, 150).trim()}… ${precio(
+    ? `${resumir(producto.fichaTecnica, 120)} ${precio(
         producto.precioUnitario,
       )}. Envíos a toda Colombia.`
     : `${producto.nombre} — ${precio(producto.precioUnitario)}. ${site.nombre}, ${site.ciudad}.`;
 
   return {
-    title: `${producto.nombre} — ${producto.sku}`,
+    // Solo el nombre: el código no lo busca nadie y gasta el espacio que
+    // Google muestra. La plantilla agrega "| Bumbay Store".
+    title: producto.nombre,
     description: descripcion,
     alternates: { canonical: rutaProducto(producto) },
     openGraph: {
