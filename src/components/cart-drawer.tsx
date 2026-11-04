@@ -3,10 +3,17 @@
 import { useEffect, useState } from "react";
 import { useCarrito } from "@/cliente/carrito/use-carrito";
 import { precio } from "@/dominio/formato";
-import { LIMITES_PEDIDO, nombreValido } from "@/dominio/pedido";
+import {
+  FORMAS_PAGO,
+  LIMITES_PEDIDO,
+  camposInvalidos,
+  type DatosCliente,
+} from "@/dominio/pedido";
+import { municipiosPorDepartamento } from "@/data/municipios";
+import { site } from "@/config/sitio";
 import { enlacePedido } from "@/infraestructura/whatsapp";
 import { imagenUrl } from "@/infraestructura/imagen-url";
-import { CampoCiudad, esCiudadValida } from "@/components/city-field";
+import { CampoUbicacion } from "@/components/location-field";
 import { registrarPedido } from "@/infraestructura/supabase/registro";
 import {
   IconoCerrar,
@@ -21,8 +28,7 @@ import {
 export function PanelPedido() {
   const {
     lineas,
-    nombre,
-    ciudad,
+    cliente,
     comentario,
     total,
     unidades,
@@ -32,13 +38,25 @@ export function PanelPedido() {
     quitar,
     vaciar,
     fijarComentario,
-    fijarNombre,
-    fijarCiudad,
+    fijarDato,
   } = useCarrito();
 
   // Los errores aparecen al intentar enviar, no mientras se escribe: avisar
   // de un campo vacío que todavía no se ha tocado solo molesta.
-  const [errores, setErrores] = useState({ nombre: false, ciudad: false });
+  const [errores, setErrores] = useState<Set<keyof DatosCliente>>(() => new Set());
+
+  const error = (campo: keyof DatosCliente) => (errores.has(campo) ? MENSAJES[campo] : null);
+
+  // Al corregir un campo, su error se va; los demás se quedan.
+  const cambiar = (campo: keyof DatosCliente, valor: string) => {
+    fijarDato(campo, valor);
+    if (!errores.has(campo)) return;
+    setErrores((actual) => {
+      const resto = new Set(actual);
+      resto.delete(campo);
+      return resto;
+    });
+  };
 
   // Mientras el panel está abierto, el fondo no debe desplazarse: en celular
   // es muy fácil arrastrar la página por debajo del panel sin querer.
@@ -60,26 +78,24 @@ export function PanelPedido() {
     return () => window.removeEventListener("keydown", alPresionar);
   }, [abierto, cerrar]);
 
-  // El vendedor necesita nombre y ciudad para cotizar el envío sin tener que
-  // preguntarlos por chat, así que son obligatorios. Se valida al pulsar en
-  // vez de deshabilitar el botón: un botón inerte no explica qué falta.
+  // El vendedor necesita todos estos datos para cotizar el envío sin tener
+  // que preguntarlos por chat, así que son obligatorios. Se valida al pulsar
+  // en vez de deshabilitar el botón: un botón inerte no explica qué falta.
   const alEnviar = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const faltaNombre = !nombreValido(nombre);
-    // La ciudad tiene que salir de la lista del DANE: así llega siempre
-    // escrita igual y se puede agrupar por zona para cotizar el envío.
-    const faltaCiudad = !esCiudadValida(ciudad);
+    // El municipio tiene que salir de la lista del DANE: así llega siempre
+    // escrito igual y se puede agrupar por zona para cotizar el envío.
+    const malos = camposInvalidos(cliente, municipiosPorDepartamento);
 
-    if (!faltaNombre && !faltaCiudad) {
+    if (malos.length === 0) {
       // Se guarda antes de salir hacia WhatsApp. El enlace abre otra pestaña,
       // así que esta página sigue viva y da tiempo a que termine.
-      void registrarPedido({ nombre, ciudad, comentario, total, lineas });
+      void registrarPedido({ ...cliente, comentario, total, lineas });
       return;
     }
 
     e.preventDefault();
-    setErrores({ nombre: faltaNombre, ciudad: faltaCiudad });
-    const id = faltaNombre ? "pedido-nombre" : "pedido-ciudad";
-    document.getElementById(id)?.focus();
+    setErrores(new Set(malos));
+    document.getElementById(ID_CAMPO[malos[0]])?.focus();
   };
 
   if (!abierto) return null;
@@ -221,28 +237,52 @@ export function PanelPedido() {
                   Datos para calcular el envío
                 </p>
 
+                <div className="grid grid-cols-2 gap-3">
+                  <Campo
+                    id={ID_CAMPO.nombre}
+                    etiqueta="Nombre"
+                    valor={cliente.nombre}
+                    alCambiar={(v) => cambiar("nombre", v)}
+                    marcador="Ana"
+                    autoComplete="given-name"
+                    maxLength={LIMITES_PEDIDO.nombreMaximo}
+                    error={error("nombre")}
+                  />
+                  <Campo
+                    id={ID_CAMPO.apellido}
+                    etiqueta="Apellido"
+                    valor={cliente.apellido}
+                    alCambiar={(v) => cambiar("apellido", v)}
+                    marcador="Gómez"
+                    autoComplete="family-name"
+                    maxLength={LIMITES_PEDIDO.nombreMaximo}
+                    error={error("apellido")}
+                  />
+                </div>
+
                 <Campo
-                  id="pedido-nombre"
-                  etiqueta="Tu nombre"
-                  valor={nombre}
-                  alCambiar={(v) => {
-                    fijarNombre(v);
-                    if (errores.nombre) setErrores((x) => ({ ...x, nombre: false }));
-                  }}
-                  marcador="Nombre y apellido"
-                  autoComplete="name"
-                  maxLength={LIMITES_PEDIDO.nombreMaximo}
-                  error={errores.nombre ? "Escribe tu nombre" : null}
+                  id={ID_CAMPO.celular}
+                  etiqueta="Celular de contacto"
+                  valor={cliente.celular}
+                  alCambiar={(v) => cambiar("celular", v)}
+                  marcador="300 123 4567"
+                  autoComplete="tel-national"
+                  tipo="tel"
+                  maxLength={20}
+                  error={error("celular")}
                 />
 
-                <CampoCiudad
-                  id="pedido-ciudad"
-                  valor={ciudad}
-                  alCambiar={(v) => {
-                    fijarCiudad(v);
-                    if (errores.ciudad) setErrores((x) => ({ ...x, ciudad: false }));
-                  }}
-                  error={errores.ciudad ? "Elige tu municipio de la lista" : null}
+                <CampoUbicacion
+                  departamento={cliente.departamento}
+                  municipio={cliente.municipio}
+                  alCambiar={cambiar}
+                  errores={{ departamento: error("departamento"), municipio: error("municipio") }}
+                />
+
+                <FormaPago
+                  valor={cliente.formaPago}
+                  alCambiar={(v) => cambiar("formaPago", v)}
+                  error={error("formaPago")}
                 />
 
                 <div>
@@ -258,7 +298,7 @@ export function PanelPedido() {
                     onChange={(e) => fijarComentario(e.target.value)}
                     rows={3}
                     maxLength={LIMITES_PEDIDO.comentarioMaximo}
-                    placeholder="Dirección, forma de pago, cantidades especiales…"
+                    placeholder="Dirección, barrio, cantidades especiales…"
                     className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
                   />
                 </div>
@@ -276,7 +316,7 @@ export function PanelPedido() {
               </div>
 
               <a
-                href={enlacePedido(lineas, total, { nombre, ciudad, comentario })}
+                href={enlacePedido(lineas, total, { ...cliente, comentario })}
                 onClick={alEnviar}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -307,6 +347,87 @@ export function PanelPedido() {
 }
 
 
+/** Id de cada campo, para llevar el foco al primero que falte. */
+const ID_CAMPO: Record<keyof DatosCliente, string> = {
+  nombre: "pedido-nombre",
+  apellido: "pedido-apellido",
+  celular: "pedido-celular",
+  departamento: "pedido-departamento",
+  municipio: "pedido-municipio",
+  formaPago: `pedido-pago-${FORMAS_PAGO[0].id}`,
+};
+
+const MENSAJES: Record<keyof DatosCliente, string> = {
+  nombre: "Escribe tu nombre",
+  apellido: "Escribe tu apellido",
+  celular: "Escribe un celular de 10 dígitos que empiece por 3",
+  departamento: "Elige tu departamento",
+  municipio: "Elige tu ciudad o municipio de la lista",
+  formaPago: "Elige cómo vas a pagar",
+};
+
+/**
+ * Forma de pago: cuatro opciones a la vista, sin desplegar nada. La nota del
+ * pago anticipado va siempre visible, porque es lo que hace elegirlo.
+ */
+function FormaPago({
+  valor,
+  alCambiar,
+  error,
+}: {
+  valor: string;
+  alCambiar: (v: string) => void;
+  error: string | null;
+}) {
+  return (
+    <fieldset aria-describedby={error ? "pedido-pago-error" : "pedido-pago-nota"}>
+      <legend className="block rotulo text-[11px] text-carbon-500">Forma de pago</legend>
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        {FORMAS_PAGO.map((f) => {
+          const elegida = valor === f.id;
+          return (
+            <label
+              key={f.id}
+              htmlFor={`pedido-pago-${f.id}`}
+              className={`flex min-h-11 cursor-pointer items-center gap-2.5 border px-3 py-2 text-[13px] transition-colors ${
+                elegida
+                  ? "border-marca-500 bg-marca-500/[0.10] text-carbon-50"
+                  : error
+                    ? "border-marca-500/60 bg-carbon-850 text-carbon-200"
+                    : "border-carbon-700 bg-carbon-850 text-carbon-200 hover:border-carbon-500"
+              }`}
+            >
+              <input
+                id={`pedido-pago-${f.id}`}
+                type="radio"
+                name="forma-pago"
+                value={f.id}
+                checked={elegida}
+                onChange={() => alCambiar(f.id)}
+                className="h-4 w-4 shrink-0 accent-[var(--acento)]"
+              />
+              {f.nombre}
+            </label>
+          );
+        })}
+      </div>
+      <p
+        id="pedido-pago-nota"
+        className={`mt-2 text-[12px] leading-snug ${
+          valor === "anticipado" ? "text-marca-400" : "text-carbon-400"
+        }`}
+      >
+        {site.notaPagoAnticipado}
+      </p>
+      {error && (
+        <p id="pedido-pago-error" className="mt-1.5 text-[12px] text-marca-400">
+          {error}
+        </p>
+      )}
+    </fieldset>
+  );
+}
+
 /**
  * Campo de texto del formulario de pedido, con su error debajo.
  *
@@ -323,6 +444,7 @@ function Campo({
   autoComplete,
   maxLength,
   error,
+  tipo = "text",
 }: {
   id: string;
   etiqueta: string;
@@ -332,6 +454,8 @@ function Campo({
   autoComplete: string;
   maxLength: number;
   error: string | null;
+  /** "tel" abre el teclado numérico en el celular. */
+  tipo?: "text" | "tel";
 }) {
   return (
     <div>
@@ -343,7 +467,7 @@ function Campo({
       </label>
       <input
         id={id}
-        type="text"
+        type={tipo}
         value={valor}
         onChange={(e) => alCambiar(e.target.value)}
         placeholder={marcador}

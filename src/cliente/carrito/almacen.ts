@@ -1,5 +1,7 @@
 import type { CartLine, Product } from "@/dominio/modelos";
-import { LIMITES_PEDIDO, acotarCantidad } from "@/dominio/pedido";
+import { LIMITES_PEDIDO, acotarCantidad, type DatosCliente } from "@/dominio/pedido";
+import { separarCiudad, ubicacionValida } from "@/dominio/ubicacion";
+import { municipiosPorDepartamento } from "@/data/municipios";
 
 /**
  * Almacén del pedido.
@@ -19,12 +21,13 @@ import { LIMITES_PEDIDO, acotarCantidad } from "@/dominio/pedido";
 
 const CLAVE = "bumbay:pedido:v1";
 
-export type EstadoPedido = {
+/**
+ * Los datos del cliente (nombre, apellido, celular, departamento, municipio y
+ * forma de pago) van al nivel del pedido, como texto tal cual se escribe: se
+ * validan al enviar, no al guardar.
+ */
+export type EstadoPedido = DatosCliente & {
   lineas: CartLine[];
-  /** Nombre de quien hace el pedido. */
-  nombre: string;
-  /** Ciudad o municipio de entrega: sin esto no se puede cotizar el envío. */
-  ciudad: string;
   comentario: string;
   /** Panel abierto. Es estado de interfaz: no se persiste. */
   abierto: boolean;
@@ -33,10 +36,16 @@ export type EstadoPedido = {
 const VACIO: EstadoPedido = {
   lineas: [],
   nombre: "",
-  ciudad: "",
+  apellido: "",
+  celular: "",
+  departamento: "",
+  municipio: "",
+  formaPago: "",
   comentario: "",
   abierto: false,
 };
+
+const texto = (v: unknown) => (typeof v === "string" ? v : "");
 
 let estado: EstadoPedido = VACIO;
 let hidratado = false;
@@ -47,12 +56,19 @@ function leerAlmacen(): EstadoPedido {
   try {
     const bruto = window.localStorage.getItem(CLAVE);
     if (!bruto) return VACIO;
-    const datos = JSON.parse(bruto) as Partial<EstadoPedido>;
+    const datos = JSON.parse(bruto) as Record<string, unknown>;
+    // La versión anterior guardaba un solo campo "Municipio, Departamento":
+    // si existe, se separa para no pedirle de nuevo la ubicación.
+    const anterior = separarCiudad(texto(datos.ciudad), municipiosPorDepartamento);
     return {
-      lineas: Array.isArray(datos.lineas) ? datos.lineas : [],
-      nombre: typeof datos.nombre === "string" ? datos.nombre : "",
-      ciudad: typeof datos.ciudad === "string" ? datos.ciudad : "",
-      comentario: typeof datos.comentario === "string" ? datos.comentario : "",
+      lineas: Array.isArray(datos.lineas) ? (datos.lineas as CartLine[]) : [],
+      nombre: texto(datos.nombre),
+      apellido: texto(datos.apellido),
+      celular: texto(datos.celular),
+      departamento: texto(datos.departamento) || anterior?.departamento || "",
+      municipio: texto(datos.municipio) || anterior?.municipio || "",
+      formaPago: texto(datos.formaPago),
+      comentario: texto(datos.comentario),
       abierto: false,
     };
   } catch {
@@ -68,7 +84,11 @@ function guardar(nuevo: EstadoPedido) {
       JSON.stringify({
         lineas: nuevo.lineas,
         nombre: nuevo.nombre,
-        ciudad: nuevo.ciudad,
+        apellido: nuevo.apellido,
+        celular: nuevo.celular,
+        departamento: nuevo.departamento,
+        municipio: nuevo.municipio,
+        formaPago: nuevo.formaPago,
         comentario: nuevo.comentario,
       }),
     );
@@ -158,8 +178,8 @@ export function quitar(slug: string) {
 }
 
 export function vaciar() {
-  // El nombre y la ciudad se conservan: si el cliente vuelve a pedir, no
-  // tiene por qué escribirlos otra vez.
+  // Los datos del cliente se conservan: si vuelve a pedir, no tiene por qué
+  // escribirlos otra vez.
   fijar({ lineas: [], comentario: "", abierto: false });
 }
 
@@ -167,12 +187,17 @@ export function fijarComentario(comentario: string) {
   fijar({ comentario });
 }
 
-export function fijarNombre(nombre: string) {
-  fijar({ nombre });
-}
-
-export function fijarCiudad(ciudad: string) {
-  fijar({ ciudad });
+export function fijarDato(campo: keyof DatosCliente, valor: string) {
+  // Un municipio solo tiene sentido dentro de su departamento: si el cliente
+  // cambia de departamento, el municipio elegido antes se descarta.
+  if (
+    campo === "departamento" &&
+    !ubicacionValida(valor, estado.municipio, municipiosPorDepartamento)
+  ) {
+    fijar({ departamento: valor, municipio: "" });
+    return;
+  }
+  fijar({ [campo]: valor });
 }
 
 export function abrir() {
