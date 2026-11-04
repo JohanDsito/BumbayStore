@@ -124,6 +124,10 @@
 
   html {
     scroll-behavior: smooth;
+    /* Los saltos a un ancla (#catalogo, #ficha-tecnica…) quedan bajo la
+       cabecera fija. Su alto lo mide la propia cabecera, que cambia entre
+       celular y computador y cuando muestra las categorías del nicho. */
+    scroll-padding-top: calc(var(--alto-cabecera, 8.5rem) + 1rem);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -219,45 +223,21 @@
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
   }
 
-  /* Cinta de precaución: la firma de Bumbay Tools. Solo aparece dentro del
-     nicho de herramientas. */
-  .cinta-precaucion {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--acento) 0 8px,
-      transparent 8px 16px
-    );
-  }
-
-  /* Marcas de esquina tipo dibujo técnico, de las tarjetas de producto. */
+  /* Marcas de esquina tipo dibujo técnico, de las tarjetas de producto.
+     Se dibujan con fondos y no con ::before/::after porque estos obligan a
+     posicionar el bloque, y un bloque posicionado encierra el enlace que
+     cubre la tarjeta: la foto quedaba sin clic. */
   .esquinas-tecnicas {
-    position: relative;
+    --esquina: var(--color-carbon-600);
+    background:
+      linear-gradient(var(--esquina) 0 0) top left / 10px 1px no-repeat,
+      linear-gradient(var(--esquina) 0 0) top left / 1px 10px no-repeat,
+      linear-gradient(var(--esquina) 0 0) bottom right / 10px 1px no-repeat,
+      linear-gradient(var(--esquina) 0 0) bottom right / 1px 10px no-repeat;
+    transition: --esquina 0.25s var(--ease-salida);
   }
-  .esquinas-tecnicas::before,
-  .esquinas-tecnicas::after {
-    content: "";
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-color: var(--color-carbon-600);
-    transition: border-color 0.25s var(--ease-salida);
-    pointer-events: none;
-  }
-  .esquinas-tecnicas::before {
-    top: 0;
-    left: 0;
-    border-top: 1px solid;
-    border-left: 1px solid;
-  }
-  .esquinas-tecnicas::after {
-    bottom: 0;
-    right: 0;
-    border-bottom: 1px solid;
-    border-right: 1px solid;
-  }
-  .group:hover .esquinas-tecnicas::before,
-  .group:hover .esquinas-tecnicas::after {
-    border-color: var(--acento);
+  .group:hover .esquinas-tecnicas {
+    --esquina: var(--acento);
   }
 
   /* Oculta la barra de scroll en los carruseles horizontales */
@@ -268,6 +248,13 @@
   .sin-scrollbar::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Color de las esquinas técnicas, registrado para poder animarlo. */
+@property --esquina {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #444a63;
 }
 
 @media (prefers-reduced-motion: reduce) {

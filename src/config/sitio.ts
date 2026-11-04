@@ -34,8 +34,8 @@ export const site = {
    */
   acento: "#12acaa",
   /**
-   * Nicho que conserva la identidad de taller de Bumbay Tools (la cinta de
-   * precaución). Los demás nichos usan solo el mundo de Bumbay Store.
+   * Nicho de Bumbay Tools: su portada lleva el logo de Tools sobre el
+   * titular. Los demás nichos usan solo el mundo de Bumbay Store.
    */
   nichoTaller: "herramientas",
 } as const;

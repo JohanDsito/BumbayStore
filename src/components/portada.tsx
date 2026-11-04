@@ -13,6 +13,9 @@ import { TitularAnimado } from "@/components/titular-animado";
  * Reciben el contenido ya resuelto: no consultan nada por su cuenta.
  */
 
+/** Id de la sección del catálogo, adonde lleva "Ver catálogo". */
+export const ANCLA_CATALOGO = "catalogo";
+
 /**
  * La primera pantalla de una portada, sobre el campo de luz: a la izquierda
  * el índice y, debajo, la lectura del campo; a la derecha el titular, con
@@ -28,7 +31,6 @@ export function Portico({
   indice,
   lectura,
   mensajeWhatsApp,
-  cinta = false,
   logo,
 }: {
   titular: string;
@@ -39,14 +41,11 @@ export function Portico({
   /** La columna derecha: qué está mostrando el campo. */
   lectura: React.ReactNode;
   mensajeWhatsApp: string;
-  /** La cinta de precaución de Bumbay Tools, solo en su nicho. */
-  cinta?: boolean;
   /** Logo de la submarca, sobre el titular. */
   logo?: React.ReactNode;
 }) {
   return (
     <section className="relative">
-      {cinta && <div aria-hidden className="cinta-precaucion h-1 opacity-80" />}
       <div className="relative mx-auto grid max-w-[1400px] gap-10 px-4 pb-12 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-14 lg:pb-16 lg:pt-20">
         {/* La lectura del campo va bajo el índice que la enciende. Flotando en
             la esquina chocaba con titulares largos y nichos con muchas cifras. */}
@@ -72,7 +71,7 @@ export function Portico({
           )}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <a href="#contenido-catalogo" className={BOTON_PRINCIPAL}>
+            <a href={`#${ANCLA_CATALOGO}`} className={BOTON_PRINCIPAL}>
               Ver catálogo
               <IconoFlecha className="h-4 w-4" />
             </a>
@@ -88,8 +87,6 @@ export function Portico({
           </div>
         </div>
       </div>
-
-      <span id="contenido-catalogo" className="sr-only" />
     </section>
   );
 }

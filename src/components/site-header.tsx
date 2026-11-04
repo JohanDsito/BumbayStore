@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { site } from "@/config/sitio";
 import { enlaceGeneral } from "@/infraestructura/whatsapp";
 import { Buscador } from "@/components/search-box";
@@ -22,6 +22,23 @@ import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const ruta = usePathname();
+  const cabecera = useRef<HTMLElement>(null);
+
+  // Publica el alto de la cabecera en --alto-cabecera, para que los saltos a
+  // un ancla no dejen el título debajo de ella (scroll-padding-top en
+  // globals.css). Cambia con el ancho y con la fila de categorías del nicho.
+  useEffect(() => {
+    const elemento = cabecera.current;
+    if (!elemento) return;
+    const publicar = () =>
+      document.documentElement.style.setProperty(
+        "--alto-cabecera",
+        `${elemento.offsetHeight}px`,
+      );
+    const observador = new ResizeObserver(publicar);
+    observador.observe(elemento);
+    return () => observador.disconnect();
+  }, []);
 
   // Nicho en el que se está: por su portada o por una de sus categorías.
   const actual = menu.find(
@@ -29,7 +46,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   );
 
   return (
-    <header className="sticky top-0 z-30 border-b border-carbon-800/80 bg-carbon-950/92 backdrop-blur-md">
+    <header ref={cabecera} className="sticky top-0 z-30 border-b border-carbon-800/80 bg-carbon-950/92 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:gap-6 sm:px-6">
         <Link
           href="/"
