@@ -3,9 +3,9 @@ name: Bumbay Store
 description: Un portal vivo. Un campo de luz con un filamento por nicho respira detrás del catálogo.
 colors:
   # Tema claro (predeterminado). Los mismos nombres con -oscuro son el tema oscuro.
-  fondo: "#f4f5f8"
+  fondo: "#ffffff"
   superficie: "#ffffff"
-  hundido: "#eceef3"
+  hundido: "#f1f3f6"
   linea: "#e0e3ea"
   borde: "#cdd1dc"
   borde-fuerte: "#a3a9ba"
@@ -14,7 +14,7 @@ colors:
   tinta-media: "#363b4d"
   tinta-suave: "#454b5f"
   tinta-tenue: "#535970"
-  panel-foto: "#e9ebf1"
+  panel-foto: "#eef0f4"
   disponible: "#0b6e3a"
   fondo-oscuro: "#07080d"
   superficie-oscuro: "#0c0e17"
@@ -137,11 +137,12 @@ El campo es el único momento de movimiento autorado del sitio, y está gobernad
 Bumbay Tools conserva su firma dentro de su nicho: su logotipo sobre el titular y el rojo exacto del logotipo como acento. La cinta de precaución que llevaba su portada se quitó a pedido del equipo (noviembre de 2026).
 
 **Key Characteristics:**
-- Dos temas. Claro (predeterminado): papel gris azulado muy pálido, tarjetas blancas, el campo dibuja líneas de color sobre el papel. Oscuro: fondo noche casi negro azulado, el campo es luz sobre la noche. En los dos, sin retícula: el campo es la única textura.
+- Dos temas, con el ritmo de una vitrina (referencia del equipo: eu.neewer.com): arriba un escenario de noche con el campo de luz (cabecera y portada), en medio la tienda, y abajo el pie de noche que la cierra. En el claro (predeterminado) la tienda es blanca y la franja de confianza gris; en el oscuro, todo es noche. El campo es luz sobre la noche en los dos temas y vive en el escenario: la tienda debajo tiene fondo sólido.
+- Los productos mandan: fila de categorías con la foto de uno de sus productos, tarjetas sin caja ni borde con la foto grande, títulos de sección enormes en mayúsculas condensadas.
 - El color de marca cambia con el nicho: turquesa de Bumbay Store en la tienda, rojo en Bumbay Tools, el suyo en cada nicho. Todo lo demás es neutro.
 - Titulares en Archivo al 62 % de ancho, en mayúsculas y enormes; rótulos al 112 % de ancho, diminutos y espaciados.
-- Esquinas rectas en todo; el vidrio oscuro solo donde hay texto sobre el campo.
-- Fotos de producto fundidas sobre un panel gris azulado, nunca sobre blanco puro.
+- Esquinas rectas en todo; el vidrio solo donde hay texto sobre el campo.
+- Fotos de producto fundidas sobre un panel gris azulado muy claro, nunca sobre blanco puro.
 
 ## Colors
 
@@ -149,9 +150,9 @@ Neutros azulados casi sin color, para que los filamentos de cada nicho sean lo �
 
 | Función | Uso | Claro | Oscuro |
 |---|---|---|---|
-| `fondo` | la página | #f4f5f8 | #07080d |
+| `fondo` | la página | #ffffff | #07080d |
 | `superficie` | tarjetas, paneles, cajones | #ffffff | #0c0e17 |
-| `hundido` | campos de formulario, zonas rehundidas | #eceef3 | #11141f |
+| `hundido` | campos de formulario, franja de confianza | #f1f3f6 | #11141f |
 | `linea` | separadores de 1 px | #e0e3ea | #191c29 |
 | `borde` / `borde-fuerte` | contornos de controles; al pasar | #cdd1dc / #a3a9ba | #2c3043 / #444a63 |
 | `tinta-fuerte` | titulares, precios | #0b0c12 | #f7f8fb |
@@ -159,7 +160,7 @@ Neutros azulados casi sin color, para que los filamentos de cada nicho sean lo �
 | `tinta-media` | párrafos secundarios | #363b4d | #bcc0d3 |
 | `tinta-suave` | rótulos | #454b5f | #a1a7bf |
 | `tinta-tenue` | lo mínimo: códigos, notas, marcadores | #535970 | #8c92ae |
-| `panel-foto` | detrás de las fotos de producto (claro en los dos) | #e9ebf1 | #e4e6ee |
+| `panel-foto` | detrás de las fotos de producto (claro en los dos) | #eef0f4 | #e4e6ee |
 | `disponible` | WhatsApp y "Disponible" | #0b6e3a, tinta blanca | #35d07f, tinta noche |
 | `noche` | tinta fija: sobre amarillo, sobre fotos y sobre el panel de foto | #0b0c12 | #0b0c12 |
 
@@ -202,7 +203,8 @@ Ver la tabla de funciones arriba. `tinta-tenue` es el texto más tenue permitido
 
 ### Hierarchy
 - **Display** (700, 44 → 96 px, interlínea 0.86, mayúsculas, ancho 62 %): el titular de cada portada y el nombre de una categoría. Dos líneas; la segunda va en el acento.
-- **Headline** (800, 30 → 48 px, ancho 75 %): títulos de sección y nombre del producto en su ficha. Sin mayúsculas.
+- **Section** (700, 40 → 60 px, interlínea 0.86, mayúsculas, ancho 62 %, la clase `titular`): títulos de sección de la tienda ("Destacados", "Todo el catálogo"). Marcan dónde empieza cada parte, como un rótulo de vitrina.
+- **Headline** (800, 30 → 48 px, ancho 75 %): nombre del producto en su ficha y el bloque mayorista. Sin mayúsculas.
 - **Title** (600, 14–15 px): nombres en tarjetas y en el índice.
 - **Body** (400, 15–16 px, interlínea 1.625): presentaciones y fichas técnicas; máximo 52–60 caracteres por línea.
 - **Label** (500, 11 px, tracking 0.22em, mayúsculas, ancho 112 %): navegación, rótulos de sección, etiquetas de campo, lecturas del campo.
@@ -232,7 +234,7 @@ Profundidad por capas tonales de la noche y por el campo detrás de todo. Los pa
 
 ## Shapes
 
-Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El único círculo es el punto de estado (disponible, línea activa). Las tarjetas de producto llevan las esquinas técnicas, que se encienden en el acento al pasar. Se dibujan con fondos y no con pseudoelementos: así el bloque no queda posicionado y el enlace del nombre puede cubrir la tarjeta entera, foto incluida.
+Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El único círculo es el punto de estado (disponible, línea activa).
 
 ## Components
 
@@ -245,9 +247,9 @@ Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El
 
 ### Cards / Containers
 - **Corner Style:** rectas.
-- **Background:** `superficie`; la foto va sobre el panel de foto, fundida con `mix-blend-mode: multiply` (el panel es claro en los dos temas, así la mezcla funciona igual). Las etiquetas sobre fotos son noche al 70 % con texto blanco.
-- **Border:** 1 px `linea`, a `borde-fuerte` al pasar.
-- **Internal Padding:** 14–16 px.
+- **Tarjeta de producto:** sin caja ni borde. La foto sobre el panel de foto, fundida con `mix-blend-mode: multiply` (el panel es claro en los dos temas, así la mezcla funciona igual), crece un 4 % al pasar; debajo, código, nombre, precio y "Agregar". El fondo de la tarjeta es `fondo`: invisible, pero tapa el campo donde la tarjeta va sobre él. El enlace del nombre cubre la tarjeta entera, foto incluida: entre él y el `<article>` no puede haber otro bloque posicionado.
+- **Etiquetas sobre fotos:** noche al 70 % con texto blanco.
+- **Paneles** (vista rápida, pedido, bloque mayorista): `superficie` o vidrio, borde 1 px `linea` o `borde`.
 
 ### Inputs / Fields
 - **Style:** `hundido`, borde 1 px `borde`, alto 40–44 px, rectos.
@@ -259,8 +261,17 @@ Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El
 - **Mobile (bajo 1024 px):** tres columnas: menú a la izquierda, logo centrado de 148 px, pedido a la derecha; el buscador va en su propia fila. El menú despliega bajo la cabecera, fuera del flujo, con un velo noche al 75 % detrás: solo los nichos, uno por fila (56 px de alto), y al tocar uno se abren sus categorías y "Ver todo en {nicho} →", uno abierto a la vez. Al final, las redes configuradas y WhatsApp. Se cierra al navegar, al tocar fuera y con Escape, y devuelve el foco al botón.
 - **Footer:** en celular, logo y WhatsApp en una fila, los nichos en línea (sin categorías) y el contacto en tres renglones con las redes como íconos. En computador, los nichos van en columnas de dos o tres, para que el pie crezca hacia el costado y no hacia abajo.
 
+### Escenario
+La clase `.escenario` le pone la noche a una zona en cualquier tema: la cabecera, la portada (y sus migas) y el pie. En el tema claro la tienda queda enmarcada por esas dos bandas de noche; en el oscuro no cambia nada. La capa del campo cubre en el claro solo hasta el final de la portada (`--alto-escenario`, que publica `MedirEscenario`); antes de medir, la portada pinta su propia noche, así nunca se ve texto claro sobre fondo claro. Dentro del escenario, el CSS propio usa `--t-*` y no `--color-*`, que se calculan en la raíz.
+
+### Fila de categorías
+Justo debajo del escenario: cada categoría con la foto de uno de sus productos (`fotoDeCategoria`: disponible y destacado primero), su nombre y su conteo. 112 px en celular y 148 px en computador, deslizable con el dedo. Se ve qué se vende antes de leer.
+
+### Franja de confianza
+Antes del pie, en una sola franja gris sin cajas: cuatro promesas verdaderas con su ícono (importador directo, envío a toda Colombia, pedido por WhatsApp, formas de pago). Si cambia una forma de pago, se cambia también aquí.
+
 ### Campo de luz
-La firma del sistema: un lienzo WebGL fijo en el layout de la tienda, detrás de todo. Un filamento por nicho (núcleo fino, halo y partículas que solo se encienden cerca del filamento); el puntero los curva al pasar. Se funde al color del nicho al navegar. Presupuesto: 50 % de la resolución en escritorio y 35 % en celular, 30 cuadros en celular, congelado bajo la primera pantalla y con la pestaña oculta, una imagen quieta con el movimiento reducido, y póster CSS sin WebGL, con ahorro de datos o con poca memoria.
+La firma del sistema: un lienzo WebGL en el layout de la tienda, detrás de todo; vive en el escenario (ver Escenario). Un filamento por nicho (núcleo fino, halo y partículas que solo se encienden cerca del filamento); el puntero los curva al pasar. Se funde al color del nicho al navegar. Presupuesto: 50 % de la resolución en escritorio y 35 % en celular, 30 cuadros en celular, congelado bajo la primera pantalla y con la pestaña oculta, una imagen quieta con el movimiento reducido, y póster CSS sin WebGL, con ahorro de datos o con poca memoria.
 
 ### Titular animado
 Al cargar una portada, las letras del titular suben y se enderezan una a una (CSS puro, `letra-entra`), y la segunda línea entra justo después. El ritmo vive en tres variables de `globals.css`: `--letra-duracion` (760 ms), `--letra-paso` (26 ms entre letras) y `--linea-pausa` (140 ms). Con movimiento reducido el titular aparece entero de inmediato. Para los lectores de pantalla el título es una sola frase.

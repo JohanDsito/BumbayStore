@@ -4,6 +4,7 @@ import {
   buscar,
   categoriasConProductos,
   elegirDestacados,
+  fotoDeCategoria,
   menuPorNicho,
   nichosConProductos,
   productosDeNicho,
@@ -175,5 +176,24 @@ describe("buscar", () => {
 
   it("una consulta vacía no devuelve nada", () => {
     expect(buscar(productos, "   ")).toEqual([]);
+  });
+});
+
+describe("fotoDeCategoria", () => {
+  it("prefiere un producto disponible y destacado con foto", () => {
+    const lista = [
+      producto({ slug: "a", imagen: "a.webp", agotado: true }),
+      producto({ slug: "b", imagen: "b.webp" }),
+      producto({ slug: "c", imagen: "c.webp", imagenMini: "c-mini.webp", destacado: true }),
+    ];
+    expect(fotoDeCategoria("taladros", lista)).toBe("c-mini.webp");
+  });
+
+  it("ignora otras categorías y productos sin foto", () => {
+    const lista = [
+      producto({ slug: "a" }),
+      producto({ slug: "b", imagen: "b.webp", categoriaSlug: "pulidoras" }),
+    ];
+    expect(fotoDeCategoria("taladros", lista)).toBeNull();
   });
 });

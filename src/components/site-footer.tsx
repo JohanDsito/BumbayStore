@@ -8,7 +8,8 @@ import type { SeccionMenu } from "@/dominio/catalogo";
 import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
 /**
- * Pie de la tienda.
+ * Pie de la tienda. Es escenario: de noche en los dos temas, el marco de
+ * abajo que cierra la tienda clara.
  *
  * En celular es corto: logo y WhatsApp en una fila, los nichos en línea y el
  * contacto en tres renglones. Las categorías no se ven ahí (están en el menú),
@@ -19,7 +20,7 @@ export function PieSitio({ menu }: { menu: SeccionMenu[] }) {
   const anio = new Date().getFullYear();
 
   return (
-    <footer className="mt-14 border-t border-linea bg-fondo md:mt-20">
+    <footer className="escenario border-t border-linea bg-fondo">
       <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 md:py-12">
         <div className="grid gap-7 md:grid-cols-[1.1fr_2fr_1fr] md:gap-10">
           <div className="flex items-center justify-between gap-4 md:block">

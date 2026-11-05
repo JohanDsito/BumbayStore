@@ -18,8 +18,11 @@ export const TEMA = {
    * translúcidos que dejan ver el campo de luz.
    */
   fondoTexto: { claro: "#dfe2e9", oscuro: "#262a3a" },
-  /** Color de la barra del navegador en el celular: --t-fondo de cada tema. */
-  barra: { claro: "#f4f5f8", oscuro: "#07080d" },
+  /**
+   * Color de la barra del navegador en el celular. Es la noche en los dos
+   * temas: la cabecera es escenario y la barra la continúa.
+   */
+  barra: "#07080d",
 } as const;
 
 /**

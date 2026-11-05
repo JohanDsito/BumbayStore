@@ -15,7 +15,8 @@ import type { SeccionMenu } from "@/dominio/catalogo";
 import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
 /**
- * Encabezado de la tienda: vidrio oscuro flotando sobre el campo de luz.
+ * Encabezado de la tienda: vidrio oscuro flotando sobre el campo de luz. Es
+ * escenario: de noche en los dos temas, como el marco de arriba de la tienda.
  *
  * En computador, la fila de navegación muestra solo los nichos, así cabe
  * aunque haya muchos, y las categorías aparecen en una segunda fila cuando se
@@ -85,7 +86,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   }, [menuAbierto, cerrarMenu]);
 
   return (
-    <header ref={cabecera} className="sticky top-0 z-30 border-b border-linea/80 bg-fondo/92 backdrop-blur-md">
+    <header ref={cabecera} className="escenario sticky top-0 z-30 border-b border-linea/80 bg-fondo/92 backdrop-blur-md">
       {/* En celular, tres columnas: menú, logo centrado y pedido. En computador
           la fila corre de izquierda a derecha con los nichos y el buscador. */}
       <div className="mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2.5 sm:px-6 lg:flex lg:gap-6 lg:py-3">

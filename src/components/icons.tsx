@@ -133,3 +133,33 @@ export function IconoLuna(props: Props) {
     </svg>
   );
 }
+
+/* Promesas de la tienda (FranjaConfianza). */
+
+export function IconoCaja(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="m3.5 7.5 8.5-4 8.5 4v9l-8.5 4-8.5-4v-9Z" />
+      <path d="m3.5 7.5 8.5 4 8.5-4M12 11.5v9" />
+    </svg>
+  );
+}
+
+export function IconoCamion(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7" />
+      <circle cx="6.5" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
+    </svg>
+  );
+}
+
+export function IconoPago(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <rect x="2.5" y="6" width="19" height="12" rx="1.5" />
+      <path d="M2.5 10h19M6.5 14.5h4" />
+    </svg>
+  );
+}

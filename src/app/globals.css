@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
-/* `oscuro:` aplica una clase solo en el tema oscuro. Es para lo poco que no
-   se resuelve con los colores por función, como elegir qué versión del logo
-   se muestra; los colores nunca se duplican con esto. */
-@custom-variant oscuro (&:where([data-tema="oscuro"], [data-tema="oscuro"] *));
+/* `oscuro:` aplica una clase en lo que se ve de noche: el tema oscuro entero
+   y, en el claro, el escenario (ver .escenario). Es para lo poco que no se
+   resuelve con los colores por función, como elegir qué versión del logo se
+   muestra; los colores nunca se duplican con esto. */
+@custom-variant oscuro (&:where([data-tema="oscuro"], [data-tema="oscuro"] *, .escenario, .escenario *));
 
 /* ============================================================
    Bumbay Store — sistema de diseño
@@ -79,9 +80,9 @@
 
 /* Tema claro: el predeterminado. */
 :root {
-  --t-fondo: #f4f5f8;
+  --t-fondo: #ffffff;
   --t-superficie: #ffffff;
-  --t-hundido: #eceef3;
+  --t-hundido: #f1f3f6;
   --t-linea: #e0e3ea;
   --t-borde: #cdd1dc;
   --t-borde-fuerte: #a3a9ba;
@@ -90,7 +91,7 @@
   --t-tinta-media: #363b4d;
   --t-tinta-suave: #454b5f;
   --t-tinta-tenue: #535970;
-  --t-panel-foto: #e9ebf1;
+  --t-panel-foto: #eef0f4;
   --t-disponible: #0b6e3a;
   --t-sobre-disponible: #ffffff;
   --t-sombra-panel: 0 1px 2px rgb(16 20 40 / 0.06), 0 8px 24px -12px rgb(16 20 40 / 0.18);
@@ -101,8 +102,14 @@
 }
 
 /* Tema oscuro: la noche del portal. Azulada y casi sin color, para que los
-   filamentos de cada nicho sean lo único saturado. */
-:root[data-tema="oscuro"] {
+   filamentos de cada nicho sean lo único saturado.
+
+   .escenario lleva la misma noche a una zona de la página en el tema claro:
+   la cabecera, la portada con el campo de luz y el pie. La tienda clara queda
+   enmarcada por dos bandas de noche, y el campo sigue siendo luz sobre la
+   noche en los dos temas. */
+:root[data-tema="oscuro"],
+.escenario {
   --t-fondo: #07080d;
   --t-superficie: #0c0e17;
   --t-hundido: #11141f;
@@ -135,8 +142,37 @@
   --acento-texto: var(--acento-texto-claro);
 }
 :root[data-tema="oscuro"],
-:root[data-tema="oscuro"] .contexto-nicho {
+:root[data-tema="oscuro"] .contexto-nicho,
+.escenario {
   --acento-texto: var(--acento-texto-oscuro);
+}
+
+/* El escenario toma el color de texto de la noche aunque el resto de la
+   página esté en claro. */
+.escenario {
+  color: var(--t-tinta);
+}
+
+/* La capa del campo de luz. En el oscuro cubre la pantalla, fija, detrás de
+   todo. En el claro solo cubre el escenario de arriba: va desde el borde
+   superior hasta el final de la portada (--alto-escenario, que mide
+   MedirEscenario) y se va con el scroll; debajo empieza la tienda clara. */
+.campo-capa {
+  position: fixed;
+  inset: 0;
+}
+:root:not([data-tema="oscuro"]) .campo-capa {
+  position: absolute;
+  bottom: auto;
+  height: var(--alto-escenario, 0px);
+}
+
+/* Mientras no se ha medido el escenario (el primer cuadro, antes de que corra
+   JavaScript), la portada pinta su propia noche: nunca se ve un instante el
+   texto claro sobre el fondo claro. Medido, se vuelve transparente y deja ver
+   el campo. */
+:root:not([data-tema="oscuro"]):not([data-escenario]) .portico {
+  background-color: var(--t-fondo);
 }
 
 @keyframes aparecer {
@@ -189,7 +225,7 @@
 
 @layer base {
   :root {
-    scrollbar-color: var(--color-borde) transparent;
+    scrollbar-color: var(--t-borde) transparent;
   }
 
   html {
@@ -202,8 +238,8 @@
   }
 
   body {
-    background-color: var(--color-fondo);
-    color: var(--color-tinta);
+    background-color: var(--t-fondo);
+    color: var(--t-tinta);
     font-family: var(--font-sans);
   }
 
@@ -220,13 +256,13 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-acento-texto);
+    outline: 2px solid var(--acento-texto);
     outline-offset: 2px;
   }
 
   input,
   textarea {
-    caret-color: var(--color-acento-texto);
+    caret-color: var(--acento-texto);
   }
 
   h1,
@@ -266,9 +302,11 @@
     /* Un halo del color del fondo alrededor de cada letra: el campo de luz no
        pasa pegado al trazo, y el titular en el acento no se pierde cuando un
        filamento del mismo color cruza detrás. */
+    /* --t-fondo y no --color-fondo: este se calcula en la raíz y, dentro del
+       escenario del tema claro, daría un halo blanco. */
     text-shadow:
-      0 0 0.08em var(--color-fondo),
-      0 0 0.3em var(--color-fondo);
+      0 0 0.08em var(--t-fondo),
+      0 0 0.3em var(--t-fondo);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.01em;
@@ -305,23 +343,6 @@
     -webkit-backdrop-filter: blur(14px) saturate(1.2);
   }
 
-  /* Marcas de esquina tipo dibujo técnico, de las tarjetas de producto.
-     Se dibujan con fondos y no con ::before/::after porque estos obligan a
-     posicionar el bloque, y un bloque posicionado encierra el enlace que
-     cubre la tarjeta: la foto quedaba sin clic. */
-  .esquinas-tecnicas {
-    --esquina: var(--color-borde-fuerte);
-    background:
-      linear-gradient(var(--esquina) 0 0) top left / 10px 1px no-repeat,
-      linear-gradient(var(--esquina) 0 0) top left / 1px 10px no-repeat,
-      linear-gradient(var(--esquina) 0 0) bottom right / 10px 1px no-repeat,
-      linear-gradient(var(--esquina) 0 0) bottom right / 1px 10px no-repeat;
-    transition: --esquina 0.25s var(--ease-salida);
-  }
-  .group:hover .esquinas-tecnicas {
-    --esquina: var(--acento);
-  }
-
   /* Oculta la barra de scroll en los carruseles horizontales */
   .sin-scrollbar {
     scrollbar-width: none;
@@ -330,13 +351,6 @@
   .sin-scrollbar::-webkit-scrollbar {
     display: none;
   }
-}
-
-/* Color de las esquinas técnicas, registrado para poder animarlo. */
-@property --esquina {
-  syntax: "<color>";
-  inherits: false;
-  initial-value: #444a63;
 }
 
 @media (prefers-reduced-motion: reduce) {

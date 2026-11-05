@@ -10,7 +10,9 @@ import {
   ANCLA_CATALOGO,
   BloqueMayorista,
   EncabezadoSeccion,
+  FilaCategorias,
   Portico,
+  entradasCategorias,
 } from "@/components/portada";
 
 export const metadata: Metadata = {
@@ -57,23 +59,36 @@ export default async function Portada() {
         mensajeWhatsApp={`Hola, quisiera la lista de precios de ${site.nombre}.`}
       />
 
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        {destacados.length > 0 && (
-          <div className="pb-12 sm:pb-16">
-            <CarruselDestacados productos={destacados} />
-          </div>
-        )}
-
-        <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
-          <EncabezadoSeccion
-            id="titulo-catalogo"
-            titulo="Todo el catálogo"
-            cantidad={productos.length}
+      {/* La tienda, debajo del escenario: fondo sólido en los dos temas. El
+          campo de luz se queda en el escenario y no pasa detrás de las
+          tarjetas, que ya no tienen caja. */}
+      <div className="bg-fondo">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+          <FilaCategorias
+            titulo="Categorías"
+            entradas={entradasCategorias(
+              menu.flatMap((s) => s.categorias),
+              productos,
+            )}
           />
-          <GrillaProductos productos={productos} prioritarias={0} />
-        </section>
 
-        <BloqueMayorista />
+          {destacados.length > 0 && (
+            <div className="pt-12 sm:pt-16">
+              <CarruselDestacados productos={destacados} />
+            </div>
+          )}
+
+          <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
+            <EncabezadoSeccion
+              id="titulo-catalogo"
+              titulo="Todo el catálogo"
+              cantidad={productos.length}
+            />
+            <GrillaProductos productos={productos} prioritarias={0} />
+          </section>
+
+          <BloqueMayorista />
+        </div>
       </div>
     </>
   );

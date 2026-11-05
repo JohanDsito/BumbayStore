@@ -26,3 +26,7 @@ FIRST VIEWPORT: Izquierda, el índice de nichos con su conteo de productos, que 
 FORM: Portal de estudio experimental con campo de shader a pantalla completa, adoptado por el usuario pese al veredicto; fuera de la lista propia. seed:ccaf86b3df3ef7c8. Interacción firma: el campo persiste entre páginas y cambia de color al navegar entre nichos.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+
+## Tema claro (noviembre de 2026)
+
+Referencia del equipo: eu.neewer.com. Dirección elegida por el dueño entre tres ("A · Escenario oscuro, vitrina clara"): en el tema claro, la cabecera y la portada siguen siendo un escenario de noche con el campo de luz, y de ahí para abajo la tienda es blanca: fila de categorías con foto, títulos de sección enormes en mayúsculas condensadas, tarjetas sin caja, franja de confianza gris y pie de noche. La misma estructura vale para el tema oscuro. La "grilla blanca" que esta portada rechazaba como plantilla queda admitida solo debajo del escenario, a pedido del equipo.

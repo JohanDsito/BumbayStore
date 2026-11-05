@@ -73,10 +73,9 @@ export const metadata: Metadata = {
   },
 };
 
-// El tema claro es el predeterminado. Si el visitante elige el oscuro, el
-// color de la barra se cambia desde el navegador (cliente/tema/estado.ts).
+// La barra del navegador sigue a la cabecera, que es de noche en los dos temas.
 export const viewport: Viewport = {
-  themeColor: TEMA.barra.claro,
+  themeColor: TEMA.barra,
   colorScheme: "light dark",
 };
 

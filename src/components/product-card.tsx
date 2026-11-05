@@ -14,7 +14,9 @@ type Props = {
 export function TarjetaProducto({ producto, prioridad = false }: Props) {
   return (
     <article
-      className="group relative flex h-full min-w-0 flex-col border border-linea bg-superficie transition-colors duration-300 hover:border-borde-fuerte"
+      // bg-fondo: invisible sobre la página, pero tapa el campo de luz donde
+      // la tarjeta va sin caja sobre él (fichas, categorías).
+      className="group relative flex h-full min-w-0 flex-col bg-fondo"
     >
       <div className="relative">
         <div className={producto.agotado ? "opacity-45 grayscale" : undefined}>
@@ -34,7 +36,8 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
 
       </div>
 
-      <div className="esquinas-tecnicas flex flex-1 flex-col p-3.5 sm:p-4">
+      {/* Sin caja ni borde: la foto manda, como en una vitrina. */}
+      <div className="flex flex-1 flex-col pt-3 sm:pt-3.5">
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-[11px] tracking-[0.16em] text-tinta-tenue">
             {producto.sku}
@@ -45,7 +48,7 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
         <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-tinta sm:text-sm">
           {/* El enlace cubre toda la tarjeta, foto incluida, salvo el botón, que va
               por encima. Por eso entre él y el <article> no puede haber otro
-              bloque posicionado (ver .esquinas-tecnicas en globals.css). */}
+              bloque posicionado. */}
           <Link href={rutaProducto(producto)} className="before:absolute before:inset-0">
             {producto.nombre}
           </Link>

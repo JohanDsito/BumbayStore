@@ -28,7 +28,6 @@ export function fijar(tema: Tema) {
   const raiz = document.documentElement;
   if (tema === "oscuro") raiz.dataset.tema = "oscuro";
   else delete raiz.dataset.tema;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", TEMA.barra[tema]);
   try {
     localStorage.setItem(TEMA.clave, tema);
   } catch {

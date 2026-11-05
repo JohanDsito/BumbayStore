@@ -44,7 +44,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
   return (
     <section aria-labelledby="titulo-destacados" className="relative">
       <div className="mb-5 flex items-end justify-between gap-4">
-        <h2 id="titulo-destacados" className="rotulo text-tinta-media">
+        <h2 id="titulo-destacados" className="titular text-[2.5rem] text-tinta-fuerte sm:text-6xl">
           Destacados
         </h2>
 
@@ -72,7 +72,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
 
       <div
         ref={pista}
-        className="sin-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
+        className="sin-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 sm:scroll-px-0 gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
       >
         {productos.map((producto, i) => (
           <div
