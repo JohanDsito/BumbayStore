@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import type { Session } from "@supabase/supabase-js";
 
 import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
+import { hayCambiosSinGuardar } from "@/cliente/panel/pendientes";
 import { AdminProductos } from "@/components/admin/productos";
 import { AdminPedidos } from "@/components/admin/pedidos";
 import { AdminBusquedas } from "@/components/admin/busquedas";
@@ -25,8 +27,14 @@ export function PanelAdmin() {
   // definitivo: fijarlo dentro del efecto provocaría un render en cascada.
   const [cargando, setCargando] = useState(Boolean(sb));
   const [pestana, setPestana] = useState<Pestana>("productos");
-  // null mientras se comprueba; false si la cuenta entró pero no tiene permiso.
-  const [esAdmin, setEsAdmin] = useState<boolean | null>(null);
+  // El permiso se recuerda junto con la cuenta a la que pertenece: si alguien
+  // sale y entra otra persona en el mismo equipo, no hereda el de la anterior.
+  // "error" es que no se pudo preguntar (sin internet), no que no tenga permiso.
+  const [permiso, setPermiso] = useState<{
+    usuario: string;
+    estado: "si" | "no" | "error";
+  } | null>(null);
+  const [intento, setIntento] = useState(0);
 
   useEffect(() => {
     if (!sb) return;
@@ -42,14 +50,36 @@ export function PanelAdmin() {
   // Estar autenticado no basta: el permiso lo da la tabla `admins`. Se
   // pregunta a la base en vez de suponerlo, y así el panel puede avisar en
   // lugar de dejar que los guardados fallen en silencio.
+  const usuario = sesion?.user.id ?? null;
   useEffect(() => {
-    if (!sb || !sesion) {
+    if (!sb || !usuario) return;
+    sb.rpc("es_admin").then(({ data, error }) => {
+      setPermiso({ usuario, estado: error ? "error" : data ? "si" : "no" });
+    });
+  }, [sb, usuario, intento]);
+
+  const esAdmin = permiso && permiso.usuario === usuario ? permiso.estado : null;
+
+  const irA = (destino: Pestana) => {
+    if (destino === pestana) return;
+    if (
+      hayCambiosSinGuardar() &&
+      !window.confirm("Tienes cambios sin guardar en esta pestaña. Si cambias, se pierden. ¿Cambiar de todos modos?")
+    ) {
       return;
     }
-    sb.rpc("es_admin").then(({ data, error }) => {
-      setEsAdmin(error ? false : Boolean(data));
-    });
-  }, [sb, sesion]);
+    setPestana(destino);
+  };
+
+  const salir = () => {
+    if (
+      hayCambiosSinGuardar() &&
+      !window.confirm("Tienes cambios sin guardar. Si sales, se pierden. ¿Salir de todos modos?")
+    ) {
+      return;
+    }
+    void sb?.auth.signOut();
+  };
 
   if (!sb) {
     return (
@@ -74,7 +104,25 @@ export function PanelAdmin() {
     );
   }
 
-  if (!esAdmin) {
+  if (esAdmin === "error") {
+    return (
+      <Aviso titulo="No se pudo comprobar tu cuenta">
+        No hubo respuesta de la base de datos. Revisa el internet e intenta de nuevo.
+        <button
+          type="button"
+          onClick={() => {
+            setPermiso(null);
+            setIntento((n) => n + 1);
+          }}
+          className="mt-4 block w-full border border-borde py-2 rotulo text-[11px] text-tinta-media transition-colors hover:border-marca-500 hover:text-acento-texto"
+        >
+          Intentar de nuevo
+        </button>
+      </Aviso>
+    );
+  }
+
+  if (esAdmin === "no") {
     return (
       <Aviso titulo="Esta cuenta no tiene permisos">
         <span className="font-mono text-tinta">{sesion.user.email}</span> entró
@@ -101,7 +149,7 @@ export function PanelAdmin() {
             <button
               key={p.id}
               type="button"
-              onClick={() => setPestana(p.id)}
+              onClick={() => irA(p.id)}
               aria-current={pestana === p.id ? "page" : undefined}
               className={`whitespace-nowrap px-4 py-2 text-[13px] font-medium transition-colors ${
                 pestana === p.id
@@ -120,7 +168,7 @@ export function PanelAdmin() {
           </span>
           <button
             type="button"
-            onClick={() => sb.auth.signOut()}
+            onClick={salir}
             className="rotulo text-[11px] text-tinta-suave transition-colors hover:text-acento-texto"
           >
             Salir
@@ -155,11 +203,7 @@ function FormularioAcceso() {
       });
       if (error) {
         // El mensaje de Supabase viene en inglés y es técnico.
-        setError(
-          /invalid/i.test(error.message)
-            ? "Correo o contraseña incorrectos."
-            : error.message,
-        );
+        setError(mensajeDeError(error, "entrar"));
         setEnviando(false);
       }
       // Si entra bien, onAuthStateChange se encarga de cambiar la vista.

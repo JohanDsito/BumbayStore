@@ -196,7 +196,7 @@ no puede hacer nada. Lo que evita es el ruido de los robots que prueban
 `/admin` y `/wp-admin`, y que la dirección quede a la vista en el historial de
 un navegador compartido.
 
-Está fuera del índice de Google y `/acceso` está bloqueado en `robots.txt`.
+Está fuera del índice de Google (noindex). Una clave equivocada se responde igual que cualquier página inexistente de la tienda (`src/proxy.ts`), y `robots.txt` no nombra el panel: es lo primero que lee quien anda buscando paneles.
 
 ### Crear tu usuario
 

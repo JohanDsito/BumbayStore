@@ -12,10 +12,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // /buscar genera infinitas URLs sin valor de indexación.
-        // /acceso es el panel: no se nombra la ruta real, que vive en una
-        // variable de entorno, solo el prefijo.
-        disallow: ["/buscar", "/acceso", "/api"],
+        // /buscar genera infinitas URLs sin valor de indexación. El panel no
+        // se nombra aquí, ni siquiera su prefijo: robots.txt es lo primero que
+        // lee quien busca paneles. Se protege con noindex en su propia página.
+        disallow: ["/buscar", "/api"],
       },
     ],
     sitemap: `${site.url}/sitemap.xml`,

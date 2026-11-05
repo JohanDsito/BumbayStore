@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
 import { precio } from "@/dominio/formato";
 import { FORMAS_PAGO, formatearCelular, nombreFormaPago } from "@/dominio/pedido";
 import { separarCiudad } from "@/dominio/ubicacion";
@@ -66,7 +67,7 @@ export function AdminPedidos() {
       .order("creado_en", { ascending: false })
       .limit(200)
       .then(({ data, error }) => {
-        if (error) setError(error.message);
+        if (error) setError(mensajeDeError(error, "cargar los pedidos"));
         else setPedidos((data ?? []) as Pedido[]);
         setCargando(false);
       });
