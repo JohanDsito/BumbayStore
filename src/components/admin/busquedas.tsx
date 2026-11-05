@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
 
 type Busqueda = { consulta: string; resultados: number; creado_en: string };
 
@@ -20,7 +21,7 @@ export function AdminBusquedas() {
       .order("creado_en", { ascending: false })
       .limit(1000)
       .then(({ data, error }) => {
-        if (error) setError(error.message);
+        if (error) setError(mensajeDeError(error, "cargar las búsquedas"));
         else setFilas((data ?? []) as Busqueda[]);
         setCargando(false);
       });

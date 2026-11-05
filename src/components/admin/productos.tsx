@@ -4,6 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 
 import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
+import { useCambiosSinGuardar } from "@/cliente/panel/pendientes";
 import { pedirRegeneracion } from "@/infraestructura/supabase/admin-catalogo";
 import { imagenUrl } from "@/infraestructura/imagen-url";
 import { precio } from "@/dominio/formato";
@@ -81,7 +83,7 @@ export function AdminProductos() {
       .select(CAMPOS)
       .order("nombre")
       .then(({ data, error }) => {
-        if (error) setError(error.message);
+        if (error) setError(mensajeDeError(error, "cargar los productos"));
         else setFilas((data ?? []) as Fila[]);
         setCargando(false);
       });
@@ -153,11 +155,16 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
   const sb = getSupabaseSesion();
   const [abierto, setAbierto] = useState(false);
   const [b, setB] = useState<Borrador>(() => aBorrador(fila));
+  // Contra qué se compara para saber si hay cambios: lo último guardado desde
+  // aquí, o lo que vino de la base. Así, si se guarda y enseguida se vuelve
+  // al valor anterior, "Guardar" no desaparece mientras la lista se recarga.
+  const [guardado, setGuardado] = useState<Borrador | null>(null);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState<string | null>(null);
 
-  const original = aBorrador(fila);
+  const original = guardado ?? aBorrador(fila);
   const sucio = JSON.stringify(b) !== JSON.stringify(original);
+  useCambiosSinGuardar(sucio);
 
   const cambiar = <K extends keyof Borrador>(k: K, v: Borrador[K]) => {
     setB((x) => ({ ...x, [k]: v }));
@@ -193,7 +200,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
       .select("id");
 
     if (error) {
-      setMensaje(error.message);
+      setMensaje(mensajeDeError(error));
       setGuardando(false);
       return;
     }
@@ -210,6 +217,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
 
     setGuardando(false);
     setMensaje("Guardado");
+    setGuardado(b);
     alGuardar();
   };
 
@@ -362,7 +370,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
         mensaje={mensaje}
         guardando={guardando}
         alDescartar={() => {
-          setB(aBorrador(fila));
+          setB(original);
           setMensaje(null);
         }}
         alGuardar={guardar}

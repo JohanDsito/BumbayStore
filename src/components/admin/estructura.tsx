@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { getSupabaseSesion } from "@/infraestructura/supabase/sesion";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
+import { useCambiosSinGuardar } from "@/cliente/panel/pendientes";
 import {
   contarProductosPorCategoria,
   crearCategoria,
@@ -47,7 +49,7 @@ export function AdminEstructura() {
         setConteo(k);
         setError(null);
       })
-      .catch((e: Error) => setError(e.message))
+      .catch((e: Error) => setError(mensajeDeError(e, "cargar los nichos y categorías")))
       .finally(() => setCargando(false));
   }, [sb]);
 
@@ -191,11 +193,17 @@ function FilaNicho({
   alGuardar: () => void;
 }) {
   const [b, setB] = useState(() => aBorradorNicho(nicho));
+  // Contra qué se compara para saber si hay cambios: lo último guardado desde
+  // aquí, o lo que vino de la base. Así, si se guarda y enseguida se vuelve
+  // al valor anterior, "Guardar" no desaparece mientras la lista se recarga.
+  const [guardado, setGuardado] = useState<BorradorNicho | null>(null);
+  const base = guardado ?? aBorradorNicho(nicho);
   const [abierto, setAbierto] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState<string | null>(null);
 
-  const sucio = JSON.stringify(b) !== JSON.stringify(aBorradorNicho(nicho));
+  const sucio = JSON.stringify(b) !== JSON.stringify(base);
+  useCambiosSinGuardar(sucio);
   const cambiar = <K extends keyof BorradorNicho>(campo: K, valor: BorradorNicho[K]) => {
     setB((x) => ({ ...x, [campo]: valor }));
     setMensaje(null);
@@ -216,7 +224,10 @@ function FilaNicho({
     });
     setGuardando(false);
     setMensaje(error ?? "Guardado");
-    if (!error) alGuardar();
+    if (!error) {
+      setGuardado(b);
+      alGuardar();
+    }
   };
 
   // Visible pero vacío: no aparece en la tienda y conviene decirlo.
@@ -297,7 +308,7 @@ function FilaNicho({
         mensaje={mensaje}
         guardando={guardando}
         alDescartar={() => {
-          setB(aBorradorNicho(nicho));
+          setB(base);
           setMensaje(null);
         }}
         alGuardar={guardar}
@@ -384,11 +395,17 @@ function FilaCategoria({
   alGuardar: () => void;
 }) {
   const [b, setB] = useState(() => aBorradorCategoria(categoria));
+  // Contra qué se compara para saber si hay cambios: lo último guardado desde
+  // aquí, o lo que vino de la base. Así, si se guarda y enseguida se vuelve
+  // al valor anterior, "Guardar" no desaparece mientras la lista se recarga.
+  const [guardado, setGuardado] = useState<BorradorCategoria | null>(null);
+  const base = guardado ?? aBorradorCategoria(categoria);
   const [abierto, setAbierto] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [mensaje, setMensaje] = useState<string | null>(null);
 
-  const sucio = JSON.stringify(b) !== JSON.stringify(aBorradorCategoria(categoria));
+  const sucio = JSON.stringify(b) !== JSON.stringify(base);
+  useCambiosSinGuardar(sucio);
   const cambiar = <K extends keyof BorradorCategoria>(campo: K, valor: BorradorCategoria[K]) => {
     setB((x) => ({ ...x, [campo]: valor }));
     setMensaje(null);
@@ -405,7 +422,10 @@ function FilaCategoria({
     });
     setGuardando(false);
     setMensaje(error ?? "Guardado");
-    if (!error) alGuardar();
+    if (!error) {
+      setGuardado(b);
+      alGuardar();
+    }
   };
 
   return (
@@ -453,7 +473,7 @@ function FilaCategoria({
         mensaje={mensaje}
         guardando={guardando}
         alDescartar={() => {
-          setB(aBorradorCategoria(categoria));
+          setB(base);
           setMensaje(null);
         }}
         alGuardar={guardar}

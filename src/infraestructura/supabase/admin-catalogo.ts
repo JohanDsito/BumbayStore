@@ -2,6 +2,7 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { DatoNicho } from "@/dominio/modelos";
+import { mensajeDeError } from "@/infraestructura/supabase/errores";
 
 /**
  * Lo que el panel lee y escribe de la estructura del catálogo: nichos y
@@ -77,7 +78,7 @@ export async function crearNicho(
   return {
     error: /duplicate|unique/i.test(error.message)
       ? `Ya existe un nicho con la dirección "${nicho.slug}".`
-      : error.message,
+      : mensajeDeError(error, "crear el nicho"),
   };
 }
 
@@ -104,7 +105,7 @@ export async function crearCategoria(
   return {
     error: /duplicate|unique/i.test(error.message)
       ? `Ya existe una categoría con la dirección "${categoria.slug}".`
-      : error.message,
+      : mensajeDeError(error, "crear la categoría"),
   };
 }
 
@@ -126,7 +127,7 @@ export async function guardarCategoria(
  * fila. Hay que mirar el resultado para no decir "Guardado" en falso.
  */
 function conPermiso(data: unknown[] | null, error: { message: string } | null): Resultado {
-  if (error) return { error: error.message };
+  if (error) return { error: mensajeDeError(error) };
   if (!data || data.length === 0) {
     return { error: "No se guardó: esta cuenta no tiene permisos de escritura." };
   }
