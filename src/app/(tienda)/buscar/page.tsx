@@ -30,19 +30,19 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
       {consulta && (
         <RegistrarBusqueda consulta={consulta} resultados={resultados.length} />
       )}
-      <header className="border-b border-carbon-800 py-8">
-        <h1 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl">
+      <header className="border-b border-linea py-8">
+        <h1 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-tinta-fuerte sm:text-4xl">
           {consulta ? (
             <>
               Resultados para{" "}
-              <span className="font-mono text-marca-400">{consulta}</span>
+              <span className="font-mono text-acento-texto">{consulta}</span>
             </>
           ) : (
             "¿Qué estás buscando?"
           )}
         </h1>
         {consulta && (
-          <p className="mt-3 font-mono text-xs text-carbon-500">
+          <p className="mt-3 font-mono text-xs text-tinta-tenue">
             {resultados.length}{" "}
             {resultados.length === 1 ? "producto encontrado" : "productos encontrados"}
           </p>
@@ -51,12 +51,12 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
 
       <div className="py-8">
         {consulta && resultados.length === 0 ? (
-          <div className="border border-dashed border-carbon-700 px-6 py-16 text-center">
-            <p className="text-[15px] text-carbon-300">
+          <div className="border border-dashed border-borde px-6 py-16 text-center">
+            <p className="text-[15px] text-tinta-media">
               No encontramos nada para{" "}
-              <span className="font-mono text-carbon-100">{consulta}</span>.
+              <span className="font-mono text-tinta">{consulta}</span>.
             </p>
-            <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-carbon-500">
+            <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-tinta-tenue">
               Prueba con una palabra más corta, con el código del producto, o
               escríbenos: si no está en el catálogo, probablemente lo
               conseguimos.
@@ -65,7 +65,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
               href={enlaceGeneral(`Hola, estoy buscando: ${consulta}`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex h-11 items-center gap-2 bg-disponible px-6 text-[13px] font-semibold tracking-tight text-carbon-950 transition-opacity hover:opacity-90"
+              className="mt-6 inline-flex h-11 items-center gap-2 bg-disponible px-6 text-[13px] font-semibold tracking-tight text-sobre-disponible transition-opacity hover:opacity-90"
             >
               <IconoWhatsApp className="h-4 w-4" />
               Preguntar por WhatsApp
@@ -78,7 +78,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
           </>
         ) : (
           <div>
-            <h2 className="rotulo text-carbon-400">
+            <h2 className="rotulo text-tinta-suave">
               O explora por categoría
             </h2>
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -86,7 +86,7 @@ export default async function PaginaBusqueda({ searchParams }: Props) {
                 <li key={c.slug}>
                   <Link
                     href={rutaCategoria(c)}
-                    className="block border border-carbon-800 bg-carbon-900 px-4 py-2.5 text-[13px] font-medium text-carbon-300 transition-colors hover:border-marca-500 hover:text-carbon-50"
+                    className="block border border-linea bg-superficie px-4 py-2.5 text-[13px] font-medium text-tinta-media transition-colors hover:border-marca-500 hover:text-tinta-fuerte"
                   >
                     {c.nombre}
                   </Link>

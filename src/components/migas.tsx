@@ -36,18 +36,18 @@ export function Migas({ pasos }: { pasos: Paso[] }) {
     <>
       <JsonLd datos={datos} />
       <nav aria-label="Ruta de navegación" className="py-4">
-        <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-carbon-500">
+        <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-tinta-tenue">
           {todos.map((p, i) => {
             const ultimo = i === todos.length - 1;
             return (
               <li key={p.ruta} className="flex items-center gap-1.5">
                 {i > 0 && <span aria-hidden>/</span>}
                 {ultimo ? (
-                  <span aria-current="page" className="text-carbon-300">
+                  <span aria-current="page" className="text-tinta-media">
                     {p.etiqueta ?? p.nombre}
                   </span>
                 ) : (
-                  <Link href={p.ruta} className="transition-colors hover:text-marca-400">
+                  <Link href={p.ruta} className="transition-colors hover:text-acento-texto">
                     {p.etiqueta ?? p.nombre}
                   </Link>
                 )}

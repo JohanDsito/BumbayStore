@@ -53,7 +53,7 @@ export default async function LayoutTienda({
         // ni búsquedas de prueba en la base real (ver infraestructura/supabase/registro.ts).
         <p
           data-modo-demo
-          className="rotulo bg-alerta px-4 py-2 text-center text-[11px] text-carbon-950"
+          className="rotulo bg-alerta px-4 py-2 text-center text-[11px] text-noche"
         >
           Demostración · Hogar, tecnología y belleza son nichos de ejemplo · Los pedidos no se guardan
         </p>

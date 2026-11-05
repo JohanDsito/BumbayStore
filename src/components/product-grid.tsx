@@ -11,8 +11,8 @@ type Props = {
 export function GrillaProductos({ productos, prioritarias = 4 }: Props) {
   if (productos.length === 0) {
     return (
-      <div className="border border-dashed border-carbon-700 px-6 py-20 text-center">
-        <p className="text-sm text-carbon-400">
+      <div className="border border-dashed border-borde px-6 py-20 text-center">
+        <p className="text-sm text-tinta-suave">
           No hay productos para mostrar aquí todavía.
         </p>
       </div>
@@ -20,7 +20,7 @@ export function GrillaProductos({ productos, prioritarias = 4 }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-px bg-carbon-800 sm:gap-3 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-px bg-linea sm:gap-3 sm:bg-transparent lg:grid-cols-3 xl:grid-cols-4">
       {productos.map((producto, i) => (
         <TarjetaProducto
           key={producto.slug}

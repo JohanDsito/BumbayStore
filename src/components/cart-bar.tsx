@@ -33,20 +33,20 @@ export function BarraPedido() {
       {visible && (
         <div className="fixed inset-x-0 bottom-0 z-40 animate-[subir_0.32s_var(--ease-salida)] pb-[env(safe-area-inset-bottom,0px)]">
           <div aria-hidden className="h-px bg-marca-500/70" />
-          <div className="border-t border-carbon-800 bg-carbon-900/95 backdrop-blur-md shadow-flotante">
+          <div className="border-t border-linea bg-superficie/95 backdrop-blur-md shadow-flotante">
             <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-3 sm:px-6">
               <div className="relative shrink-0">
-                <IconoCarrito className="h-6 w-6 text-marca-500" />
+                <IconoCarrito className="h-6 w-6 text-acento-texto" />
                 <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center bg-marca-500 px-1 font-mono text-[11px] font-bold text-sobre-marca">
                   {unidades}
                 </span>
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="rotulo text-[11px] text-carbon-500">
+                <p className="rotulo text-[11px] text-tinta-tenue">
                   Pedido en curso
                 </p>
-                <p className="font-mono text-base font-bold leading-tight text-carbon-50">
+                <p className="font-mono text-base font-bold leading-tight text-tinta-fuerte">
                   {precio(total)}
                 </p>
               </div>
@@ -78,7 +78,7 @@ export function BotonPedidoHeader() {
       type="button"
       onClick={abrir}
       aria-label={`Ver pedido${unidades > 0 ? `, ${unidades} unidades` : ""}`}
-      className="relative flex h-11 w-11 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400"
+      className="relative flex h-11 w-11 items-center justify-center text-tinta-media transition-colors hover:text-acento-texto"
     >
       <IconoCarrito className="h-5 w-5" />
       {unidades > 0 && (

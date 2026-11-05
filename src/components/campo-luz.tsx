@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import * as campo from "@/cliente/campo/estado";
+import * as tema from "@/cliente/tema/estado";
 
 /**
  * El campo de luz: un filamento por nicho que respira detrás de la tienda.
@@ -43,19 +44,26 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
   const lienzo = useRef<HTMLCanvasElement>(null);
   const [visible, setVisible] = useState(false);
   const estado = useSyncExternalStore(campo.suscribir, campo.leer, campo.leer);
+  const temaActual = useSyncExternalStore(tema.suscribir, tema.leer, tema.leerServidor);
 
   // Lo que el campo debe mostrar ahora. Se recalcula al cambiar de página o
   // de foco; el bucle de dibujo se acerca a esto poco a poco.
   const meta = useMemo(
-    () => calcularObjetivo(estado, colores, acentoTienda),
-    [estado, colores, acentoTienda],
+    () => calcularObjetivo(estado, colores, acentoTienda, temaActual === "claro"),
+    [estado, colores, acentoTienda, temaActual],
   );
   const objetivo = useRef<Objetivo>(meta);
   const reanudar = useRef<(() => void) | null>(null);
+  const forzar = useRef<(() => void) | null>(null);
   useEffect(() => {
     objetivo.current = meta;
     reanudar.current?.();
   }, [meta]);
+  // Cambiar de tema redibuja ya, aunque el campo esté congelado por el
+  // scroll: un lienzo de noche detrás de una página clara se notaría.
+  useEffect(() => {
+    forzar.current?.();
+  }, [temaActual]);
 
   useEffect(() => {
     const canvas = lienzo.current;
@@ -71,6 +79,7 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
       if (!motor) return;
       detener = motor.detener;
       reanudar.current = motor.reanudar;
+      forzar.current = motor.forzar;
     };
 
     // Después de pintar y con el navegador libre: el campo nunca compite
@@ -87,6 +96,7 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
       else window.clearTimeout(id);
       detener?.();
       reanudar.current = null;
+      forzar.current = null;
     };
   }, []);
 
@@ -101,7 +111,7 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
       />
       {/* Grano fino de película, fijo: le quita al degradado su brillo de
           pantalla y no cuesta nada porque no se mueve. */}
-      <div className="absolute inset-0 opacity-[0.07] [background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22/%3E%3C/svg%3E')]" />
+      <div className="absolute inset-0 opacity-[var(--t-grano)] [background-image:url('data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22%3E%3Cfilter id=%22g%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23g)%22/%3E%3C/svg%3E')]" />
     </div>
   );
 }
@@ -112,12 +122,15 @@ type Objetivo = {
   colores: [number, number, number][];
   pesos: number[];
   intensidad: number;
+  /** 1 en el tema claro (líneas de color sobre papel), 0 en el oscuro (luz sobre noche). */
+  claro: number;
 };
 
 function calcularObjetivo(
   estado: campo.EstadoCampo,
   colores: string[],
   acentoTienda: string,
+  claro: boolean,
 ): Objetivo {
   // Dentro de un nicho, los cuatro filamentos toman su color en tonos
   // distintos: el campo entero es del nicho.
@@ -127,6 +140,7 @@ function calcularObjetivo(
       colores: [base, aclarar(base, 0.35), oscurecer(base, 0.35), aclarar(base, 0.6)],
       pesos: [1, 0.75, 0.8, 0.45],
       intensidad: estado.intensidad,
+      claro: claro ? 1 : 0,
     };
   }
 
@@ -142,6 +156,7 @@ function calcularObjetivo(
       return i === estado.foco ? 1.25 : 0.2;
     }),
     intensidad: estado.intensidad,
+    claro: claro ? 1 : 0,
   };
 }
 
@@ -200,6 +215,7 @@ uniform vec2 u_mouse;
 uniform vec3 u_col[4];
 uniform float u_w[4];
 uniform float u_int;
+uniform float u_claro;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float ruido(vec2 p) {
@@ -223,7 +239,11 @@ void main() {
   float ancho = step(1.2, asp);
   float entrada = mix(0.42, 0.08 + 0.92 * smoothstep(0.3, 0.92, uv.x), ancho);
 
-  vec3 col = vec3(0.027, 0.031, 0.051);
+  // Fondos de cada tema: deben coincidir con --t-fondo en globals.css.
+  vec3 noche = vec3(0.027, 0.031, 0.051);
+  vec3 papel = vec3(0.957, 0.961, 0.973);
+  vec3 luz = vec3(0.0);
+  vec3 tinta = papel;
   float semilla = hash(floor(gl_FragCoord.xy));
 
   for (int i = 0; i < 4; i++) {
@@ -237,11 +257,16 @@ void main() {
     float nucleo = exp(-d * 95.0);
     float halo = exp(-d * 13.0) * 0.26;
     float particulas = step(0.9, semilla) * exp(-d * 26.0) * 0.85;
-    col += u_col[i] * (nucleo + halo + particulas) * u_w[i] * entrada * u_int;
+    float e = (nucleo + halo + particulas) * u_w[i] * entrada * u_int;
+    // Oscuro: la luz se suma sobre la noche.
+    luz += u_col[i] * e;
+    // Claro: cada hilo es una línea de color sobre papel, que nunca tapa más
+    // de la mitad del fondo: el texto encima sigue leyéndose.
+    tinta = mix(tinta, u_col[i], clamp(e * 0.55, 0.0, 0.45));
   }
 
-  col *= 1.0 - 0.4 * length(uv - vec2(0.62, 0.48));
-  gl_FragColor = vec4(col, 1.0);
+  vec3 oscuro = (noche + luz) * (1.0 - 0.4 * length(uv - vec2(0.62, 0.48)));
+  gl_FragColor = vec4(mix(oscuro, tinta, u_claro), 1.0);
 }
 `;
 
@@ -250,7 +275,7 @@ function iniciar(
   objetivo: { current: Objetivo },
   quieto: boolean,
   alPrimerCuadro: () => void,
-): { detener: () => void; reanudar: () => void } | null {
+): { detener: () => void; reanudar: () => void; forzar: () => void } | null {
   const gl = canvas.getContext("webgl", {
     alpha: false,
     antialias: false,
@@ -279,6 +304,7 @@ function iniciar(
     col: gl.getUniformLocation(programa, "u_col"),
     w: gl.getUniformLocation(programa, "u_w"),
     int: gl.getUniformLocation(programa, "u_int"),
+    claro: gl.getUniformLocation(programa, "u_claro"),
   };
 
   const tactil = window.matchMedia("(pointer: coarse)").matches;
@@ -336,17 +362,11 @@ function iniciar(
       actual.pesos[i] += (meta.pesos[i] - actual.pesos[i]) * k;
     }
     actual.intensidad += (meta.intensidad - actual.intensidad) * k;
+    actual.claro += (meta.claro - actual.claro) * k;
     raton.ax += (raton.x - raton.ax) * k;
     raton.ay += (raton.y - raton.ay) * k;
 
-    gl.useProgram(programa);
-    gl.uniform2f(u.res, canvas.width, canvas.height);
-    gl.uniform1f(u.t, tiempo);
-    gl.uniform2f(u.mouse, raton.ax, raton.ay);
-    gl.uniform3fv(u.col, actual.colores.flat());
-    gl.uniform1fv(u.w, actual.pesos);
-    gl.uniform1f(u.int, actual.intensidad);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    dibujar();
 
     if (primero) {
       primero = false;
@@ -357,6 +377,25 @@ function iniciar(
       marco = 0;
       corriendo = false;
     }
+  };
+
+  const dibujar = () => {
+    gl.useProgram(programa);
+    gl.uniform2f(u.res, canvas.width, canvas.height);
+    gl.uniform1f(u.t, tiempo);
+    gl.uniform2f(u.mouse, raton.ax, raton.ay);
+    gl.uniform3fv(u.col, actual.colores.flat());
+    gl.uniform1fv(u.w, actual.pesos);
+    gl.uniform1f(u.int, actual.intensidad);
+    gl.uniform1f(u.claro, actual.claro);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+
+  // Un cuadro ya, con el tema nuevo de golpe, aunque el campo esté congelado.
+  // Si está corriendo, el bucle sigue desde ahí.
+  const forzar = () => {
+    actual.claro = objetivo.current.claro;
+    dibujar();
   };
 
   const reanudar = () => {
@@ -394,6 +433,7 @@ function iniciar(
 
   return {
     reanudar,
+    forzar,
     detener: () => {
       cancelAnimationFrame(marco);
       window.removeEventListener("scroll", reanudar);

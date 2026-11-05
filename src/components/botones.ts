@@ -9,4 +9,4 @@ export const BOTON_PRINCIPAL =
 
 /** Botón secundario: borde fino sobre vidrio; se enciende en verde si lleva a WhatsApp. */
 export const BOTON_SECUNDARIO =
-  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-carbon-600 bg-carbon-950/40 px-7 text-carbon-100 transition-colors duration-200 hover:border-disponible hover:text-disponible";
+  "rotulo inline-flex h-12 items-center justify-center gap-3 border border-borde-fuerte bg-fondo/40 px-7 text-tinta transition-colors duration-200 hover:border-disponible hover:text-disponible";

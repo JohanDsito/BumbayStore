@@ -79,10 +79,10 @@ export function SelectorColor({
 
   return (
     <div className={compacto ? "mt-3" : "mt-6"}>
-      <p className="rotulo text-[11px] text-carbon-500">
+      <p className="rotulo text-[11px] text-tinta-tenue">
         Color
         {actual?.color && (
-          <span className="ml-2 text-carbon-200">{actual.color}</span>
+          <span className="ml-2 text-tinta">{actual.color}</span>
         )}
       </p>
 
@@ -94,7 +94,7 @@ export function SelectorColor({
               {activo ? (
                 <span
                   aria-current="true"
-                  className={`flex items-center gap-2 border-2 border-marca-500 bg-marca-500/10 pl-2 pr-3 font-medium text-carbon-50 ${
+                  className={`flex items-center gap-2 border-2 border-marca-500 bg-marca-500/10 pl-2 pr-3 font-medium text-tinta-fuerte ${
                     compacto ? "h-9 text-[12px]" : "h-11 text-[13px]"
                   }`}
                 >
@@ -104,7 +104,7 @@ export function SelectorColor({
               ) : (
                 <Enlace
                   href={rutaProducto(v)}
-                  className={`flex items-center gap-2 border border-carbon-700 pl-2 pr-3 text-carbon-300 transition-colors hover:border-carbon-500 hover:text-carbon-50 ${
+                  className={`flex items-center gap-2 border border-borde pl-2 pr-3 text-tinta-media transition-colors hover:border-tinta-tenue hover:text-tinta-fuerte ${
                     compacto ? "h-9 text-[12px]" : "h-11 text-[13px]"
                   }`}
                 >
@@ -124,7 +124,7 @@ function Punto({ color, compacto }: { color: string | null; compacto: boolean })
   return (
     <span
       aria-hidden
-      className={`block shrink-0 rounded-full ring-1 ring-carbon-950/40 ${
+      className={`block shrink-0 rounded-full ring-1 ring-noche/40 ${
         compacto ? "h-4 w-4" : "h-5 w-5"
       }`}
       style={{ backgroundColor: color ? muestra(color) : "#52525B" }}
@@ -135,10 +135,10 @@ function Punto({ color, compacto }: { color: string | null; compacto: boolean })
 /** Marca de color para las tarjetas de la grilla. */
 export function EtiquetaColor({ color }: { color: string }) {
   return (
-    <span className="flex items-center gap-1.5 rotulo text-[11px] text-carbon-400">
+    <span className="flex items-center gap-1.5 rotulo text-[11px] text-tinta-suave">
       <span
         aria-hidden
-        className="block h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-carbon-950/40"
+        className="block h-2.5 w-2.5 shrink-0 rounded-full ring-1 ring-noche/40"
         style={{ backgroundColor: muestra(color) }}
       />
       {color}

@@ -129,8 +129,8 @@ function LecturaNicho({ datos }: { datos: DatoNicho[] }) {
     <dl className="space-y-4">
       {datos.map((d) => (
         <div key={d.etiqueta}>
-          <dt className="rotulo text-carbon-400">{d.etiqueta}</dt>
-          <dd className="mt-1 font-mono text-sm text-carbon-50">{d.valor}</dd>
+          <dt className="rotulo text-tinta-suave">{d.etiqueta}</dt>
+          <dd className="mt-1 font-mono text-sm text-tinta-fuerte">{d.valor}</dd>
         </div>
       ))}
     </dl>

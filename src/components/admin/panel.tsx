@@ -54,21 +54,21 @@ export function PanelAdmin() {
   if (!sb) {
     return (
       <Aviso titulo="Supabase no está configurado">
-        Faltan <code className="font-mono text-marca-400">NEXT_PUBLIC_SUPABASE_URL</code>{" "}
-        o <code className="font-mono text-marca-400">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
+        Faltan <code className="font-mono text-acento-texto">NEXT_PUBLIC_SUPABASE_URL</code>{" "}
+        o <code className="font-mono text-acento-texto">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
       </Aviso>
     );
   }
 
   if (cargando) {
-    return <p className="py-20 text-center font-mono text-xs text-carbon-500">Cargando…</p>;
+    return <p className="py-20 text-center font-mono text-xs text-tinta-tenue">Cargando…</p>;
   }
 
   if (!sesion) return <FormularioAcceso />;
 
   if (esAdmin === null) {
     return (
-      <p className="py-20 text-center font-mono text-xs text-carbon-500">
+      <p className="py-20 text-center font-mono text-xs text-tinta-tenue">
         Comprobando permisos…
       </p>
     );
@@ -77,15 +77,15 @@ export function PanelAdmin() {
   if (!esAdmin) {
     return (
       <Aviso titulo="Esta cuenta no tiene permisos">
-        <span className="font-mono text-carbon-100">{sesion.user.email}</span> entró
+        <span className="font-mono text-tinta">{sesion.user.email}</span> entró
         correctamente, pero no está en la lista de administradores, así que no
         puede ver ni modificar nada. Añádela desde el SQL Editor de Supabase
         con la instrucción de la sección{" "}
-        <span className="font-mono text-marca-400">Crear tu usuario</span> del README.
+        <span className="font-mono text-acento-texto">Crear tu usuario</span> del README.
         <button
           type="button"
           onClick={() => sb.auth.signOut()}
-          className="mt-4 block w-full border border-carbon-700 py-2 rotulo text-[11px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="mt-4 block w-full border border-borde py-2 rotulo text-[11px] text-tinta-media transition-colors hover:border-marca-500 hover:text-acento-texto"
         >
           Salir
         </button>
@@ -95,7 +95,7 @@ export function PanelAdmin() {
 
   return (
     <div>
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-carbon-800 pb-3">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-linea pb-3">
         <nav className="sin-scrollbar flex max-w-full gap-1 overflow-x-auto" aria-label="Secciones">
           {PESTANAS.map((p) => (
             <button
@@ -105,8 +105,8 @@ export function PanelAdmin() {
               aria-current={pestana === p.id ? "page" : undefined}
               className={`whitespace-nowrap px-4 py-2 text-[13px] font-medium transition-colors ${
                 pestana === p.id
-                  ? "border-b-2 border-marca-500 text-carbon-50"
-                  : "text-carbon-400 hover:text-carbon-100"
+                  ? "border-b-2 border-marca-500 text-tinta-fuerte"
+                  : "text-tinta-suave hover:text-tinta"
               }`}
             >
               {p.titulo}
@@ -115,13 +115,13 @@ export function PanelAdmin() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[11px] text-carbon-500">
+          <span className="font-mono text-[11px] text-tinta-tenue">
             {sesion.user.email}
           </span>
           <button
             type="button"
             onClick={() => sb.auth.signOut()}
-            className="rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
+            className="rotulo text-[11px] text-tinta-suave transition-colors hover:text-acento-texto"
           >
             Salir
           </button>
@@ -169,10 +169,10 @@ function FormularioAcceso() {
 
   return (
     <div className="mx-auto max-w-sm py-16">
-      <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-carbon-50">
+      <h1 className="text-2xl font-extrabold tracking-[-0.03em] text-tinta-fuerte">
         Entrar al panel
       </h1>
-      <p className="mt-2 text-[13px] leading-relaxed text-carbon-400">
+      <p className="mt-2 text-[13px] leading-relaxed text-tinta-suave">
         Con el correo y la contraseña del usuario que creaste en Supabase.
       </p>
 
@@ -180,7 +180,7 @@ function FormularioAcceso() {
         <div>
           <label
             htmlFor="admin-correo"
-            className="block rotulo text-[10px] text-carbon-500"
+            className="block rotulo text-[10px] text-tinta-tenue"
           >
             Correo
           </label>
@@ -191,14 +191,14 @@ function FormularioAcceso() {
             autoComplete="username"
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
-            className="mt-2 h-11 w-full border border-carbon-700 bg-carbon-850 px-3 text-[14px] text-carbon-100 focus:border-marca-500 focus:outline-none"
+            className="mt-2 h-11 w-full border border-borde bg-hundido px-3 text-[14px] text-tinta focus:border-marca-500 focus:outline-none"
           />
         </div>
 
         <div>
           <label
             htmlFor="admin-clave"
-            className="block rotulo text-[10px] text-carbon-500"
+            className="block rotulo text-[10px] text-tinta-tenue"
           >
             Contraseña
           </label>
@@ -209,11 +209,11 @@ function FormularioAcceso() {
             autoComplete="current-password"
             value={clave}
             onChange={(e) => setClave(e.target.value)}
-            className="mt-2 h-11 w-full border border-carbon-700 bg-carbon-850 px-3 text-[14px] text-carbon-100 focus:border-marca-500 focus:outline-none"
+            className="mt-2 h-11 w-full border border-borde bg-hundido px-3 text-[14px] text-tinta focus:border-marca-500 focus:outline-none"
           />
         </div>
 
-        {error && <p className="text-[13px] text-marca-400">{error}</p>}
+        {error && <p className="text-[13px] text-acento-texto">{error}</p>}
 
         <button
           type="submit"
@@ -230,8 +230,8 @@ function FormularioAcceso() {
 function Aviso({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-md border border-marca-500/40 bg-marca-500/[0.06] p-6 text-center">
-      <h1 className="text-lg font-bold text-carbon-50">{titulo}</h1>
-      <p className="mt-2 text-[13px] leading-relaxed text-carbon-300">{children}</p>
+      <h1 className="text-lg font-bold text-tinta-fuerte">{titulo}</h1>
+      <p className="mt-2 text-[13px] leading-relaxed text-tinta-media">{children}</p>
     </div>
   );
 }

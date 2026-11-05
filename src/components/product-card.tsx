@@ -14,7 +14,7 @@ type Props = {
 export function TarjetaProducto({ producto, prioridad = false }: Props) {
   return (
     <article
-      className="group relative flex h-full min-w-0 flex-col border border-carbon-800 bg-carbon-900 transition-colors duration-300 hover:border-carbon-600"
+      className="group relative flex h-full min-w-0 flex-col border border-linea bg-superficie transition-colors duration-300 hover:border-borde-fuerte"
     >
       <div className="relative">
         <div className={producto.agotado ? "opacity-45 grayscale" : undefined}>
@@ -27,7 +27,7 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
         </div>
 
         {producto.agotado && (
-          <span className="absolute left-0 top-3 bg-carbon-950 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-carbon-200 ring-1 ring-carbon-700">
+          <span className="absolute left-0 top-3 bg-fondo py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-tinta ring-1 ring-noche">
             Agotado
           </span>
         )}
@@ -36,13 +36,13 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
 
       <div className="esquinas-tecnicas flex flex-1 flex-col p-3.5 sm:p-4">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-[11px] tracking-[0.16em] text-carbon-500">
+          <span className="font-mono text-[11px] tracking-[0.16em] text-tinta-tenue">
             {producto.sku}
           </span>
           {producto.color && <EtiquetaColor color={producto.color} />}
         </div>
 
-        <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-carbon-100 sm:text-sm">
+        <h3 className="mt-1.5 text-[13px] font-semibold leading-snug tracking-tight text-tinta sm:text-sm">
           {/* El enlace cubre toda la tarjeta, foto incluida, salvo el botón, que va
               por encima. Por eso entre él y el <article> no puede haber otro
               bloque posicionado (ver .esquinas-tecnicas en globals.css). */}
@@ -55,7 +55,7 @@ export function TarjetaProducto({ producto, prioridad = false }: Props) {
           <div className="min-w-0">
             <span
               className={`block font-mono text-lg font-semibold leading-none ${
-                producto.agotado ? "text-carbon-500 line-through" : "text-carbon-50"
+                producto.agotado ? "text-tinta-tenue line-through" : "text-tinta-fuerte"
               }`}
             >
               {precio(producto.precioUnitario)}

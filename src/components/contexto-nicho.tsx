@@ -1,4 +1,4 @@
-import { tintaSobre } from "@/dominio/color";
+import { variablesAcento } from "@/config/tema";
 import { FijarCampo } from "@/components/fijar-campo";
 
 /**
@@ -20,12 +20,12 @@ export function ContextoNicho({
   intensidad: number;
   children: React.ReactNode;
 }) {
-  const estilo = acento
-    ? ({ "--acento": acento, "--acento-tinta": tintaSobre(acento) } as React.CSSProperties)
-    : undefined;
+  const estilo = acento ? (variablesAcento(acento) as React.CSSProperties) : undefined;
 
+  // La clase hace que --acento-texto se resuelva aquí, con el color del nicho
+  // (ver .contexto-nicho en globals.css).
   return (
-    <div style={estilo}>
+    <div style={estilo} className={acento ? "contexto-nicho" : undefined}>
       <FijarCampo acento={acento} intensidad={intensidad} />
       {children}
     </div>

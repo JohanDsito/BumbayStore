@@ -60,14 +60,14 @@ export function Portico({
           {logo && <div className="mb-8">{logo}</div>}
           <TitularAnimado
             texto={titular}
-            className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-carbon-50"
-            acentoClassName="text-marca-500"
+            className="titular text-[clamp(2.75rem,11.5vw,6rem)] text-tinta-fuerte"
+            acentoClassName="text-acento-texto"
           />
 
-          <p className="rotulo mt-7 text-carbon-200">{lineaClave}</p>
+          <p className="rotulo mt-7 text-tinta">{lineaClave}</p>
 
           {descripcion && (
-            <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-carbon-300 sm:text-base">
+            <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-tinta-media sm:text-base">
               {descripcion}
             </p>
           )}
@@ -104,7 +104,7 @@ export function ExplorarCategorias({
   if (categorias.length === 0) return null;
   return (
     <section aria-labelledby="titulo-categorias" className="pb-12">
-      <h2 id="titulo-categorias" className="rotulo text-carbon-400">
+      <h2 id="titulo-categorias" className="rotulo text-tinta-suave">
         {titulo}
       </h2>
       <ul className="mt-4 flex flex-wrap gap-2">
@@ -112,10 +112,10 @@ export function ExplorarCategorias({
           <li key={c.slug}>
             <Link
               href={rutaCategoria(c)}
-              className="group flex items-center gap-2 border border-carbon-700 bg-carbon-950/50 px-4 py-2.5 text-[13px] font-medium text-carbon-200 transition-colors hover:border-marca-400 hover:text-carbon-50"
+              className="group flex items-center gap-2 border border-borde bg-fondo/50 px-4 py-2.5 text-[13px] font-medium text-tinta transition-colors hover:border-marca-400 hover:text-tinta-fuerte"
             >
               {c.nombre}
-              <IconoFlecha className="h-3.5 w-3.5 text-carbon-500 transition-[transform,color] group-hover:translate-x-0.5 group-hover:text-marca-400" />
+              <IconoFlecha className="h-3.5 w-3.5 text-tinta-tenue transition-[transform,color] group-hover:translate-x-0.5 group-hover:text-acento-texto" />
             </Link>
           </li>
         ))}
@@ -127,13 +127,13 @@ export function ExplorarCategorias({
 /** Llamado a la acción para el cliente que compra por volumen. */
 export function BloqueMayorista() {
   return (
-    <section className="vidrio relative my-12 border border-carbon-700">
+    <section className="vidrio relative my-12 border border-borde">
       <div className="grid gap-8 p-8 sm:p-12 lg:grid-cols-[1.5fr_1fr] lg:items-center">
         <div>
-          <h2 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl">
+          <h2 className="condensada text-3xl font-extrabold tracking-[-0.02em] text-tinta-fuerte sm:text-4xl">
             ¿Compras para tu negocio?
           </h2>
-          <p className="mt-4 max-w-[56ch] text-[15px] leading-relaxed text-carbon-300">
+          <p className="mt-4 max-w-[56ch] text-[15px] leading-relaxed text-tinta-media">
             Manejamos un solo precio, de distribuidor, igual para todos: el que
             ves en el catálogo. Arma tu pedido y escríbenos con las cantidades
             que necesitas para coordinar despacho a toda Colombia y respaldo de
@@ -146,7 +146,7 @@ export function BloqueMayorista() {
           )}
           target="_blank"
           rel="noopener noreferrer"
-          className="rotulo flex h-14 items-center justify-center gap-3 bg-disponible px-8 text-carbon-950 transition-opacity hover:opacity-90"
+          className="rotulo flex h-14 items-center justify-center gap-3 bg-disponible px-8 text-sobre-disponible transition-opacity hover:opacity-90"
         >
           <IconoWhatsApp className="h-5 w-5" />
           Cotizar al por mayor
@@ -167,14 +167,14 @@ export function EncabezadoSeccion({
   cantidad: number;
 }) {
   return (
-    <div className="mb-6 flex items-end justify-between gap-4 border-t border-carbon-800 pt-10">
+    <div className="mb-6 flex items-end justify-between gap-4 border-t border-linea pt-10">
       <h2
         id={id}
-        className="condensada text-3xl font-extrabold tracking-[-0.02em] text-carbon-50 sm:text-4xl"
+        className="condensada text-3xl font-extrabold tracking-[-0.02em] text-tinta-fuerte sm:text-4xl"
       >
         {titulo}
       </h2>
-      <span className="shrink-0 font-mono text-xs text-carbon-400">
+      <span className="shrink-0 font-mono text-xs text-tinta-suave">
         {cantidad} {cantidad === 1 ? "producto" : "productos"}
       </span>
     </div>

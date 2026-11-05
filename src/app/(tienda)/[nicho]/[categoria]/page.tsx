@@ -92,16 +92,16 @@ export default async function PaginaCategoria({ params }: Props) {
           ]}
         />
 
-        <header className="border-b border-carbon-800 pb-8 pt-4">
-          <h1 className="titular text-[clamp(2.75rem,7vw,4.75rem)] text-carbon-50">
+        <header className="border-b border-linea pb-8 pt-4">
+          <h1 className="titular text-[clamp(2.75rem,7vw,4.75rem)] text-tinta-fuerte">
             {categoria.nombre}
           </h1>
           {categoria.descripcion && (
-            <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-carbon-300">
+            <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-tinta-media">
               {categoria.descripcion}
             </p>
           )}
-          <p className="mt-5 font-mono text-xs text-carbon-400">
+          <p className="mt-5 font-mono text-xs text-tinta-suave">
             {productos.length} {productos.length === 1 ? "producto" : "productos"}
           </p>
         </header>

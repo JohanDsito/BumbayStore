@@ -29,8 +29,8 @@ function buscar(departamento: string, consulta: string) {
 }
 
 const CLASE_CAMPO =
-  "mt-2 h-11 w-full border px-3 text-[14px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50";
-const CLASE_NORMAL = "border-carbon-700 bg-carbon-850";
+  "mt-2 h-11 w-full border px-3 text-[14px] text-tinta placeholder:text-tinta-tenue focus:border-marca-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50";
+const CLASE_NORMAL = "border-borde bg-hundido";
 const CLASE_ERROR = "border-marca-500 bg-marca-500/[0.10]";
 
 type Props = {
@@ -98,7 +98,7 @@ export function CampoUbicacion({ departamento, municipio, alCambiar, errores }: 
   return (
     <div className="space-y-4">
       <div>
-        <label htmlFor="pedido-departamento" className="block rotulo text-[11px] text-carbon-500">
+        <label htmlFor="pedido-departamento" className="block rotulo text-[11px] text-tinta-tenue">
           Departamento
         </label>
         <select
@@ -120,14 +120,14 @@ export function CampoUbicacion({ departamento, municipio, alCambiar, errores }: 
           ))}
         </select>
         {errores.departamento && (
-          <p id="pedido-departamento-error" className="mt-1.5 text-[12px] text-marca-400">
+          <p id="pedido-departamento-error" className="mt-1.5 text-[12px] text-acento-texto">
             {errores.departamento}
           </p>
         )}
       </div>
 
       <div ref={contenedor} className="relative">
-        <label htmlFor="pedido-municipio" className="block rotulo text-[11px] text-carbon-500">
+        <label htmlFor="pedido-municipio" className="block rotulo text-[11px] text-tinta-tenue">
           Ciudad o municipio
         </label>
         <input
@@ -177,7 +177,7 @@ export function CampoUbicacion({ departamento, municipio, alCambiar, errores }: 
             id={idLista}
             role="listbox"
             aria-label={`Municipios de ${departamento}`}
-            className="absolute left-0 right-0 top-full z-10 mt-1 max-h-64 overflow-y-auto border border-carbon-700 bg-carbon-850 shadow-panel"
+            className="absolute left-0 right-0 top-full z-10 mt-1 max-h-64 overflow-y-auto border border-borde bg-hundido shadow-panel"
           >
             {sugerencias.map((m, i) => (
               <li key={m.nombre} role="option" aria-selected={i === resaltado}>
@@ -190,7 +190,7 @@ export function CampoUbicacion({ departamento, municipio, alCambiar, errores }: 
                     elegir(m.nombre);
                   }}
                   onMouseEnter={() => setResaltado(i)}
-                  className={`block min-h-11 w-full px-3 py-2.5 text-left text-[14px] leading-tight text-carbon-100 transition-colors ${
+                  className={`block min-h-11 w-full px-3 py-2.5 text-left text-[14px] leading-tight text-tinta transition-colors ${
                     i === resaltado ? "bg-marca-500/[0.14]" : ""
                   }`}
                 >
@@ -202,7 +202,7 @@ export function CampoUbicacion({ departamento, municipio, alCambiar, errores }: 
         )}
 
         {errores.municipio && (
-          <p id="pedido-municipio-error" className="mt-1.5 text-[12px] text-marca-400">
+          <p id="pedido-municipio-error" className="mt-1.5 text-[12px] text-acento-texto">
             {errores.municipio}
           </p>
         )}

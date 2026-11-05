@@ -2,25 +2,38 @@
 name: Bumbay Store
 description: Un portal vivo. Un campo de luz con un filamento por nicho respira detrás del catálogo.
 colors:
-  noche-950: "#07080d"
-  noche-900: "#0c0e17"
-  noche-850: "#11141f"
-  noche-800: "#191c29"
-  noche-750: "#212534"
-  noche-700: "#2c3043"
-  noche-600: "#444a63"
-  noche-500: "#7b81a0"
-  noche-400: "#959bb5"
-  noche-300: "#bcc0d3"
-  noche-200: "#d9dbe6"
-  noche-100: "#edeef4"
-  noche-50: "#f7f8fb"
+  # Tema claro (predeterminado). Los mismos nombres con -oscuro son el tema oscuro.
+  fondo: "#f4f5f8"
+  superficie: "#ffffff"
+  hundido: "#eceef3"
+  linea: "#e0e3ea"
+  borde: "#cdd1dc"
+  borde-fuerte: "#a3a9ba"
+  tinta-fuerte: "#0b0c12"
+  tinta: "#1c1f2b"
+  tinta-media: "#363b4d"
+  tinta-suave: "#454b5f"
+  tinta-tenue: "#535970"
+  panel-foto: "#e9ebf1"
+  disponible: "#0b6e3a"
+  fondo-oscuro: "#07080d"
+  superficie-oscuro: "#0c0e17"
+  hundido-oscuro: "#11141f"
+  linea-oscuro: "#191c29"
+  borde-oscuro: "#2c3043"
+  borde-fuerte-oscuro: "#444a63"
+  tinta-fuerte-oscuro: "#f7f8fb"
+  tinta-oscuro: "#e6e8f0"
+  tinta-media-oscuro: "#bcc0d3"
+  tinta-suave-oscuro: "#a1a7bf"
+  tinta-tenue-oscuro: "#8c92ae"
+  panel-foto-oscuro: "#e4e6ee"
+  disponible-oscuro: "#35d07f"
+  noche: "#0b0c12"
   turquesa-store: "#12acaa"
   rojo-bumbay: "#ec080f"
   ambar-hogar: "#ffb21a"
   violeta-tecnologia: "#8b5cff"
-  panel-foto: "#e4e6ee"
-  disponible: "#35d07f"
   alerta: "#ffc53d"
 typography:
   display:
@@ -69,13 +82,13 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.turquesa-store}"
-    textColor: "{colors.noche-950}"
+    textColor: "{colors.noche}"
     rounded: "{rounded.none}"
     height: "48px"
     padding: "0 28px"
   button-secondary:
     backgroundColor: "transparent"
-    textColor: "{colors.noche-100}"
+    textColor: "{colors.tinta}"
     rounded: "{rounded.none}"
     height: "48px"
     padding: "0 28px"
@@ -86,18 +99,18 @@ components:
     height: "40px"
   button-whatsapp:
     backgroundColor: "{colors.disponible}"
-    textColor: "{colors.noche-950}"
+    textColor: "#ffffff"
     rounded: "{rounded.none}"
     height: "56px"
     padding: "0 32px"
   card-product:
-    backgroundColor: "{colors.noche-900}"
-    textColor: "{colors.noche-100}"
+    backgroundColor: "{colors.superficie}"
+    textColor: "{colors.tinta}"
     rounded: "{rounded.none}"
     padding: "16px"
   input-field:
-    backgroundColor: "{colors.noche-950}"
-    textColor: "{colors.noche-100}"
+    backgroundColor: "{colors.hundido}"
+    textColor: "{colors.tinta}"
     rounded: "{rounded.none}"
     height: "40px"
     padding: "0 12px"
@@ -107,10 +120,10 @@ components:
 
 <!--
   Construido el 2026-10-22 a partir de la dirección elegida por el dueño
-  (portal con campo de luz). Los nombres de los tokens en el código siguen
-  siendo `carbon-*` y `marca-*`; aquí van con su nombre de diseño (`noche-*`,
-  y el color de acento de cada nicho). La identidad anterior, "catálogo
-  técnico de taller", sigue viva como submarca dentro de herramientas.
+  (portal con campo de luz). Desde noviembre de 2026 tiene dos temas: claro
+  (el predeterminado) y oscuro (la noche original). Los componentes usan
+  colores por función (`fondo`, `superficie`, `tinta`…, ver Colors), nunca un
+  tono fijo; cada función tiene su valor en cada tema en src/app/globals.css.
 -->
 
 ## Overview
@@ -124,15 +137,33 @@ El campo es el único momento de movimiento autorado del sitio, y está gobernad
 Bumbay Tools conserva su firma dentro de su nicho: su logotipo sobre el titular y el rojo exacto del logotipo como acento. La cinta de precaución que llevaba su portada se quitó a pedido del equipo (noviembre de 2026).
 
 **Key Characteristics:**
-- Fondo noche casi negro azulado, sin retícula; el campo de luz es la única textura.
-- El color de marca cambia con el nicho: turquesa de Bumbay Store en la tienda, rojo en Bumbay Tools, el suyo en cada nicho. Todo lo demás es noche.
+- Dos temas. Claro (predeterminado): papel gris azulado muy pálido, tarjetas blancas, el campo dibuja líneas de color sobre el papel. Oscuro: fondo noche casi negro azulado, el campo es luz sobre la noche. En los dos, sin retícula: el campo es la única textura.
+- El color de marca cambia con el nicho: turquesa de Bumbay Store en la tienda, rojo en Bumbay Tools, el suyo en cada nicho. Todo lo demás es neutro.
 - Titulares en Archivo al 62 % de ancho, en mayúsculas y enormes; rótulos al 112 % de ancho, diminutos y espaciados.
 - Esquinas rectas en todo; el vidrio oscuro solo donde hay texto sobre el campo.
 - Fotos de producto fundidas sobre un panel gris azulado, nunca sobre blanco puro.
 
 ## Colors
 
-Una escala de noche azulada casi sin color, para que los filamentos de cada nicho sean lo único saturado de la pantalla.
+Neutros azulados casi sin color, para que los filamentos de cada nicho sean lo único saturado de la pantalla. Cada neutro es una función, con un valor por tema:
+
+| Función | Uso | Claro | Oscuro |
+|---|---|---|---|
+| `fondo` | la página | #f4f5f8 | #07080d |
+| `superficie` | tarjetas, paneles, cajones | #ffffff | #0c0e17 |
+| `hundido` | campos de formulario, zonas rehundidas | #eceef3 | #11141f |
+| `linea` | separadores de 1 px | #e0e3ea | #191c29 |
+| `borde` / `borde-fuerte` | contornos de controles; al pasar | #cdd1dc / #a3a9ba | #2c3043 / #444a63 |
+| `tinta-fuerte` | titulares, precios | #0b0c12 | #f7f8fb |
+| `tinta` | texto corriente | #1c1f2b | #e6e8f0 |
+| `tinta-media` | párrafos secundarios | #363b4d | #bcc0d3 |
+| `tinta-suave` | rótulos | #454b5f | #a1a7bf |
+| `tinta-tenue` | lo mínimo: códigos, notas, marcadores | #535970 | #8c92ae |
+| `panel-foto` | detrás de las fotos de producto (claro en los dos) | #e9ebf1 | #e4e6ee |
+| `disponible` | WhatsApp y "Disponible" | #0b6e3a, tinta blanca | #35d07f, tinta noche |
+| `noche` | tinta fija: sobre amarillo, sobre fotos y sobre el panel de foto | #0b0c12 | #0b0c12 |
+
+Todos los textos cumplen WCAG AA (4,5:1; 3:1 los grandes) contra su fondo real en los dos temas, incluido el campo de luz: medido en noviembre de 2026 sobre capturas con el texto oculto, en portada, nicho, categoría, ficha, búsqueda, pedido y acceso al panel, a 390 y 1440 px.
 
 ### Primary
 - **Turquesa Store** (turquesa-store): el color de Bumbay Store, tomado de su logo. Es el acento de la portada general, del encabezado, del pie y del pedido. Tinta oscura encima.
@@ -140,19 +171,20 @@ Una escala de noche azulada casi sin color, para que los filamentos de cada nich
 ### Secondary
 - **Rojo Bumbay** (rojo-bumbay): el color de Bumbay Tools y de la "A" de su logo. Es el acento del nicho de herramientas, no de la tienda.
 - **Acento de nicho** (ámbar-hogar, violeta-tecnologia y los que se creen): cada nicho trae su color desde la base de datos. Dentro del nicho reemplaza al turquesa en botones, enlaces, titulares y en el campo. La tinta sobre el acento se calcula: blanca sobre rojo o violeta, oscura sobre turquesa o ámbar.
+- **Acento como texto** (`acento-texto`): el acento cuando va en letras. Es el mismo color si ya se lee sobre las superficies del tema; si no, se oscurece (claro) o aclara (oscuro) lo justo para llegar a 4,5:1 (`acentoLegible` en src/dominio/color.ts). Por eso el turquesa queda igual en el oscuro y algo más hondo en el claro, y un ámbar nuevo se lee sin que nadie lo ajuste a mano. Botones y bordes siguen usando el acento puro.
 - **Verde disponible** (disponible): WhatsApp y el estado "Disponible". Nunca decora.
 
 ### Tertiary
 - **Ámbar alerta** (alerta): avisos. Uso mínimo.
 
 ### Neutral
-- **Noche vacío** (noche-950): el fondo y el campo.
-- **Noche panel** (noche-900, noche-850): tarjetas, cajones, campos de formulario.
-- **Noche línea** (noche-800, noche-700, noche-600): bordes de 1 px y divisores.
-- **Gris lavanda** (noche-500, noche-400): texto secundario y rótulos. noche-500 es el más tenue que cumple 4.5:1 sobre el fondo.
-- **Niebla** (noche-300, noche-200): párrafos.
-- **Blanco luna** (noche-100, noche-50): titulares y texto principal.
-- **Panel de foto** (panel-foto): el fondo donde se apoyan las fotos de producto.
+Ver la tabla de funciones arriba. `tinta-tenue` es el texto más tenue permitido: cumple 4,5:1 sobre todas las superficies de su tema.
+
+### Tema
+- El claro es el predeterminado. El botón de la cabecera (tienda y panel) cambia al otro y la elección se guarda en el navegador (`bumbay:tema`).
+- Un script en el `<head>` pone `data-tema="oscuro"` antes de pintar: nunca se ve un cuadro del tema equivocado.
+- Lo que no es color (qué versión del logo se ve) usa la variante `oscuro:`. Los colores nunca se duplican con ella: para eso están las funciones.
+- Los logos tienen versión para fondo claro (letras en tinta noche, mismo turquesa y rojo) mientras llega el oficial en SVG.
 
 ### Named Rules
 **La Regla del Filamento Propio.** Un color saturado en pantalla pertenece a un nicho. Si no es el acento de la página ni el verde de WhatsApp, no va.
@@ -191,8 +223,9 @@ Profundidad por capas tonales de la noche y por el campo detrás de todo. Los pa
 
 ### Shadow Vocabulary
 - **Brillo** (`inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 -1px 0 rgb(0 0 0 / 0.18)`): el botón principal. La luz del campo reflejada en su canto, sin halo de color alrededor.
-- **Panel** (`0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)`): paneles superpuestos como la vista rápida.
-- **Flotante** (`0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)`): la barra de pedido y el cajón, que suben desde abajo.
+- **Panel**: paneles superpuestos como la vista rápida. Oscuro: `0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6)`; claro, la misma forma en noche azulada al 6 % y 18 %.
+- **Flotante**: la barra de pedido y el cajón, que suben desde abajo. Oscuro: `0 -1px 0 rgb(255 255 255 / 0.06), 0 -12px 40px -8px rgb(0 0 0 / 0.7)`; claro, más suave (22 %).
+- **Halo del titular**: el titular lleva un `text-shadow` del color del fondo (0,08 y 0,3 em) para que un filamento no pase pegado a las letras.
 
 ### Named Rules
 **La Regla del Vidrio con Motivo.** El desenfoque existe solo donde hay texto sobre el campo. Un panel de vidrio sobre fondo liso es adorno.
@@ -206,19 +239,19 @@ Esquinas rectas en todo (0 px; 2 px como máximo en paneles). Bordes de 1 px. El
 ### Buttons
 - **Shape:** rectos.
 - **Primary:** fondo del acento, tinta calculada, rótulo de 11 px, alto 48 px (56 px en la ficha), sombra de brillo. Hover al acento aclarado; al presionar, 0.98.
-- **Secondary:** borde noche-600 sobre noche al 40 %; se enciende en verde si lleva a WhatsApp.
-- **Agregar en grillas:** contorno del acento al 70 %, texto en el acento aclarado; se llena al pasar el cursor. Lleno solo en la ficha: veinte botones llenos seguidos son una pared de color.
-- **WhatsApp:** verde disponible con tinta noche; alto 56 px en los bloques de cierre.
+- **Secondary:** borde `borde-fuerte` sobre el fondo al 40 %; se enciende en verde si lleva a WhatsApp.
+- **Agregar en grillas:** contorno del acento al 70 %, texto en `acento-texto`; se llena al pasar el cursor. Lleno solo en la ficha: veinte botones llenos seguidos son una pared de color.
+- **WhatsApp:** verde `disponible` con su tinta (`sobre-disponible`); alto 56 px en los bloques de cierre.
 
 ### Cards / Containers
 - **Corner Style:** rectas.
-- **Background:** noche panel; la foto va sobre el panel de foto, fundida con `mix-blend-mode: multiply`.
-- **Border:** 1 px noche-800, a noche-600 al pasar.
+- **Background:** `superficie`; la foto va sobre el panel de foto, fundida con `mix-blend-mode: multiply` (el panel es claro en los dos temas, así la mezcla funciona igual). Las etiquetas sobre fotos son noche al 70 % con texto blanco.
+- **Border:** 1 px `linea`, a `borde-fuerte` al pasar.
 - **Internal Padding:** 14–16 px.
 
 ### Inputs / Fields
-- **Style:** noche al 60 %, borde 1 px noche-700, alto 40–44 px, rectos.
-- **Focus:** borde en el acento aclarado; el cursor de texto también.
+- **Style:** `hundido`, borde 1 px `borde`, alto 40–44 px, rectos.
+- **Focus:** borde en el acento; el anillo de foco y el cursor de texto en `acento-texto`.
 - **Error:** borde en el acento y fondo teñido al 10 %, mensaje bajo el campo.
 
 ### Navigation

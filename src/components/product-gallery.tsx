@@ -72,7 +72,7 @@ export function GaleriaProducto({
   // no quede con un hueco donde va la imagen.
   if (total === 0) {
     return (
-      <div className="border border-carbon-800">
+      <div className="border border-linea">
         <ImagenProducto
           imagen={null}
           nombre={nombre}
@@ -87,7 +87,7 @@ export function GaleriaProducto({
 
   return (
     <div>
-      <div className="relative border border-carbon-800 bg-panel-foto">
+      <div className="relative border border-linea bg-panel-foto">
         <div
           className={
             compacto
@@ -118,7 +118,7 @@ export function GaleriaProducto({
               type="button"
               onClick={() => ir(activa - 1)}
               aria-label="Imagen anterior"
-              className={`absolute left-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
+              className={`absolute left-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-noche/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
                 compacto ? "h-8 w-8" : "h-10 w-10"
               }`}
             >
@@ -128,13 +128,13 @@ export function GaleriaProducto({
               type="button"
               onClick={() => ir(activa + 1)}
               aria-label="Imagen siguiente"
-              className={`absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-carbon-950/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
+              className={`absolute right-2 top-1/2 flex -translate-y-1/2 items-center justify-center bg-noche/70 text-white backdrop-blur-sm transition-colors hover:bg-marca-500 hover:text-sobre-marca ${
                 compacto ? "h-8 w-8" : "h-10 w-10"
               }`}
             >
               <IconoFlecha className="h-4 w-4" />
             </button>
-            <span className="absolute bottom-2 right-2 bg-carbon-950/70 px-2 py-1 font-mono text-[11px] text-white backdrop-blur-sm">
+            <span className="absolute bottom-2 right-2 bg-noche/70 px-2 py-1 font-mono text-[11px] text-white backdrop-blur-sm">
               {activa + 1} / {total}
             </span>
           </>
@@ -164,7 +164,7 @@ export function GaleriaProducto({
                 } ${
                   activaEsta
                     ? "border-marca-500"
-                    : "border-carbon-800 hover:border-carbon-600"
+                    : "border-linea hover:border-borde-fuerte"
                 }`}
               >
                 {miniatura && (
