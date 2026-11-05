@@ -97,9 +97,10 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
       <Poster objetivo={meta} />
       <canvas
         ref={lienzo}
-        // Siempre del alto de la pantalla, arriba: si el escenario es más
-        // bajo, la capa lo recorta; si es más alto, sigue la noche de la capa.
-        className={`absolute inset-x-0 top-0 h-svh w-full transition-opacity duration-1000 ease-out ${
+        // Del tamaño de la capa: la pantalla en el tema oscuro, el escenario
+        // en el claro. El dibujo se ajusta a esa medida (ver `ajustar`), así
+        // los filamentos cruzan también una franja baja como la de una categoría.
+        className={`absolute inset-0 h-full w-full transition-opacity duration-1000 ease-out ${
           visible ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -296,8 +297,10 @@ function iniciar(
   const raton = { x: 0.7, y: 0.5, ax: 0.7, ay: 0.5 };
 
   const ajustar = () => {
-    const w = Math.min(Math.round(window.innerWidth * escala), 960);
-    const h = Math.round(w * (window.innerHeight / window.innerWidth));
+    // Sin medida (tema claro en una página sin escenario): no hay nada que ver.
+    if (!canvas.clientWidth || !canvas.clientHeight) return;
+    const w = Math.min(Math.round(canvas.clientWidth * escala), 960);
+    const h = Math.round(w * (canvas.clientHeight / canvas.clientWidth));
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
@@ -395,7 +398,10 @@ function iniciar(
     window.addEventListener("scroll", reanudar, { passive: true });
     document.addEventListener("visibilitychange", reanudar);
   }
-  window.addEventListener("resize", alRedimensionar);
+  // La capa cambia de alto sin que cambie la ventana (al pasar de la portada
+  // a una categoría en el tema claro): se observa el lienzo, no la ventana.
+  const observador = new ResizeObserver(alRedimensionar);
+  observador.observe(canvas);
   if (!tactil && !quieto) window.addEventListener("pointermove", alMover, { passive: true });
   canvas.addEventListener("webglcontextlost", alPerderContexto);
 
@@ -406,7 +412,7 @@ function iniciar(
     detener: () => {
       cancelAnimationFrame(marco);
       window.removeEventListener("scroll", reanudar);
-      window.removeEventListener("resize", alRedimensionar);
+      observador.disconnect();
       document.removeEventListener("visibilitychange", reanudar);
       window.removeEventListener("pointermove", alMover);
       canvas.removeEventListener("webglcontextlost", alPerderContexto);

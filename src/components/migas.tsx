@@ -36,7 +36,8 @@ export function Migas({ pasos }: { pasos: Paso[] }) {
     <>
       <JsonLd datos={datos} />
       <nav aria-label="Ruta de navegación" className="py-4">
-        <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-tinta-tenue">
+        {/* tinta-suave y no tinta-tenue: en el escenario las migas van sobre el campo de luz. */}
+        <ol className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] text-tinta-suave">
           {todos.map((p, i) => {
             const ultimo = i === todos.length - 1;
             return (

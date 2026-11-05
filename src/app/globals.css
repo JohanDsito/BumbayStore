@@ -305,8 +305,9 @@
     /* --t-fondo y no --color-fondo: este se calcula en la raíz y, dentro del
        escenario del tema claro, daría un halo blanco. */
     text-shadow:
-      0 0 0.08em var(--t-fondo),
-      0 0 0.3em var(--t-fondo);
+      0 0 0.06em var(--t-fondo),
+      0 0 0.2em var(--t-fondo),
+      0 0 0.45em var(--t-fondo);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.01em;

@@ -20,6 +20,9 @@ export type EntradaIndice = {
  * pasar el cursor o al enfocarla con el teclado: se ve qué línea es cuál
  * antes de entrar. `enciende` lo desactiva donde el campo es de un solo
  * color y no hay filamento propio que encender.
+ *
+ * Va sobre el campo de luz: sus textos secundarios usan tinta-media y no
+ * tinta-suave, para leerse aunque un filamento pase justo detrás.
  */
 export function IndicePortal({
   titulo,
@@ -32,7 +35,7 @@ export function IndicePortal({
 }) {
   return (
     <nav aria-label={titulo}>
-      <h2 className="rotulo text-tinta-suave">{titulo}</h2>
+      <h2 className="rotulo text-tinta-media">{titulo}</h2>
       <ul className="mt-4 border-t border-linea">
         {entradas.map((e, i) => (
           <li key={e.href}>
@@ -48,7 +51,7 @@ export function IndicePortal({
                 <span className="block text-[15px] font-semibold text-tinta transition-colors group-hover:text-tinta-fuerte">
                   {e.nombre}
                 </span>
-                <span className="mt-0.5 block font-mono text-[11px] text-tinta-suave">
+                <span className="mt-0.5 block font-mono text-[11px] text-tinta-media">
                   {e.detalle}
                 </span>
               </span>
@@ -79,7 +82,7 @@ export function LecturaCampo({
 
   return (
     <p className="rotulo leading-relaxed text-tinta-media">
-      <span className="flex items-center gap-2 text-tinta-suave">
+      <span className="flex items-center gap-2 text-tinta-media">
         <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-marca-400" />
         Línea
       </span>
