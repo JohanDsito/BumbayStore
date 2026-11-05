@@ -26,7 +26,7 @@ export function RedesSociales({ className = "" }: { className?: string }) {
             rel="noopener noreferrer"
             aria-label={nombre}
             title={nombre}
-            className="flex h-11 w-11 items-center justify-center text-carbon-300 transition-colors hover:text-marca-400"
+            className="flex h-11 w-11 items-center justify-center text-tinta-media transition-colors hover:text-acento-texto"
           >
             <Icono className="h-5 w-5" />
           </a>

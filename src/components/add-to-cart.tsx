@@ -27,7 +27,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
   if (producto.agotado) {
     return (
       <div
-        className={`flex w-full items-center justify-center border border-carbon-700 bg-carbon-850 font-medium text-carbon-400 ${
+        className={`flex w-full items-center justify-center border border-borde bg-hundido font-medium text-tinta-suave ${
           grande ? "h-14 text-[15px]" : "h-11 text-[13px]"
         }`}
       >
@@ -48,7 +48,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         className={`group/btn flex w-full items-center justify-center gap-2 font-semibold tracking-tight transition-[background-color,color,transform] duration-200 active:scale-[0.98] ${
           grande
             ? "h-14 bg-marca-500 text-[15px] text-sobre-marca shadow-brillo hover:bg-marca-400"
-            : "h-11 border border-marca-500/70 text-[13px] text-marca-400 hover:bg-marca-500 hover:text-sobre-marca"
+            : "h-11 border border-marca-500/70 text-[13px] text-acento-texto hover:bg-marca-500 hover:text-sobre-marca"
         }`}
       >
         <IconoCarrito className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -67,7 +67,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad - 1)}
         aria-label={cantidad === 1 ? "Quitar del pedido" : "Quitar una unidad"}
-        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-sobre-marca"
+        className="flex w-12 shrink-0 items-center justify-center text-acento-texto transition-colors hover:bg-marca-500 hover:text-sobre-marca"
       >
         {cantidad === 1 ? (
           <IconoBasura className={grande ? "h-5 w-5" : "h-4 w-4"} />
@@ -78,14 +78,14 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
 
       <div className="flex flex-1 flex-col items-center justify-center leading-none">
         <span
-          className={`font-mono font-semibold text-carbon-50 ${
+          className={`font-mono font-semibold text-tinta-fuerte ${
             grande ? "text-lg" : "text-sm"
           }`}
         >
           {cantidad}
         </span>
         {grande && (
-          <span className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-marca-300">
+          <span className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-acento-texto">
             {cantidad === 1 ? "unidad" : "unidades"}
           </span>
         )}
@@ -95,7 +95,7 @@ export function AgregarAlPedido({ producto, tamano = "grande" }: Props) {
         type="button"
         onClick={() => fijarCantidad(producto.slug, cantidad + 1)}
         aria-label="Agregar una unidad"
-        className="flex w-12 shrink-0 items-center justify-center text-marca-400 transition-colors hover:bg-marca-500 hover:text-sobre-marca"
+        className="flex w-12 shrink-0 items-center justify-center text-acento-texto transition-colors hover:bg-marca-500 hover:text-sobre-marca"
       >
         <IconoMas className={grande ? "h-5 w-5" : "h-4 w-4"} />
       </button>

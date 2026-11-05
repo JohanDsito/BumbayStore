@@ -75,17 +75,17 @@ export function AdminPedidos() {
   useEffect(cargar, [cargar]);
 
   if (cargando) {
-    return <p className="py-16 text-center font-mono text-xs text-carbon-500">Cargando pedidos…</p>;
+    return <p className="py-16 text-center font-mono text-xs text-tinta-tenue">Cargando pedidos…</p>;
   }
   if (error) {
-    return <p className="py-16 text-center text-[13px] text-marca-400">{error}</p>;
+    return <p className="py-16 text-center text-[13px] text-acento-texto">{error}</p>;
   }
 
   if (pedidos.length === 0) {
     return (
-      <div className="border border-dashed border-carbon-700 px-6 py-16 text-center">
-        <p className="text-[14px] text-carbon-300">Todavía no hay pedidos registrados.</p>
-        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-carbon-500">
+      <div className="border border-dashed border-borde px-6 py-16 text-center">
+        <p className="text-[14px] text-tinta-media">Todavía no hay pedidos registrados.</p>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-tinta-tenue">
           Cada vez que alguien pulse “Enviar pedido por WhatsApp” quedará aquí,
           aunque después no llegue a escribirte.
         </p>
@@ -141,25 +141,25 @@ export function AdminPedidos() {
         />
       </div>
 
-      <div className="mb-5 grid gap-px bg-carbon-800 sm:grid-cols-3">
+      <div className="mb-5 grid gap-px bg-linea sm:grid-cols-3">
         <Dato titulo="Pedidos registrados" valor={String(visibles.length)} />
         <Dato titulo="Hoy" valor={String(deHoy.length)} />
         <Dato titulo="Valor acumulado" valor={precio(suma)} />
       </div>
 
       {zonas.length > 1 && (
-        <div className="mb-5 border border-carbon-800 bg-carbon-900 p-4">
-          <p className="rotulo text-[10px] text-carbon-500">
+        <div className="mb-5 border border-linea bg-superficie p-4">
+          <p className="rotulo text-[10px] text-tinta-tenue">
             {departamento ? `Municipios que más piden en ${departamento}` : "Departamentos que más piden"}
           </p>
           <ul className="mt-3 flex flex-wrap gap-2">
             {zonas.map(([nombre, n]) => (
               <li
                 key={nombre}
-                className="border border-carbon-700 px-3 py-1.5 text-[12px] text-carbon-200"
+                className="border border-borde px-3 py-1.5 text-[12px] text-tinta"
               >
                 {nombre}
-                <span className="ml-2 font-mono text-[11px] text-marca-400">{n}</span>
+                <span className="ml-2 font-mono text-[11px] text-acento-texto">{n}</span>
               </li>
             ))}
           </ul>
@@ -167,7 +167,7 @@ export function AdminPedidos() {
       )}
 
       {visibles.length === 0 && (
-        <p className="border border-dashed border-carbon-700 p-6 text-center text-[13px] text-carbon-400">
+        <p className="border border-dashed border-borde p-6 text-center text-[13px] text-tinta-suave">
           Ningún pedido con esos filtros.
         </p>
       )}
@@ -176,19 +176,19 @@ export function AdminPedidos() {
         {visibles.map((p) => {
           const z = zona(p);
           return (
-            <li key={p.id} className="border border-carbon-800 bg-carbon-900 p-4">
+            <li key={p.id} className="border border-linea bg-superficie p-4">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="text-[14px] font-semibold text-carbon-50">
+                  <p className="text-[14px] font-semibold text-tinta-fuerte">
                     {p.nombre} {p.apellido}
                   </p>
-                  <p className="mt-0.5 font-mono text-[11px] text-marca-400">
+                  <p className="mt-0.5 font-mono text-[11px] text-acento-texto">
                     {z ? `${z.municipio}, ${z.departamento}` : (p.ciudad ?? SIN_DATO)}
                   </p>
                   {(p.celular || p.forma_pago) && (
-                    <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-carbon-300">
+                    <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-tinta-media">
                       {p.celular && (
-                        <a href={`tel:+57${p.celular}`} className="hover:text-carbon-50">
+                        <a href={`tel:+57${p.celular}`} className="hover:text-tinta-fuerte">
                           {formatearCelular(p.celular)}
                         </a>
                       )}
@@ -197,21 +197,21 @@ export function AdminPedidos() {
                   )}
                 </div>
                 <div className="text-right">
-                  <p className="font-mono text-[15px] font-bold text-carbon-50">
+                  <p className="font-mono text-[15px] font-bold text-tinta-fuerte">
                     {precio(p.total)}
                   </p>
-                  <p className="font-mono text-[10px] text-carbon-500">{cuando(p.creado_en)}</p>
+                  <p className="font-mono text-[10px] text-tinta-tenue">{cuando(p.creado_en)}</p>
                 </div>
               </div>
 
-              <ul className="mt-3 space-y-1 border-t border-carbon-850 pt-3">
+              <ul className="mt-3 space-y-1 border-t border-hundido pt-3">
                 {p.lineas.map((l, i) => (
                   <li key={`${l.sku}-${i}`} className="flex justify-between gap-3 text-[13px]">
-                    <span className="min-w-0 text-carbon-300">
-                      <span className="font-mono text-marca-400">{l.cantidad}×</span>{" "}
+                    <span className="min-w-0 text-tinta-media">
+                      <span className="font-mono text-acento-texto">{l.cantidad}×</span>{" "}
                       {l.nombre}
                     </span>
-                    <span className="shrink-0 font-mono text-[12px] text-carbon-500">
+                    <span className="shrink-0 font-mono text-[12px] text-tinta-tenue">
                       {precio(l.precio * l.cantidad)}
                     </span>
                   </li>
@@ -219,7 +219,7 @@ export function AdminPedidos() {
               </ul>
 
               {p.comentario && (
-                <p className="mt-3 border-l-2 border-carbon-700 pl-3 text-[13px] italic leading-relaxed text-carbon-400">
+                <p className="mt-3 border-l-2 border-borde pl-3 text-[13px] italic leading-relaxed text-tinta-suave">
                   {p.comentario}
                 </p>
               )}
@@ -244,11 +244,11 @@ function Filtro({
 }) {
   return (
     <label className="block">
-      <span className="rotulo text-[10px] text-carbon-500">{etiqueta}</span>
+      <span className="rotulo text-[10px] text-tinta-tenue">{etiqueta}</span>
       <select
         value={valor}
         onChange={(e) => alCambiar(e.target.value)}
-        className="mt-1.5 h-11 w-full border border-carbon-700 bg-carbon-850 px-3 text-[13px] text-carbon-100 focus:border-marca-500 focus:outline-none"
+        className="mt-1.5 h-11 w-full border border-borde bg-hundido px-3 text-[13px] text-tinta focus:border-marca-500 focus:outline-none"
       >
         {opciones.map((o) => (
           <option key={o.valor} value={o.valor}>
@@ -262,11 +262,11 @@ function Filtro({
 
 function Dato({ titulo, valor }: { titulo: string; valor: string }) {
   return (
-    <div className="bg-carbon-900 p-4">
-      <p className="rotulo text-[10px] text-carbon-500">
+    <div className="bg-superficie p-4">
+      <p className="rotulo text-[10px] text-tinta-tenue">
         {titulo}
       </p>
-      <p className="mt-1.5 font-mono text-xl font-bold text-carbon-50">{valor}</p>
+      <p className="mt-1.5 font-mono text-xl font-bold text-tinta-fuerte">{valor}</p>
     </div>
   );
 }

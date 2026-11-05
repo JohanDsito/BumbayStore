@@ -107,18 +107,18 @@ export function PanelPedido() {
         type="button"
         aria-label="Cerrar pedido"
         onClick={cerrar}
-        className="absolute inset-0 bg-carbon-950/80 backdrop-blur-sm animate-[aparecer_0.2s_ease-out]"
+        className="absolute inset-0 bg-fondo/80 backdrop-blur-sm animate-[aparecer_0.2s_ease-out]"
       />
 
-      <div className="relative flex h-full w-full max-w-md flex-col border-l border-carbon-800 bg-carbon-900 shadow-flotante animate-[subir_0.3s_var(--ease-salida)] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
+      <div className="relative flex h-full w-full max-w-md flex-col border-l border-linea bg-superficie shadow-flotante animate-[subir_0.3s_var(--ease-salida)] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
         <div aria-hidden className="h-px shrink-0 bg-marca-500/70" />
 
-        <header className="flex shrink-0 items-center justify-between border-b border-carbon-800 px-5 py-4">
+        <header className="flex shrink-0 items-center justify-between border-b border-linea px-5 py-4">
           <div>
-            <h2 className="text-lg font-extrabold tracking-tight text-carbon-50">
+            <h2 className="text-lg font-extrabold tracking-tight text-tinta-fuerte">
               Tu pedido
             </h2>
-            <p className="mt-0.5 font-mono text-[11px] text-carbon-500">
+            <p className="mt-0.5 font-mono text-[11px] text-tinta-tenue">
               {lineas.length} {lineas.length === 1 ? "producto" : "productos"} ·{" "}
               {unidades} {unidades === 1 ? "unidad" : "unidades"}
             </p>
@@ -127,7 +127,7 @@ export function PanelPedido() {
             type="button"
             onClick={cerrar}
             aria-label="Cerrar"
-            className="flex h-9 w-9 items-center justify-center border border-carbon-700 text-carbon-400 transition-colors hover:border-carbon-500 hover:text-carbon-100"
+            className="flex h-9 w-9 items-center justify-center border border-borde text-tinta-suave transition-colors hover:border-tinta-tenue hover:text-tinta"
           >
             <IconoCerrar className="h-4 w-4" />
           </button>
@@ -135,11 +135,11 @@ export function PanelPedido() {
 
         {lineas.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 text-center">
-            <p className="text-sm text-carbon-400">Tu pedido está vacío.</p>
+            <p className="text-sm text-tinta-suave">Tu pedido está vacío.</p>
             <button
               type="button"
               onClick={cerrar}
-              className="font-mono text-xs uppercase tracking-[0.14em] text-marca-400 hover:text-marca-300"
+              className="font-mono text-xs uppercase tracking-[0.14em] text-acento-texto hover:text-acento-texto"
             >
               Seguir viendo productos
             </button>
@@ -147,7 +147,7 @@ export function PanelPedido() {
         ) : (
           <>
             <div className="flex-1 overflow-y-auto overscroll-contain">
-              <ul className="divide-y divide-carbon-800">
+              <ul className="divide-y divide-linea">
                 {lineas.map((linea) => {
                   const url = imagenUrl(linea.imagen);
                   return (
@@ -164,7 +164,7 @@ export function PanelPedido() {
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center bg-panel-foto">
-                            <span className="font-mono text-[8px] text-carbon-500">
+                            <span className="font-mono text-[8px] text-noche/70">
                               {linea.sku.slice(-4)}
                             </span>
                           </div>
@@ -172,20 +172,20 @@ export function PanelPedido() {
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[11px] tracking-[0.14em] text-carbon-500">
+                        <p className="font-mono text-[11px] tracking-[0.14em] text-tinta-tenue">
                           {linea.sku}
                         </p>
-                        <p className="mt-0.5 line-clamp-2 text-[13px] font-medium leading-snug text-carbon-100">
+                        <p className="mt-0.5 line-clamp-2 text-[13px] font-medium leading-snug text-tinta">
                           {linea.nombre}
                         </p>
 
                         <div className="mt-2 flex items-center justify-between gap-2">
-                          <div className="flex items-center border border-carbon-700">
+                          <div className="flex items-center border border-borde">
                             <button
                               type="button"
                               onClick={() => fijarCantidad(linea.slug, linea.cantidad - 1)}
                               aria-label="Quitar una unidad"
-                              className="flex h-7 w-7 items-center justify-center text-carbon-400 transition-colors hover:bg-carbon-800 hover:text-carbon-100"
+                              className="flex h-7 w-7 items-center justify-center text-tinta-suave transition-colors hover:bg-linea hover:text-tinta"
                             >
                               {linea.cantidad === 1 ? (
                                 <IconoBasura className="h-3.5 w-3.5" />
@@ -193,25 +193,25 @@ export function PanelPedido() {
                                 <IconoMenos className="h-3.5 w-3.5" />
                               )}
                             </button>
-                            <span className="w-8 text-center font-mono text-xs font-semibold text-carbon-50">
+                            <span className="w-8 text-center font-mono text-xs font-semibold text-tinta-fuerte">
                               {linea.cantidad}
                             </span>
                             <button
                               type="button"
                               onClick={() => fijarCantidad(linea.slug, linea.cantidad + 1)}
                               aria-label="Agregar una unidad"
-                              className="flex h-7 w-7 items-center justify-center text-carbon-400 transition-colors hover:bg-carbon-800 hover:text-carbon-100"
+                              className="flex h-7 w-7 items-center justify-center text-tinta-suave transition-colors hover:bg-linea hover:text-tinta"
                             >
                               <IconoMas className="h-3.5 w-3.5" />
                             </button>
                           </div>
 
                           <div className="text-right">
-                            <span className="block font-mono text-sm font-semibold text-carbon-50">
+                            <span className="block font-mono text-sm font-semibold text-tinta-fuerte">
                               {precio(linea.precioUnitario * linea.cantidad)}
                             </span>
                             {linea.cantidad > 1 && (
-                              <span className="font-mono text-[11px] text-carbon-500">
+                              <span className="font-mono text-[11px] text-tinta-tenue">
                                 {precio(linea.precioUnitario)} c/u
                               </span>
                             )}
@@ -223,7 +223,7 @@ export function PanelPedido() {
                         type="button"
                         onClick={() => quitar(linea.slug)}
                         aria-label={`Eliminar ${linea.nombre}`}
-                        className="self-start p-1 text-carbon-500 transition-colors hover:text-marca-400"
+                        className="self-start p-1 text-tinta-tenue transition-colors hover:text-acento-texto"
                       >
                         <IconoCerrar className="h-3.5 w-3.5" />
                       </button>
@@ -232,8 +232,8 @@ export function PanelPedido() {
                 })}
               </ul>
 
-              <div className="space-y-4 border-t border-carbon-800 p-4">
-                <p className="rotulo text-[11px] text-marca-400">
+              <div className="space-y-4 border-t border-linea p-4">
+                <p className="rotulo text-[11px] text-acento-texto">
                   Datos para calcular el envío
                 </p>
 
@@ -288,9 +288,9 @@ export function PanelPedido() {
                 <div>
                   <label
                     htmlFor="comentario-pedido"
-                    className="block rotulo text-[11px] text-carbon-500"
+                    className="block rotulo text-[11px] text-tinta-tenue"
                   >
-                    Comentarios <span className="text-carbon-600">(opcional)</span>
+                    Comentarios <span className="text-tinta-tenue">(opcional)</span>
                   </label>
                   <textarea
                     id="comentario-pedido"
@@ -299,18 +299,18 @@ export function PanelPedido() {
                     rows={3}
                     maxLength={LIMITES_PEDIDO.comentarioMaximo}
                     placeholder="Dirección, barrio, cantidades especiales…"
-                    className="mt-2 w-full resize-none border border-carbon-700 bg-carbon-850 px-3 py-2 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
+                    className="mt-2 w-full resize-none border border-borde bg-hundido px-3 py-2 text-[13px] text-tinta placeholder:text-tinta-tenue focus:border-marca-500 focus:outline-none"
                   />
                 </div>
               </div>
             </div>
 
-            <footer className="shrink-0 border-t border-carbon-800 bg-carbon-900 p-4">
+            <footer className="shrink-0 border-t border-linea bg-superficie p-4">
               <div className="mb-3 flex items-end justify-between">
-                <span className="rotulo text-[11px] text-carbon-500">
+                <span className="rotulo text-[11px] text-tinta-tenue">
                   Total
                 </span>
-                <span className="font-mono text-2xl font-extrabold leading-none text-carbon-50">
+                <span className="font-mono text-2xl font-extrabold leading-none text-tinta-fuerte">
                   {precio(total)}
                 </span>
               </div>
@@ -330,11 +330,11 @@ export function PanelPedido() {
                 <button
                   type="button"
                   onClick={vaciar}
-                  className="rotulo text-[11px] text-carbon-500 transition-colors hover:text-carbon-300"
+                  className="rotulo text-[11px] text-tinta-tenue transition-colors hover:text-tinta-media"
                 >
                   Vaciar pedido
                 </button>
-                <p className="font-mono text-[11px] text-carbon-500">
+                <p className="font-mono text-[11px] text-tinta-tenue">
                   El pago se coordina por WhatsApp
                 </p>
               </div>
@@ -381,7 +381,7 @@ function FormaPago({
 }) {
   return (
     <fieldset aria-describedby={error ? "pedido-pago-error" : "pedido-pago-nota"}>
-      <legend className="block rotulo text-[11px] text-carbon-500">Forma de pago</legend>
+      <legend className="block rotulo text-[11px] text-tinta-tenue">Forma de pago</legend>
       <div className="mt-2 grid grid-cols-2 gap-2">
         {FORMAS_PAGO.map((f) => {
           const elegida = valor === f.id;
@@ -391,10 +391,10 @@ function FormaPago({
               htmlFor={`pedido-pago-${f.id}`}
               className={`flex min-h-11 cursor-pointer items-center gap-2.5 border px-3 py-2 text-[13px] transition-colors ${
                 elegida
-                  ? "border-marca-500 bg-marca-500/[0.10] text-carbon-50"
+                  ? "border-marca-500 bg-marca-500/[0.10] text-tinta-fuerte"
                   : error
-                    ? "border-marca-500/60 bg-carbon-850 text-carbon-200"
-                    : "border-carbon-700 bg-carbon-850 text-carbon-200 hover:border-carbon-500"
+                    ? "border-marca-500/60 bg-hundido text-tinta"
+                    : "border-borde bg-hundido text-tinta hover:border-tinta-tenue"
               }`}
             >
               <input
@@ -414,13 +414,13 @@ function FormaPago({
       <p
         id="pedido-pago-nota"
         className={`mt-2 text-[12px] leading-snug ${
-          valor === "anticipado" ? "text-marca-400" : "text-carbon-400"
+          valor === "anticipado" ? "text-acento-texto" : "text-tinta-suave"
         }`}
       >
         {site.notaPagoAnticipado}
       </p>
       {error && (
-        <p id="pedido-pago-error" className="mt-1.5 text-[12px] text-marca-400">
+        <p id="pedido-pago-error" className="mt-1.5 text-[12px] text-acento-texto">
           {error}
         </p>
       )}
@@ -461,7 +461,7 @@ function Campo({
     <div>
       <label
         htmlFor={id}
-        className="block rotulo text-[11px] text-carbon-500"
+        className="block rotulo text-[11px] text-tinta-tenue"
       >
         {etiqueta}
       </label>
@@ -475,14 +475,14 @@ function Campo({
         maxLength={maxLength}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={`mt-2 h-11 w-full border px-3 text-[14px] text-carbon-100 placeholder:text-carbon-500 focus:outline-none focus:border-marca-500 ${
+        className={`mt-2 h-11 w-full border px-3 text-[14px] text-tinta placeholder:text-tinta-tenue focus:outline-none focus:border-marca-500 ${
           error
             ? "border-marca-500 bg-marca-500/[0.10]"
-            : "border-carbon-700 bg-carbon-850"
+            : "border-borde bg-hundido"
         }`}
       />
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-[12px] text-marca-400">
+        <p id={`${id}-error`} className="mt-1.5 text-[12px] text-acento-texto">
           {error}
         </p>
       )}

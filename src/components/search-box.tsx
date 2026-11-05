@@ -26,7 +26,7 @@ export function Buscador({ className = "" }: { className?: string }) {
       className={`relative ${className}`}
     >
       <IconoBuscar
-        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-carbon-500"
+        className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-tinta-tenue"
         aria-hidden
       />
       <input
@@ -36,7 +36,7 @@ export function Buscador({ className = "" }: { className?: string }) {
         defaultValue={consulta}
         placeholder="Buscar producto o código…"
         aria-label="Buscar productos"
-        className="h-11 w-full border border-carbon-700 bg-carbon-950/60 pl-9 pr-3 text-[13px] text-carbon-100 transition-colors placeholder:text-carbon-400 focus:border-marca-400 focus:outline-none"
+        className="h-11 w-full border border-borde bg-fondo/60 pl-9 pr-3 text-[13px] text-tinta transition-colors placeholder:text-tinta-suave focus:border-marca-400 focus:outline-none"
       />
     </form>
   );

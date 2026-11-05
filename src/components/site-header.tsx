@@ -9,12 +9,14 @@ import { Buscador } from "@/components/search-box";
 import { BotonPedidoHeader } from "@/components/cart-bar";
 import { IconoWhatsApp, IconoMenu, IconoCerrar, IconoFlecha } from "@/components/icons";
 import { RedesSociales } from "@/components/redes-sociales";
+import { BotonTema } from "@/components/boton-tema";
 import { LogoStore } from "@/components/logos";
 import type { SeccionMenu } from "@/dominio/catalogo";
 import { rutaCategoria, rutaNicho } from "@/dominio/rutas";
 
 /**
- * Encabezado de la tienda: vidrio oscuro flotando sobre el campo de luz.
+ * Encabezado de la tienda: vidrio oscuro flotando sobre el campo de luz. Es
+ * escenario: de noche en los dos temas, como el marco de arriba de la tienda.
  *
  * En computador, la fila de navegación muestra solo los nichos, así cabe
  * aunque haya muchos, y las categorías aparecen en una segunda fila cuando se
@@ -84,7 +86,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
   }, [menuAbierto, cerrarMenu]);
 
   return (
-    <header ref={cabecera} className="sticky top-0 z-30 border-b border-carbon-800/80 bg-carbon-950/92 backdrop-blur-md">
+    <header ref={cabecera} className="escenario sticky top-0 z-30 border-b border-linea/80 bg-fondo/92 backdrop-blur-md">
       {/* En celular, tres columnas: menú, logo centrado y pedido. En computador
           la fila corre de izquierda a derecha con los nichos y el buscador. */}
       <div className="mx-auto grid max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 py-2.5 sm:px-6 lg:flex lg:gap-6 lg:py-3">
@@ -95,7 +97,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
           aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú del catálogo"}
           aria-expanded={menuAbierto}
           aria-controls="menu-movil"
-          className="-ml-2 flex h-11 w-11 items-center justify-center text-carbon-200 transition-colors hover:text-carbon-50 lg:hidden"
+          className="-ml-2 flex h-11 w-11 items-center justify-center text-tinta transition-colors hover:text-tinta-fuerte lg:hidden"
         >
           {menuAbierto ? <IconoCerrar className="h-5 w-5" /> : <IconoMenu className="h-6 w-6" />}
         </button>
@@ -124,7 +126,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                     aria-current={ruta === rutaNicho(nicho) ? "page" : undefined}
                     title={nicho.nombre}
                     className={`rotulo relative block max-w-[20rem] truncate whitespace-nowrap px-3 py-2 transition-colors ${
-                      activo ? "text-carbon-50" : "text-carbon-300 hover:text-carbon-50"
+                      activo ? "text-tinta-fuerte" : "text-tinta-media hover:text-tinta-fuerte"
                     }`}
                   >
                     {nicho.nombre}
@@ -146,6 +148,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
         </Suspense>
 
         <div className="-mr-2 flex items-center gap-1 justify-self-end lg:mr-0">
+          <BotonTema />
           <a
             href={enlaceGeneral()}
             target="_blank"
@@ -160,7 +163,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
       </div>
 
       {/* Buscador en celular y tableta: va en su propia fila para no comprimir la marca */}
-      <div className="border-t border-carbon-800/70 px-4 py-2.5 sm:px-6 lg:hidden">
+      <div className="border-t border-linea/70 px-4 py-2.5 sm:px-6 lg:hidden">
         <Suspense fallback={<div className="h-11" />}>
           <Buscador />
         </Suspense>
@@ -170,7 +173,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
       {actual && actual.categorias.length > 0 && (
         <nav
           aria-label={`Categorías de ${actual.nicho.nombre}`}
-          className="hidden border-t border-carbon-800/70 lg:block"
+          className="hidden border-t border-linea/70 lg:block"
         >
           <ul className="sin-scrollbar mx-auto flex max-w-[1400px] items-center gap-1 overflow-x-auto px-6">
             {actual.categorias.map((c) => {
@@ -181,7 +184,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                     href={rutaCategoria(c)}
                     aria-current={activo ? "page" : undefined}
                     className={`block whitespace-nowrap px-3 py-2.5 text-[13px] transition-colors ${
-                      activo ? "text-marca-400" : "text-carbon-300 hover:text-carbon-50"
+                      activo ? "text-acento-texto" : "text-tinta-media hover:text-tinta-fuerte"
                     }`}
                   >
                     {c.nombre}
@@ -202,19 +205,19 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
             tabIndex={-1}
             aria-label="Cerrar menú"
             onClick={cerrarMenu}
-            className="absolute inset-x-0 top-full h-dvh animate-[aparecer_0.2s_ease-out] bg-carbon-950/75"
+            className="absolute inset-x-0 top-full h-dvh animate-[aparecer_0.2s_ease-out] bg-fondo/75"
           />
           <nav
             id="menu-movil"
             aria-label="Catálogo"
-            className="absolute inset-x-0 top-full max-h-[calc(100dvh-var(--alto-cabecera,8rem))] animate-[aparecer_0.2s_var(--ease-salida)] overflow-y-auto overscroll-contain border-t border-carbon-800 bg-carbon-900 shadow-flotante"
+            className="absolute inset-x-0 top-full max-h-[calc(100dvh-var(--alto-cabecera,8rem))] animate-[aparecer_0.2s_var(--ease-salida)] overflow-y-auto overscroll-contain border-t border-linea bg-superficie shadow-flotante"
           >
             <ul>
               {menu.map(({ nicho, categorias }) => {
                 const desplegado = nichoAbierto === nicho.slug;
                 const idLista = `menu-movil-${nicho.slug}`;
                 return (
-                  <li key={nicho.slug} className="border-b border-carbon-850">
+                  <li key={nicho.slug} className="border-b border-hundido">
                     <button
                       type="button"
                       onClick={() => setNichoAbierto(desplegado ? null : nicho.slug)}
@@ -223,17 +226,17 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                       className="flex min-h-14 w-full items-center justify-between gap-4 px-5 py-3 text-left"
                     >
                       <span className="min-w-0">
-                        <span className="block text-[15px] font-semibold text-carbon-50">
+                        <span className="block text-[15px] font-semibold text-tinta-fuerte">
                           {nicho.nombre}
                         </span>
                         {nicho.submarca && (
-                          <span className="rotulo mt-0.5 block text-[11px] text-carbon-400">
+                          <span className="rotulo mt-0.5 block text-[11px] text-tinta-suave">
                             {nicho.submarca}
                           </span>
                         )}
                       </span>
                       <IconoFlecha
-                        className={`h-4 w-4 shrink-0 text-carbon-400 transition-transform duration-200 ${
+                        className={`h-4 w-4 shrink-0 text-tinta-suave transition-transform duration-200 ${
                           desplegado ? "-rotate-90" : "rotate-90"
                         }`}
                       />
@@ -246,8 +249,8 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                               href={rutaCategoria(c)}
                               onClick={() => setRutaMenu(null)}
                               aria-current={ruta === rutaCategoria(c) ? "page" : undefined}
-                              className={`flex min-h-11 items-center py-2.5 pl-9 pr-5 text-sm transition-colors active:bg-carbon-850 ${
-                                ruta === rutaCategoria(c) ? "text-marca-400" : "text-carbon-300"
+                              className={`flex min-h-11 items-center py-2.5 pl-9 pr-5 text-sm transition-colors active:bg-hundido ${
+                                ruta === rutaCategoria(c) ? "text-acento-texto" : "text-tinta-media"
                               }`}
                             >
                               {c.nombre}
@@ -260,7 +263,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                             // Al navegar se cierra solo; esto cubre tocar la
                             // página en la que ya se está.
                             onClick={() => setRutaMenu(null)}
-                            className="flex min-h-11 items-center gap-2 py-2.5 pl-9 pr-5 text-sm font-semibold text-marca-400"
+                            className="flex min-h-11 items-center gap-2 py-2.5 pl-9 pr-5 text-sm font-semibold text-acento-texto"
                           >
                             Ver todo en {nicho.nombre.toLowerCase()}
                             <IconoFlecha className="h-4 w-4" />
@@ -279,7 +282,7 @@ export function EncabezadoSitio({ menu }: { menu: SeccionMenu[] }) {
                 href={enlaceGeneral()}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-auto inline-flex h-11 items-center gap-2 bg-disponible px-4 text-[13px] font-semibold tracking-tight text-carbon-950 transition-opacity hover:opacity-90"
+                className="ml-auto inline-flex h-11 items-center gap-2 bg-disponible px-4 text-[13px] font-semibold tracking-tight text-sobre-disponible transition-opacity hover:opacity-90"
               >
                 <IconoWhatsApp className="h-4 w-4" />
                 Escribir por WhatsApp

@@ -66,7 +66,7 @@ function MarcadorPosicion({ sku }: { sku: string }) {
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-panel-foto">
       <svg
         viewBox="0 0 48 48"
-        className="relative h-12 w-12 text-carbon-500"
+        className="relative h-12 w-12 text-noche/45"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
@@ -79,7 +79,7 @@ function MarcadorPosicion({ sku }: { sku: string }) {
         <path d="M24 6 40 14v20L24 42 8 34V14Z" />
         <path d="M8 14l16 8 16-8M24 22v20M16 10l16 8" />
       </svg>
-      <span className="relative max-w-full break-all px-4 text-center font-mono text-[11px] tracking-[0.18em] text-carbon-600">
+      <span className="relative max-w-full break-all px-4 text-center font-mono text-[11px] tracking-[0.18em] text-noche/70">
         {sku}
       </span>
     </div>

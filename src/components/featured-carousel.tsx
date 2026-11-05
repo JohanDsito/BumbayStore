@@ -44,17 +44,17 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
   return (
     <section aria-labelledby="titulo-destacados" className="relative">
       <div className="mb-5 flex items-end justify-between gap-4">
-        <h2 id="titulo-destacados" className="rotulo text-carbon-300">
+        <h2 id="titulo-destacados" className="titular text-[2.5rem] text-tinta-fuerte sm:text-6xl">
           Destacados
         </h2>
 
-        <div className="hidden shrink-0 gap-px bg-carbon-700 sm:flex">
+        <div className="hidden shrink-0 gap-px bg-borde sm:flex">
           <button
             type="button"
             onClick={() => desplazar(-1)}
             disabled={!puedeIzquierda}
             aria-label="Anterior"
-            className="flex h-10 w-10 items-center justify-center bg-carbon-950/70 text-carbon-200 transition-colors hover:bg-carbon-800 hover:text-marca-400 disabled:opacity-30 disabled:hover:bg-carbon-950/70 disabled:hover:text-carbon-200"
+            className="flex h-10 w-10 items-center justify-center bg-fondo/70 text-tinta transition-colors hover:bg-linea hover:text-acento-texto disabled:opacity-30 disabled:hover:bg-fondo/70 disabled:hover:text-tinta"
           >
             <IconoFlecha className="h-4 w-4 rotate-180" />
           </button>
@@ -63,7 +63,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
             onClick={() => desplazar(1)}
             disabled={!puedeDerecha}
             aria-label="Siguiente"
-            className="flex h-10 w-10 items-center justify-center bg-carbon-950/70 text-carbon-200 transition-colors hover:bg-carbon-800 hover:text-marca-400 disabled:opacity-30 disabled:hover:bg-carbon-950/70 disabled:hover:text-carbon-200"
+            className="flex h-10 w-10 items-center justify-center bg-fondo/70 text-tinta transition-colors hover:bg-linea hover:text-acento-texto disabled:opacity-30 disabled:hover:bg-fondo/70 disabled:hover:text-tinta"
           >
             <IconoFlecha className="h-4 w-4" />
           </button>
@@ -72,7 +72,7 @@ export function CarruselDestacados({ productos }: { productos: Product[] }) {
 
       <div
         ref={pista}
-        className="sin-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
+        className="sin-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 sm:scroll-px-0 gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0"
       >
         {productos.map((producto, i) => (
           <div

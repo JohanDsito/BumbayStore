@@ -90,10 +90,10 @@ export function AdminProductos() {
   useEffect(cargar, [cargar]);
 
   if (cargando) {
-    return <p className="py-16 text-center font-mono text-xs text-carbon-500">Cargando productos…</p>;
+    return <p className="py-16 text-center font-mono text-xs text-tinta-tenue">Cargando productos…</p>;
   }
   if (error) {
-    return <p className="py-16 text-center text-[13px] text-marca-400">{error}</p>;
+    return <p className="py-16 text-center text-[13px] text-acento-texto">{error}</p>;
   }
 
   const q = filtro.trim().toLowerCase();
@@ -109,16 +109,16 @@ export function AdminProductos() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-5 font-mono text-[11px] text-carbon-500">
+        <div className="flex gap-5 font-mono text-[11px] text-tinta-tenue">
           <span>
-            <strong className="text-carbon-100">{filas.length}</strong> productos
+            <strong className="text-tinta">{filas.length}</strong> productos
           </span>
           <span>
-            <strong className="text-carbon-100">{filas.filter((f) => f.destacado).length}</strong>{" "}
+            <strong className="text-tinta">{filas.filter((f) => f.destacado).length}</strong>{" "}
             destacados
           </span>
           <span>
-            <strong className={agotados ? "text-marca-400" : "text-carbon-100"}>
+            <strong className={agotados ? "text-acento-texto" : "text-tinta"}>
               {agotados}
             </strong>{" "}
             agotados
@@ -130,7 +130,7 @@ export function AdminProductos() {
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
           placeholder="Filtrar por nombre o código…"
-          className="h-10 w-full max-w-xs border border-carbon-700 bg-carbon-850 px-3 text-[13px] text-carbon-100 placeholder:text-carbon-500 focus:border-marca-500 focus:outline-none"
+          className="h-10 w-full max-w-xs border border-borde bg-hundido px-3 text-[13px] text-tinta placeholder:text-tinta-tenue focus:border-marca-500 focus:outline-none"
         />
       </div>
 
@@ -141,7 +141,7 @@ export function AdminProductos() {
       </ul>
 
       {visibles.length === 0 && (
-        <p className="py-16 text-center text-[13px] text-carbon-400">
+        <p className="py-16 text-center text-[13px] text-tinta-suave">
           Ningún producto coincide con “{filtro}”.
         </p>
       )}
@@ -216,19 +216,19 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
   const portada = imagenUrl(b.imagen);
 
   return (
-    <li className="border border-carbon-800 bg-carbon-900">
+    <li className="border border-linea bg-superficie">
       <div className="flex items-center gap-3 p-3">
-        <div className="relative h-14 w-14 shrink-0 overflow-hidden bg-carbon-50">
+        <div className="relative h-14 w-14 shrink-0 overflow-hidden bg-panel-foto">
           {portada && (
             <Image src={portada} alt="" fill sizes="56px" className="object-contain p-0.5" />
           )}
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[10px] tracking-[0.14em] text-carbon-500">
+          <p className="font-mono text-[10px] tracking-[0.14em] text-tinta-tenue">
             {fila.sku}
           </p>
-          <p className="truncate text-[14px] font-medium text-carbon-100">{b.nombre}</p>
+          <p className="truncate text-[14px] font-medium text-tinta">{b.nombre}</p>
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 sm:flex">
@@ -246,7 +246,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
           />
         </div>
 
-        <span className="hidden w-28 shrink-0 text-right font-mono text-[13px] text-carbon-200 md:block">
+        <span className="hidden w-28 shrink-0 text-right font-mono text-[13px] text-tinta md:block">
           {precio(Number(b.precio.replace(/[^\d]/g, "")) || 0)}
         </span>
 
@@ -254,14 +254,14 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
           type="button"
           onClick={() => setAbierto((v) => !v)}
           aria-expanded={abierto}
-          className="shrink-0 border border-carbon-700 px-3 py-2 rotulo text-[10px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+          className="shrink-0 border border-borde px-3 py-2 rotulo text-[10px] text-tinta-media transition-colors hover:border-marca-500 hover:text-acento-texto"
         >
           {abierto ? "Cerrar" : "Editar"}
         </button>
       </div>
 
       {/* Interruptores en su propia fila cuando la pantalla es angosta */}
-      <div className="flex gap-2 border-t border-carbon-850 px-3 py-2 sm:hidden">
+      <div className="flex gap-2 border-t border-hundido px-3 py-2 sm:hidden">
         <Interruptor
           activo={b.agotado}
           alCambiar={(v) => cambiar("agotado", v)}
@@ -277,7 +277,7 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
       </div>
 
       {abierto && (
-        <div className="space-y-5 border-t border-carbon-800 p-4">
+        <div className="space-y-5 border-t border-linea p-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <Campo etiqueta="Nombre" valor={b.nombre} alCambiar={(v) => cambiar("nombre", v)} />
             <Campo
@@ -290,9 +290,9 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
 
           {fila.imagenes.length > 1 && (
             <div>
-              <p className="rotulo text-[10px] text-carbon-500">
+              <p className="rotulo text-[10px] text-tinta-tenue">
                 Foto de portada
-                <span className="ml-2 normal-case tracking-normal text-carbon-600">
+                <span className="ml-2 normal-case tracking-normal text-tinta-tenue">
                   la que se ve en la grilla y al compartir
                 </span>
               </p>
@@ -307,8 +307,8 @@ function FichaProducto({ fila, alGuardar }: { fila: Fila; alGuardar: () => void 
                       onClick={() => cambiar("imagen", img)}
                       aria-pressed={activa}
                       title={img}
-                      className={`relative h-16 w-16 shrink-0 overflow-hidden border bg-carbon-50 transition-colors ${
-                        activa ? "border-marca-500" : "border-carbon-700 hover:border-carbon-500"
+                      className={`relative h-16 w-16 shrink-0 overflow-hidden border bg-panel-foto transition-colors ${
+                        activa ? "border-marca-500" : "border-borde hover:border-tinta-tenue"
                       }`}
                     >
                       {u && (

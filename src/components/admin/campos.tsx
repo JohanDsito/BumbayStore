@@ -23,10 +23,10 @@ export function BarraGuardado({
 }) {
   if (!sucio && !mensaje) return null;
   return (
-    <div className="flex items-center justify-between gap-3 border-t border-carbon-800 bg-carbon-850 px-3 py-2">
+    <div className="flex items-center justify-between gap-3 border-t border-linea bg-hundido px-3 py-2">
       <span
         className={`font-mono text-[11px] ${
-          mensaje === "Guardado" ? "text-disponible" : mensaje ? "text-marca-400" : "text-carbon-400"
+          mensaje === "Guardado" ? "text-disponible" : mensaje ? "text-acento-texto" : "text-tinta-suave"
         }`}
       >
         {mensaje ?? "Cambios sin guardar"}
@@ -36,7 +36,7 @@ export function BarraGuardado({
           <button
             type="button"
             onClick={alDescartar}
-            className="px-3 py-1.5 rotulo text-[10px] text-carbon-400 transition-colors hover:text-carbon-100"
+            className="px-3 py-1.5 rotulo text-[10px] text-tinta-suave transition-colors hover:text-tinta"
           >
             Descartar
           </button>
@@ -67,7 +67,7 @@ export function Interruptor({
 }) {
   const encendido =
     tono === "alerta"
-      ? "border-marca-500 bg-marca-500/[0.15] text-marca-300"
+      ? "border-marca-500 bg-marca-500/[0.15] text-acento-texto"
       : "border-disponible bg-disponible/[0.12] text-disponible";
   return (
     <button
@@ -75,7 +75,7 @@ export function Interruptor({
       onClick={() => alCambiar(!activo)}
       aria-pressed={activo}
       className={`border px-3 py-1.5 rotulo text-[10px] transition-colors ${
-        activo ? encendido : "border-carbon-700 text-carbon-500 hover:text-carbon-300"
+        activo ? encendido : "border-borde text-tinta-tenue hover:text-tinta-media"
       }`}
     >
       {etiqueta}
@@ -96,13 +96,13 @@ export function Campo({
 }) {
   return (
     <div>
-      <label className="block rotulo text-[10px] text-carbon-500">
+      <label className="block rotulo text-[10px] text-tinta-tenue">
         {etiqueta}
         <input
           type="text"
           value={valor}
           onChange={(e) => alCambiar(e.target.value)}
-          className={`mt-2 h-10 w-full border border-carbon-700 bg-carbon-850 px-3 text-[14px] normal-case tracking-normal text-carbon-100 focus:border-marca-500 focus:outline-none ${
+          className={`mt-2 h-10 w-full border border-borde bg-hundido px-3 text-[14px] normal-case tracking-normal text-tinta focus:border-marca-500 focus:outline-none ${
             mono ? "font-mono" : "font-sans"
           }`}
         />
@@ -126,16 +126,16 @@ export function AreaTexto({
 }) {
   return (
     <div>
-      <label className="block rotulo text-[10px] text-carbon-500">
+      <label className="block rotulo text-[10px] text-tinta-tenue">
         {etiqueta}
         {ayuda && (
-          <span className="ml-2 normal-case tracking-normal text-carbon-600">{ayuda}</span>
+          <span className="ml-2 normal-case tracking-normal text-tinta-tenue">{ayuda}</span>
         )}
         <textarea
           value={valor}
           onChange={(e) => alCambiar(e.target.value)}
           rows={filas}
-          className="mt-2 w-full resize-y border border-carbon-700 bg-carbon-850 px-3 py-2 font-sans text-[13px] normal-case leading-relaxed tracking-normal text-carbon-100 focus:border-marca-500 focus:outline-none"
+          className="mt-2 w-full resize-y border border-borde bg-hundido px-3 py-2 font-sans text-[13px] normal-case leading-relaxed tracking-normal text-tinta focus:border-marca-500 focus:outline-none"
         />
       </label>
     </div>

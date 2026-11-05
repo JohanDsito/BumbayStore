@@ -94,18 +94,18 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
         type="button"
         aria-label="Cerrar vista previa"
         onClick={cerrar}
-        className="absolute inset-0 animate-[aparecer_0.2s_ease-out] bg-carbon-950/85 backdrop-blur-sm"
+        className="absolute inset-0 animate-[aparecer_0.2s_ease-out] bg-fondo/85 backdrop-blur-sm"
       />
 
-      <div className="relative flex max-h-[92vh] w-full max-w-4xl animate-[subir_0.3s_var(--ease-salida)] flex-col border border-carbon-700 bg-carbon-900 shadow-flotante sm:max-h-[88vh] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
+      <div className="relative flex max-h-[92vh] w-full max-w-4xl animate-[subir_0.3s_var(--ease-salida)] flex-col border border-borde bg-superficie shadow-flotante sm:max-h-[88vh] sm:animate-[aparecer_0.25s_var(--ease-salida)]">
         <div aria-hidden className="h-px shrink-0 bg-marca-500/70" />
 
         {/* Barra superior: compartir a la izquierda, cerrar a la derecha */}
-        <div className="flex shrink-0 items-center justify-between border-b border-carbon-800 px-3 py-2">
+        <div className="flex shrink-0 items-center justify-between border-b border-linea px-3 py-2">
           <button
             type="button"
             onClick={copiarEnlace}
-            className="flex items-center gap-2 px-2 py-1.5 rotulo text-[11px] text-carbon-400 transition-colors hover:text-marca-400"
+            className="flex items-center gap-2 px-2 py-1.5 rotulo text-[11px] text-tinta-suave transition-colors hover:text-acento-texto"
           >
             <svg
               viewBox="0 0 24 24"
@@ -127,7 +127,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
             type="button"
             onClick={cerrar}
             aria-label="Cerrar"
-            className="flex h-8 w-8 items-center justify-center text-carbon-400 transition-colors hover:text-carbon-50"
+            className="flex h-8 w-8 items-center justify-center text-tinta-suave transition-colors hover:text-tinta-fuerte"
           >
             <IconoCerrar className="h-4 w-4" />
           </button>
@@ -135,9 +135,9 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
 
         <div className="grid flex-1 overflow-y-auto overscroll-contain sm:grid-cols-2">
           {/* --- Galería --- */}
-          <div className="relative border-b border-carbon-800 p-3 sm:border-b-0 sm:border-r">
+          <div className="relative border-b border-linea p-3 sm:border-b-0 sm:border-r">
             {producto.agotado && (
-              <span className="absolute left-5 top-5 z-10 bg-carbon-950/90 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-carbon-200 ring-1 ring-carbon-700 backdrop-blur-sm">
+              <span className="absolute left-5 top-5 z-10 bg-fondo/90 py-1 pl-2.5 pr-3 rotulo text-[11px] font-semibold text-tinta ring-1 ring-noche backdrop-blur-sm">
                 Agotado
               </span>
             )}
@@ -151,27 +151,27 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
 
           {/* --- Información --- */}
           <div className="flex flex-col p-5">
-            <p className="font-mono text-[11px] tracking-[0.16em] text-carbon-500">
+            <p className="font-mono text-[11px] tracking-[0.16em] text-tinta-tenue">
               {producto.sku}
               {categoria && (
                 <>
-                  <span aria-hidden className="mx-2 text-carbon-700">
+                  <span aria-hidden className="mx-2 text-tinta-tenue">
                     ·
                   </span>
-                  <span className="text-carbon-400">{categoria.nombre}</span>
+                  <span className="text-tinta-suave">{categoria.nombre}</span>
                 </>
               )}
             </p>
 
-            <h2 className="mt-2 text-xl font-extrabold leading-tight tracking-[-0.03em] text-carbon-50 sm:text-2xl">
+            <h2 className="mt-2 text-xl font-extrabold leading-tight tracking-[-0.03em] text-tinta-fuerte sm:text-2xl">
               {producto.nombre}
             </h2>
 
             <div className="mt-4">
-              <span className="block font-mono text-3xl font-extrabold leading-none text-carbon-50">
+              <span className="block font-mono text-3xl font-extrabold leading-none text-tinta-fuerte">
                 {precio(producto.precioUnitario)}
               </span>
-              <span className="mt-1.5 block text-[11px] uppercase tracking-[0.14em] text-carbon-500">
+              <span className="mt-1.5 block text-[11px] uppercase tracking-[0.14em] text-tinta-tenue">
                 Precio
               </span>
             </div>
@@ -193,7 +193,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               <button
                 type="button"
                 onClick={cerrar}
-                className="flex h-11 items-center justify-center gap-2 border border-carbon-700 px-3 text-[13px] font-medium text-carbon-200 transition-colors hover:border-carbon-500 hover:text-carbon-50"
+                className="flex h-11 items-center justify-center gap-2 border border-borde px-3 text-[13px] font-medium text-tinta transition-colors hover:border-tinta-tenue hover:text-tinta-fuerte"
               >
                 <IconoFlecha className="h-4 w-4 rotate-180" />
                 Seguir viendo
@@ -201,12 +201,12 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               <button
                 type="button"
                 onClick={abrir}
-                className="flex h-11 items-center justify-center gap-2 border border-carbon-700 px-3 text-[13px] font-medium text-carbon-200 transition-colors hover:border-marca-500 hover:text-marca-400"
+                className="flex h-11 items-center justify-center gap-2 border border-borde px-3 text-[13px] font-medium text-tinta transition-colors hover:border-marca-500 hover:text-acento-texto"
               >
                 <IconoCarrito className="h-4 w-4" />
                 Ver pedido
                 {unidades > 0 && (
-                  <span className="font-mono text-[11px] text-marca-400">
+                  <span className="font-mono text-[11px] text-acento-texto">
                     ({unidades})
                   </span>
                 )}
@@ -217,7 +217,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
               href={enlaceConsulta(producto)}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2.5 flex h-11 items-center justify-center gap-2 border border-carbon-700 text-[13px] font-medium text-carbon-200 transition-colors hover:border-disponible hover:text-disponible"
+              className="mt-2.5 flex h-11 items-center justify-center gap-2 border border-borde text-[13px] font-medium text-tinta transition-colors hover:border-disponible hover:text-disponible"
             >
               <IconoWhatsApp className="h-4 w-4" />
               Más información por WhatsApp
@@ -225,11 +225,11 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
 
             {/* Un adelanto de la ficha técnica, para no dejar la vista previa vacía */}
             {producto.especificaciones.length > 0 && (
-              <dl className="mt-5 divide-y divide-carbon-800 border-t border-carbon-800">
+              <dl className="mt-5 divide-y divide-linea border-t border-linea">
                 {producto.especificaciones.slice(0, 4).map((e) => (
                   <div key={e.label} className="flex justify-between gap-4 py-2">
-                    <dt className="text-[12px] text-carbon-500">{e.label}</dt>
-                    <dd className="text-right font-mono text-[12px] text-carbon-200">
+                    <dt className="text-[12px] text-tinta-tenue">{e.label}</dt>
+                    <dd className="text-right font-mono text-[12px] text-tinta">
                       {e.valor}
                     </dd>
                   </div>
@@ -242,7 +242,7 @@ export function VistaPrevia({ producto, categoria, variantes }: Props) {
                 completa sale de la ruta interceptada y trae la ficha entera. */}
             <a
               href={rutaProducto(producto)}
-              className="group mt-4 flex items-center gap-1.5 rotulo text-[11px] text-marca-400 transition-colors hover:text-marca-300"
+              className="group mt-4 flex items-center gap-1.5 rotulo text-[11px] text-acento-texto transition-colors hover:text-acento-texto"
             >
               Ver ficha completa
               <IconoFlecha className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

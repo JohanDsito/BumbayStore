@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 import { site } from "@/config/sitio";
+import { SCRIPT_TEMA, TEMA, variablesAcento } from "@/config/tema";
 
 /**
  * Armazón mínimo, común a todo.
@@ -72,9 +73,10 @@ export const metadata: Metadata = {
   },
 };
 
+// La barra del navegador sigue a la cabecera, que es de noche en los dos temas.
 export const viewport: Viewport = {
-  themeColor: "#07080d",
-  colorScheme: "dark",
+  themeColor: TEMA.barra,
+  colorScheme: "light dark",
 };
 
 /**
@@ -91,8 +93,20 @@ export default function RootLayout({
     <html
       lang="es-CO"
       className={`${archivo.variable} ${plexMono.variable}`}
-      style={{ "--font-archivo-sola": archivoSola } as React.CSSProperties}
+      style={
+        {
+          "--font-archivo-sola": archivoSola,
+          ...variablesAcento(site.acento),
+        } as React.CSSProperties
+      }
+      // El script del <head> pone data-tema="oscuro" antes de que React
+      // hidrate; sin esto React lo tomaría por un error y lo quitaría.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Antes de pintar: el tema elegido, sin parpadeo del predeterminado. */}
+        <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
+      </head>
       {/*
         Varias extensiones del navegador (ColorZilla, Grammarly, gestores de
         contraseñas…) añaden atributos al <body> antes de que React hidrate, y

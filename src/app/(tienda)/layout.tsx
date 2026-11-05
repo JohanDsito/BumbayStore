@@ -2,6 +2,7 @@ import { site } from "@/config/sitio";
 import { catalogo, modoDemo } from "@/servidor/catalogo";
 import { EncabezadoSitio } from "@/components/site-header";
 import { PieSitio } from "@/components/site-footer";
+import { FranjaConfianza } from "@/components/franja-confianza";
 import { BarraPedido } from "@/components/cart-bar";
 import { CampoLuz } from "@/components/campo-luz";
 import { JsonLd } from "@/components/json-ld";
@@ -53,7 +54,7 @@ export default async function LayoutTienda({
         // ni búsquedas de prueba en la base real (ver infraestructura/supabase/registro.ts).
         <p
           data-modo-demo
-          className="rotulo bg-alerta px-4 py-2 text-center text-[11px] text-carbon-950"
+          className="rotulo bg-alerta px-4 py-2 text-center text-[11px] text-noche"
         >
           Demostración · Hogar, tecnología y belleza son nichos de ejemplo · Los pedidos no se guardan
         </p>
@@ -62,9 +63,11 @@ export default async function LayoutTienda({
       <main id="contenido">{children}</main>
       {/* Vista previa del producto: solo se llena al navegar desde el catálogo */}
       {modal}
+      <FranjaConfianza />
       <PieSitio menu={menu} />
-      {/* Espacio para que la barra fija no tape el final del pie */}
-      <div aria-hidden className="h-20" />
+      {/* Espacio para que la barra fija no tape el final del pie. Sigue la
+          noche del pie: si no, el tema claro dejaría una franja clara al final. */}
+      <div aria-hidden className="escenario h-20 bg-fondo" />
       <BarraPedido />
     </>
   );

@@ -168,19 +168,19 @@ export default async function FichaProducto({ params }: Props) {
 
           {/* --- Información y compra --- */}
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] text-carbon-500">
+            <p className="font-mono text-[11px] tracking-[0.16em] text-tinta-tenue">
               {producto.sku}
               {producto.marca && (
                 <>
-                  <span aria-hidden className="mx-2 text-carbon-700">
+                  <span aria-hidden className="mx-2 text-tinta-tenue">
                     ·
                   </span>
-                  <span className="text-carbon-400">{producto.marca}</span>
+                  <span className="text-tinta-suave">{producto.marca}</span>
                 </>
               )}
             </p>
 
-            <h1 className="condensada mt-2.5 text-3xl font-extrabold leading-[1.02] tracking-[-0.02em] text-carbon-50 sm:text-4xl lg:text-5xl">
+            <h1 className="condensada mt-2.5 text-3xl font-extrabold leading-[1.02] tracking-[-0.02em] text-tinta-fuerte sm:text-4xl lg:text-5xl">
               {producto.nombre}
             </h1>
 
@@ -188,12 +188,12 @@ export default async function FichaProducto({ params }: Props) {
               <span
                 aria-hidden
                 className={`h-1.5 w-1.5 rounded-full ${
-                  producto.agotado ? "bg-carbon-500" : "bg-disponible"
+                  producto.agotado ? "bg-tinta-tenue" : "bg-disponible"
                 }`}
               />
               <span
                 className={`rotulo text-[11px] ${
-                  producto.agotado ? "text-carbon-400" : "text-disponible"
+                  producto.agotado ? "text-tinta-suave" : "text-disponible"
                 }`}
               >
                 {producto.agotado ? "Agotado por ahora" : "Disponible"}
@@ -201,12 +201,12 @@ export default async function FichaProducto({ params }: Props) {
             </div>
 
             {/* Precio único: Bumbay maneja una sola tarifa para todos. */}
-            <div className="vidrio mt-5 border border-carbon-700 p-5">
-              <p className="rotulo text-carbon-400">Precio</p>
-              <p className="mt-1.5 font-mono text-4xl font-extrabold leading-none text-carbon-50">
+            <div className="vidrio mt-5 border border-borde p-5">
+              <p className="rotulo text-tinta-suave">Precio</p>
+              <p className="mt-1.5 font-mono text-4xl font-extrabold leading-none text-tinta-fuerte">
                 {precio(producto.precioUnitario)}
               </p>
-              <p className="mt-2.5 text-[13px] leading-relaxed text-carbon-300">
+              <p className="mt-2.5 text-[13px] leading-relaxed text-tinta-media">
                 Precio de distribuidor, igual para todos. Envíos a toda Colombia.
               </p>
             </div>
@@ -220,13 +220,13 @@ export default async function FichaProducto({ params }: Props) {
                 href={enlaceConsulta(producto)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-full items-center justify-center gap-2 border border-carbon-700 text-[14px] font-semibold tracking-tight text-carbon-200 transition-colors hover:border-disponible hover:text-disponible"
+                className="flex h-12 w-full items-center justify-center gap-2 border border-borde text-[14px] font-semibold tracking-tight text-tinta transition-colors hover:border-disponible hover:text-disponible"
               >
                 <IconoWhatsApp className="h-4 w-4" />
                 Más información por WhatsApp
               </a>
 
-              <p className="text-center text-[12px] text-carbon-400">
+              <p className="text-center text-[12px] text-tinta-suave">
                 {producto.agotado
                   ? "Escríbenos y te avisamos cuando vuelva a entrar"
                   : "Agrega al pedido y envíanos todo junto por WhatsApp"}
@@ -234,9 +234,9 @@ export default async function FichaProducto({ params }: Props) {
             </div>
 
             {producto.beneficios.length > 0 && (
-              <ul className="mt-8 space-y-2.5 border-t border-carbon-800 pt-6">
+              <ul className="mt-8 space-y-2.5 border-t border-linea pt-6">
                 {producto.beneficios.map((b) => (
-                  <li key={b} className="flex gap-3 text-[14px] leading-relaxed text-carbon-300">
+                  <li key={b} className="flex gap-3 text-[14px] leading-relaxed text-tinta-media">
                     <span aria-hidden className="mt-2 h-1 w-3 shrink-0 bg-marca-500" />
                     {b}
                   </li>
@@ -247,11 +247,11 @@ export default async function FichaProducto({ params }: Props) {
         </div>
 
         {/* --- Contenido largo: lo que Google y las IAs realmente leen --- */}
-        <div className="grid gap-10 border-t border-carbon-800 py-12 lg:grid-cols-[1fr_380px] lg:gap-16">
+        <div className="grid gap-10 border-t border-linea py-12 lg:grid-cols-[1fr_380px] lg:gap-16">
           <div className="space-y-12">
             {producto.fichaTecnica && (
               <Seccion titulo="Ficha técnica" id="ficha-tecnica">
-                <p className="text-[15px] leading-relaxed text-carbon-300">
+                <p className="text-[15px] leading-relaxed text-tinta-media">
                   {producto.fichaTecnica}
                 </p>
               </Seccion>
@@ -259,7 +259,7 @@ export default async function FichaProducto({ params }: Props) {
 
             {producto.modoUso && (
               <Seccion titulo="Modo de uso" id="modo-de-uso">
-                <p className="text-[15px] leading-relaxed text-carbon-300">
+                <p className="text-[15px] leading-relaxed text-tinta-media">
                   {producto.modoUso}
                 </p>
               </Seccion>
@@ -267,19 +267,19 @@ export default async function FichaProducto({ params }: Props) {
 
             {producto.faq.length > 0 && (
               <Seccion titulo="Preguntas frecuentes" id="preguntas-frecuentes">
-                <div className="divide-y divide-carbon-800 border-y border-carbon-800">
+                <div className="divide-y divide-linea border-y border-linea">
                   {producto.faq.map((f) => (
                     <details key={f.pregunta} className="group py-4">
-                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[15px] font-semibold text-carbon-100 transition-colors hover:text-marca-400">
+                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4 text-[15px] font-semibold text-tinta transition-colors hover:text-acento-texto">
                         {f.pregunta}
                         <span
                           aria-hidden
-                          className="mt-1 shrink-0 font-mono text-marca-500 transition-transform group-open:rotate-45"
+                          className="mt-1 shrink-0 font-mono text-acento-texto transition-transform group-open:rotate-45"
                         >
                           +
                         </span>
                       </summary>
-                      <p className="mt-3 pr-8 text-[14px] leading-relaxed text-carbon-400">
+                      <p className="mt-3 pr-8 text-[14px] leading-relaxed text-tinta-suave">
                         {f.respuesta}
                       </p>
                     </details>
@@ -292,12 +292,12 @@ export default async function FichaProducto({ params }: Props) {
           {/* Especificaciones: tabla fija, en monoespaciada, como una hoja de datos */}
           {producto.especificaciones.length > 0 && (
             <aside className="lg:sticky lg:top-44 lg:self-start">
-              <h2 className="rotulo text-carbon-300">Especificaciones</h2>
-              <dl className="vidrio mt-4 divide-y divide-carbon-800 border border-carbon-700">
+              <h2 className="rotulo text-tinta-media">Especificaciones</h2>
+              <dl className="vidrio mt-4 divide-y divide-linea border border-borde">
                 {producto.especificaciones.map((e) => (
                   <div key={e.label} className="flex justify-between gap-4 px-4 py-2.5">
-                    <dt className="text-[12px] text-carbon-400">{e.label}</dt>
-                    <dd className="text-right font-mono text-[12px] font-medium text-carbon-100">
+                    <dt className="text-[12px] text-tinta-suave">{e.label}</dt>
+                    <dd className="text-right font-mono text-[12px] font-medium text-tinta">
                       {e.valor}
                     </dd>
                   </div>
@@ -308,10 +308,10 @@ export default async function FichaProducto({ params }: Props) {
         </div>
 
         {relacionados.length > 0 && (
-          <section aria-labelledby="titulo-relacionados" className="border-t border-carbon-800 py-12">
+          <section aria-labelledby="titulo-relacionados" className="border-t border-linea py-12">
             <h2
               id="titulo-relacionados"
-              className="text-xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-2xl"
+              className="text-xl font-extrabold tracking-[-0.03em] text-tinta-fuerte sm:text-2xl"
             >
               También te puede servir
             </h2>
@@ -340,7 +340,7 @@ function Seccion({
     <section aria-labelledby={id}>
       <h2
         id={id}
-        className="mb-4 text-xl font-extrabold tracking-[-0.03em] text-carbon-50 sm:text-2xl"
+        className="mb-4 text-xl font-extrabold tracking-[-0.03em] text-tinta-fuerte sm:text-2xl"
       >
         {titulo}
       </h2>

@@ -116,3 +116,50 @@ export function IconoTiktok(props: Props) {
     </svg>
   );
 }
+
+export function IconoSol(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
+    </svg>
+  );
+}
+
+export function IconoLuna(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+    </svg>
+  );
+}
+
+/* Promesas de la tienda (FranjaConfianza). */
+
+export function IconoCaja(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="m3.5 7.5 8.5-4 8.5 4v9l-8.5 4-8.5-4v-9Z" />
+      <path d="m3.5 7.5 8.5 4 8.5-4M12 11.5v9" />
+    </svg>
+  );
+}
+
+export function IconoCamion(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7" />
+      <circle cx="6.5" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
+    </svg>
+  );
+}
+
+export function IconoPago(props: Props) {
+  return (
+    <svg {...base} aria-hidden {...props}>
+      <rect x="2.5" y="6" width="19" height="12" rx="1.5" />
+      <path d="M2.5 10h19M6.5 14.5h4" />
+    </svg>
+  );
+}

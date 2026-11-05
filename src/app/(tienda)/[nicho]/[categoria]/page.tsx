@@ -9,6 +9,7 @@ import { GrillaProductos } from "@/components/product-grid";
 import { JsonLd } from "@/components/json-ld";
 import { Migas } from "@/components/migas";
 import { ContextoNicho } from "@/components/contexto-nicho";
+import { MedirEscenario } from "@/components/medir-escenario";
 
 type Props = { params: Promise<{ nicho: string; categoria: string }> };
 
@@ -81,32 +82,40 @@ export default async function PaginaCategoria({ params }: Props) {
   };
 
   return (
-    <ContextoNicho acento={nicho?.acento ?? null} intensidad={0.55}>
+    <ContextoNicho acento={nicho?.acento ?? null} intensidad={0.8}>
       <JsonLd datos={datosLista} />
 
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <Migas
-          pasos={[
-            ...(nicho ? [{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }] : []),
-            { nombre: categoria.nombre, ruta: rutaCategoria(categoria) },
-          ]}
-        />
+      {/* Un escenario más bajo que el de la portada: la luz del nicho sigue
+          encendida al entrar en una de sus categorías, en los dos temas. */}
+      <section className="portico escenario">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+          <Migas
+            pasos={[
+              ...(nicho ? [{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }] : []),
+              { nombre: categoria.nombre, ruta: rutaCategoria(categoria) },
+            ]}
+          />
 
-        <header className="border-b border-carbon-800 pb-8 pt-4">
-          <h1 className="titular text-[clamp(2.75rem,7vw,4.75rem)] text-carbon-50">
-            {categoria.nombre}
-          </h1>
-          {categoria.descripcion && (
-            <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-carbon-300">
-              {categoria.descripcion}
+          <header className="pb-12 pt-6 sm:pb-16 sm:pt-10">
+            <h1 className="titular text-[clamp(2.75rem,7vw,4.75rem)] text-tinta-fuerte">
+              {categoria.nombre}
+            </h1>
+            {categoria.descripcion && (
+              <p className="mt-5 max-w-[60ch] text-[15px] leading-relaxed text-tinta-media">
+                {categoria.descripcion}
+              </p>
+            )}
+            <p className="mt-5 font-mono text-xs text-tinta-suave">
+              {productos.length} {productos.length === 1 ? "producto" : "productos"}
             </p>
-          )}
-          <p className="mt-5 font-mono text-xs text-carbon-400">
-            {productos.length} {productos.length === 1 ? "producto" : "productos"}
-          </p>
-        </header>
+          </header>
+        </div>
+        <MedirEscenario />
+      </section>
 
-        <div className="py-8">
+      {/* Debajo, la tienda con fondo sólido: el campo se queda en el escenario. */}
+      <div className="bg-fondo">
+        <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6 sm:py-10">
           <h2 className="sr-only">Productos</h2>
           <GrillaProductos productos={productos} prioritarias={4} />
         </div>

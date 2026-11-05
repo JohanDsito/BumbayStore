@@ -48,17 +48,17 @@ export function AdminBusquedas() {
   }, [filas]);
 
   if (cargando) {
-    return <p className="py-16 text-center font-mono text-xs text-carbon-500">Cargando búsquedas…</p>;
+    return <p className="py-16 text-center font-mono text-xs text-tinta-tenue">Cargando búsquedas…</p>;
   }
   if (error) {
-    return <p className="py-16 text-center text-[13px] text-marca-400">{error}</p>;
+    return <p className="py-16 text-center text-[13px] text-acento-texto">{error}</p>;
   }
 
   if (filas.length === 0) {
     return (
-      <div className="border border-dashed border-carbon-700 px-6 py-16 text-center">
-        <p className="text-[14px] text-carbon-300">Nadie ha usado el buscador todavía.</p>
-        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-carbon-500">
+      <div className="border border-dashed border-borde px-6 py-16 text-center">
+        <p className="text-[14px] text-tinta-media">Nadie ha usado el buscador todavía.</p>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-tinta-tenue">
           Cuando empiecen, aquí verás sobre todo lo que buscan y no encuentran:
           eso te dice qué conviene traer en la próxima importación.
         </p>
@@ -69,26 +69,26 @@ export function AdminBusquedas() {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <section>
-        <h2 className="rotulo text-[10px] text-marca-400">
+        <h2 className="rotulo text-[10px] text-acento-texto">
           Buscaron y no encontraron
         </h2>
-        <p className="mt-1.5 text-[12px] leading-relaxed text-carbon-500">
+        <p className="mt-1.5 text-[12px] leading-relaxed text-tinta-tenue">
           Demanda que se está yendo con las manos vacías. Es lo más accionable
           de esta pantalla.
         </p>
 
         {vacias.length === 0 ? (
-          <p className="mt-4 border border-dashed border-carbon-700 p-6 text-center text-[13px] text-carbon-400">
+          <p className="mt-4 border border-dashed border-borde p-6 text-center text-[13px] text-tinta-suave">
             Todas las búsquedas encontraron algo.
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-carbon-800 border border-carbon-800 bg-carbon-900">
+          <ul className="mt-4 divide-y divide-linea border border-linea bg-superficie">
             {vacias.map((b) => (
               <li key={b.consulta} className="flex items-center justify-between gap-3 px-4 py-2.5">
-                <span className="min-w-0 truncate text-[14px] text-carbon-100">
+                <span className="min-w-0 truncate text-[14px] text-tinta">
                   {b.consulta}
                 </span>
-                <span className="shrink-0 font-mono text-[12px] text-marca-400">
+                <span className="shrink-0 font-mono text-[12px] text-acento-texto">
                   {b.veces} {b.veces === 1 ? "vez" : "veces"}
                 </span>
               </li>
@@ -98,25 +98,25 @@ export function AdminBusquedas() {
       </section>
 
       <section>
-        <h2 className="rotulo text-[10px] text-carbon-500">
+        <h2 className="rotulo text-[10px] text-tinta-tenue">
           Lo que sí encuentran
         </h2>
-        <p className="mt-1.5 text-[12px] leading-relaxed text-carbon-500">
+        <p className="mt-1.5 text-[12px] leading-relaxed text-tinta-tenue">
           Útil para saber qué productos conviene destacar en la portada.
         </p>
 
         {conResultado.length === 0 ? (
-          <p className="mt-4 border border-dashed border-carbon-700 p-6 text-center text-[13px] text-carbon-400">
+          <p className="mt-4 border border-dashed border-borde p-6 text-center text-[13px] text-tinta-suave">
             Ninguna búsqueda con resultados todavía.
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-carbon-800 border border-carbon-800 bg-carbon-900">
+          <ul className="mt-4 divide-y divide-linea border border-linea bg-superficie">
             {conResultado.slice(0, 30).map((b) => (
               <li key={b.consulta} className="flex items-center justify-between gap-3 px-4 py-2.5">
-                <span className="min-w-0 truncate text-[14px] text-carbon-300">
+                <span className="min-w-0 truncate text-[14px] text-tinta-media">
                   {b.consulta}
                 </span>
-                <span className="shrink-0 font-mono text-[12px] text-carbon-500">
+                <span className="shrink-0 font-mono text-[12px] text-tinta-tenue">
                   {b.veces}
                 </span>
               </li>

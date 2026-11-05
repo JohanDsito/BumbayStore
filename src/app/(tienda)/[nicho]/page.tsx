@@ -14,7 +14,9 @@ import {
   ANCLA_CATALOGO,
   BloqueMayorista,
   EncabezadoSeccion,
+  FilaCategorias,
   Portico,
+  entradasCategorias,
 } from "@/components/portada";
 
 type Props = { params: Promise<{ nicho: string }> };
@@ -73,8 +75,11 @@ export default async function PortadaNicho({ params }: Props) {
 
   return (
     <ContextoNicho acento={nicho.acento} intensidad={1}>
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <Migas pasos={[{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }]} />
+      {/* Las migas son parte del escenario: noche, encima del campo. */}
+      <div className="portico escenario">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+          <Migas pasos={[{ nombre: nicho.nombre, ruta: rutaNicho(nicho) }]} />
+        </div>
       </div>
 
       <Portico
@@ -101,23 +106,33 @@ export default async function PortadaNicho({ params }: Props) {
         mensajeWhatsApp={`Hola, quisiera la lista de precios de ${marca}.`}
       />
 
-      <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        {destacados.length > 0 && (
-          <div className="pb-12 sm:pb-16">
-            <CarruselDestacados productos={destacados} />
-          </div>
-        )}
-
-        <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
-          <EncabezadoSeccion
-            id="titulo-catalogo"
-            titulo={`Todo en ${nicho.nombre.toLowerCase()}`}
-            cantidad={productos.length}
+      {/* La tienda, debajo del escenario: fondo sólido en los dos temas. El
+          campo de luz se queda en el escenario y no pasa detrás de las
+          tarjetas, que ya no tienen caja. */}
+      <div className="bg-fondo">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
+          <FilaCategorias
+            titulo={`Categorías de ${nicho.nombre}`}
+            entradas={entradasCategorias(categorias, productos)}
           />
-          <GrillaProductos productos={productos} prioritarias={0} />
-        </section>
 
-        <BloqueMayorista />
+          {destacados.length > 0 && (
+            <div className="pt-12 sm:pt-16">
+              <CarruselDestacados productos={destacados} />
+            </div>
+          )}
+
+          <section id={ANCLA_CATALOGO} aria-labelledby="titulo-catalogo" className="pb-8">
+            <EncabezadoSeccion
+              id="titulo-catalogo"
+              titulo={`Todo en ${nicho.nombre.toLowerCase()}`}
+              cantidad={productos.length}
+            />
+            <GrillaProductos productos={productos} prioritarias={0} />
+          </section>
+
+          <BloqueMayorista />
+        </div>
       </div>
     </ContextoNicho>
   );
@@ -129,8 +144,8 @@ function LecturaNicho({ datos }: { datos: DatoNicho[] }) {
     <dl className="space-y-4">
       {datos.map((d) => (
         <div key={d.etiqueta}>
-          <dt className="rotulo text-carbon-400">{d.etiqueta}</dt>
-          <dd className="mt-1 font-mono text-sm text-carbon-50">{d.valor}</dd>
+          <dt className="rotulo text-tinta-media">{d.etiqueta}</dt>
+          <dd className="mt-1 font-mono text-sm text-tinta-fuerte">{d.valor}</dd>
         </div>
       ))}
     </dl>

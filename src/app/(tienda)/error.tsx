@@ -26,11 +26,11 @@ export default function ErrorTienda({
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-24 sm:px-6">
-      <h1 className="titular text-[clamp(2.5rem,8vw,4.5rem)] text-carbon-50">
+      <h1 className="titular text-[clamp(2.5rem,8vw,4.5rem)] text-tinta-fuerte">
         El catálogo no cargó.
-        <span className="block text-marca-500">Intenta de nuevo.</span>
+        <span className="block text-acento-texto">Intenta de nuevo.</span>
       </h1>
-      <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-carbon-300">
+      <p className="mt-6 max-w-[52ch] text-[15px] leading-relaxed text-tinta-media">
         No pudimos traer los productos en este momento. Suele resolverse en
         unos segundos; si no, escríbenos y te pasamos la lista de precios por
         WhatsApp.

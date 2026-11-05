@@ -91,10 +91,15 @@ export function CampoLuz({ colores, acentoTienda }: Props) {
   }, []);
 
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    // Noche en los dos temas: en el claro la capa solo cubre el escenario de
+    // arriba (ver .campo-capa en globals.css).
+    <div aria-hidden className="campo-capa escenario pointer-events-none -z-10 overflow-hidden bg-fondo">
       <Poster objetivo={meta} />
       <canvas
         ref={lienzo}
+        // Del tamaño de la capa: la pantalla en el tema oscuro, el escenario
+        // en el claro. El dibujo se ajusta a esa medida (ver `ajustar`), así
+        // los filamentos cruzan también una franja baja como la de una categoría.
         className={`absolute inset-0 h-full w-full transition-opacity duration-1000 ease-out ${
           visible ? "opacity-100" : "opacity-0"
         }`}
@@ -223,6 +228,7 @@ void main() {
   float ancho = step(1.2, asp);
   float entrada = mix(0.42, 0.08 + 0.92 * smoothstep(0.3, 0.92, uv.x), ancho);
 
+  // La noche: debe coincidir con --t-fondo del tema oscuro en globals.css.
   vec3 col = vec3(0.027, 0.031, 0.051);
   float semilla = hash(floor(gl_FragCoord.xy));
 
@@ -291,8 +297,10 @@ function iniciar(
   const raton = { x: 0.7, y: 0.5, ax: 0.7, ay: 0.5 };
 
   const ajustar = () => {
-    const w = Math.min(Math.round(window.innerWidth * escala), 960);
-    const h = Math.round(w * (window.innerHeight / window.innerWidth));
+    // Sin medida (tema claro en una página sin escenario): no hay nada que ver.
+    if (!canvas.clientWidth || !canvas.clientHeight) return;
+    const w = Math.min(Math.round(canvas.clientWidth * escala), 960);
+    const h = Math.round(w * (canvas.clientHeight / canvas.clientWidth));
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
@@ -339,14 +347,7 @@ function iniciar(
     raton.ax += (raton.x - raton.ax) * k;
     raton.ay += (raton.y - raton.ay) * k;
 
-    gl.useProgram(programa);
-    gl.uniform2f(u.res, canvas.width, canvas.height);
-    gl.uniform1f(u.t, tiempo);
-    gl.uniform2f(u.mouse, raton.ax, raton.ay);
-    gl.uniform3fv(u.col, actual.colores.flat());
-    gl.uniform1fv(u.w, actual.pesos);
-    gl.uniform1f(u.int, actual.intensidad);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    dibujar();
 
     if (primero) {
       primero = false;
@@ -357,6 +358,17 @@ function iniciar(
       marco = 0;
       corriendo = false;
     }
+  };
+
+  const dibujar = () => {
+    gl.useProgram(programa);
+    gl.uniform2f(u.res, canvas.width, canvas.height);
+    gl.uniform1f(u.t, tiempo);
+    gl.uniform2f(u.mouse, raton.ax, raton.ay);
+    gl.uniform3fv(u.col, actual.colores.flat());
+    gl.uniform1fv(u.w, actual.pesos);
+    gl.uniform1f(u.int, actual.intensidad);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 
   const reanudar = () => {
@@ -386,7 +398,10 @@ function iniciar(
     window.addEventListener("scroll", reanudar, { passive: true });
     document.addEventListener("visibilitychange", reanudar);
   }
-  window.addEventListener("resize", alRedimensionar);
+  // La capa cambia de alto sin que cambie la ventana (al pasar de la portada
+  // a una categoría en el tema claro): se observa el lienzo, no la ventana.
+  const observador = new ResizeObserver(alRedimensionar);
+  observador.observe(canvas);
   if (!tactil && !quieto) window.addEventListener("pointermove", alMover, { passive: true });
   canvas.addEventListener("webglcontextlost", alPerderContexto);
 
@@ -397,7 +412,7 @@ function iniciar(
     detener: () => {
       cancelAnimationFrame(marco);
       window.removeEventListener("scroll", reanudar);
-      window.removeEventListener("resize", alRedimensionar);
+      observador.disconnect();
       document.removeEventListener("visibilitychange", reanudar);
       window.removeEventListener("pointermove", alMover);
       canvas.removeEventListener("webglcontextlost", alPerderContexto);

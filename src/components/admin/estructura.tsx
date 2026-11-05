@@ -55,10 +55,10 @@ export function AdminEstructura() {
 
   if (!sb) return null;
   if (cargando) {
-    return <p className="py-16 text-center font-mono text-xs text-carbon-500">Cargando estructura…</p>;
+    return <p className="py-16 text-center font-mono text-xs text-tinta-tenue">Cargando estructura…</p>;
   }
   if (error) {
-    return <p className="py-16 text-center text-[13px] text-marca-400">{error}</p>;
+    return <p className="py-16 text-center text-[13px] text-acento-texto">{error}</p>;
   }
 
   // Al guardar se regenera la tienda y se recarga la lista desde la base.
@@ -109,12 +109,12 @@ export function AdminEstructura() {
             const propias = categorias.filter((c) => c.nicho_slug === n.slug);
             return (
               <div key={n.slug}>
-                <h3 className="mb-2 rotulo text-[11px] text-carbon-400">
+                <h3 className="mb-2 rotulo text-[11px] text-tinta-suave">
                   {n.nombre}
-                  <span className="ml-2 text-carbon-600">/{n.slug}</span>
+                  <span className="ml-2 text-tinta-tenue">/{n.slug}</span>
                 </h3>
                 {propias.length === 0 ? (
-                  <p className="border border-dashed border-carbon-800 px-4 py-3 text-[13px] text-carbon-500">
+                  <p className="border border-dashed border-linea px-4 py-3 text-[13px] text-tinta-tenue">
                     Sin categorías todavía.
                   </p>
                 ) : (
@@ -144,10 +144,10 @@ export function AdminEstructura() {
 function Encabezado({ id, titulo, ayuda }: { id: string; titulo: string; ayuda: string }) {
   return (
     <div className="mb-4">
-      <h2 id={id} className="text-xl font-extrabold tracking-[-0.03em] text-carbon-50">
+      <h2 id={id} className="text-xl font-extrabold tracking-[-0.03em] text-tinta-fuerte">
         {titulo}
       </h2>
-      <p className="mt-1 text-[13px] text-carbon-400">{ayuda}</p>
+      <p className="mt-1 text-[13px] text-tinta-suave">{ayuda}</p>
     </div>
   );
 }
@@ -223,16 +223,16 @@ function FilaNicho({
   const aviso = b.activo && productos === 0 ? "Sin productos: aún no aparece" : null;
 
   return (
-    <li className="border border-carbon-800 bg-carbon-900">
+    <li className="border border-linea bg-superficie">
       <div className="flex flex-wrap items-center gap-3 p-3">
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[10px] tracking-[0.14em] text-carbon-500">
+          <p className="font-mono text-[10px] tracking-[0.14em] text-tinta-tenue">
             /{nicho.slug} · {productos} {productos === 1 ? "producto" : "productos"}
-            {aviso && <span className="ml-2 text-marca-400">{aviso}</span>}
+            {aviso && <span className="ml-2 text-acento-texto">{aviso}</span>}
           </p>
-          <p className="truncate text-[14px] font-medium text-carbon-100">
+          <p className="truncate text-[14px] font-medium text-tinta">
             {b.nombre}
-            {b.submarca && <span className="ml-2 text-carbon-500">{b.submarca}</span>}
+            {b.submarca && <span className="ml-2 text-tinta-tenue">{b.submarca}</span>}
           </p>
         </div>
         <Interruptor
@@ -245,7 +245,7 @@ function FilaNicho({
       </div>
 
       {abierto && (
-        <div className="space-y-4 border-t border-carbon-800 p-4">
+        <div className="space-y-4 border-t border-linea p-4">
           <div className="grid gap-4 sm:grid-cols-[2fr_2fr_1fr]">
             <Campo etiqueta="Nombre" valor={b.nombre} alCambiar={(v) => cambiar("nombre", v)} />
             <Campo
@@ -256,15 +256,15 @@ function FilaNicho({
             <Campo etiqueta="Orden" valor={b.orden} alCambiar={(v) => cambiar("orden", v)} mono />
           </div>
           <div>
-            <label className="flex items-center gap-3 rotulo text-[10px] text-carbon-500">
+            <label className="flex items-center gap-3 rotulo text-[10px] text-tinta-tenue">
               Color del nicho
               <input
                 type="color"
                 value={b.acento || ACENTO_INICIAL}
                 onChange={(e) => cambiar("acento", e.target.value)}
-                className="h-9 w-14 cursor-pointer border border-carbon-700 bg-carbon-850 p-0.5"
+                className="h-9 w-14 cursor-pointer border border-borde bg-hundido p-0.5"
               />
-              <span className="normal-case tracking-normal text-carbon-600">
+              <span className="normal-case tracking-normal text-tinta-tenue">
                 {b.acento ? b.acento : "sin color propio: usa el de la tienda"}
               </span>
             </label>
@@ -409,20 +409,20 @@ function FilaCategoria({
   };
 
   return (
-    <li className="border border-carbon-800 bg-carbon-900">
+    <li className="border border-linea bg-superficie">
       <div className="flex items-center gap-3 p-3">
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[10px] tracking-[0.14em] text-carbon-500">
+          <p className="font-mono text-[10px] tracking-[0.14em] text-tinta-tenue">
             /{b.nicho_slug}/{categoria.slug} · {productos}{" "}
             {productos === 1 ? "producto" : "productos"}
           </p>
-          <p className="truncate text-[14px] font-medium text-carbon-100">{b.nombre}</p>
+          <p className="truncate text-[14px] font-medium text-tinta">{b.nombre}</p>
         </div>
         <BotonEditar abierto={abierto} alCambiar={setAbierto} />
       </div>
 
       {abierto && (
-        <div className="space-y-4 border-t border-carbon-800 p-4">
+        <div className="space-y-4 border-t border-linea p-4">
           <div className="grid gap-4 sm:grid-cols-[2fr_2fr_1fr]">
             <Campo etiqueta="Nombre" valor={b.nombre} alCambiar={(v) => cambiar("nombre", v)} />
             <SelectorNicho
@@ -433,7 +433,7 @@ function FilaCategoria({
             <Campo etiqueta="Orden" valor={b.orden} alCambiar={(v) => cambiar("orden", v)} mono />
           </div>
           {b.nicho_slug !== categoria.nicho_slug && productos > 0 && (
-            <p className="text-[12px] text-marca-400">
+            <p className="text-[12px] text-acento-texto">
               Sus {productos} productos se mudan con ella. La dirección vieja de la
               categoría redirige sola a la nueva.
             </p>
@@ -522,12 +522,12 @@ function SelectorNicho({
 }) {
   return (
     <div>
-      <label className="block rotulo text-[10px] text-carbon-500">
+      <label className="block rotulo text-[10px] text-tinta-tenue">
         Nicho
         <select
           value={valor}
           onChange={(e) => alCambiar(e.target.value)}
-          className="mt-2 h-10 w-full border border-carbon-700 bg-carbon-850 px-2 font-sans text-[14px] normal-case tracking-normal text-carbon-100 focus:border-marca-500 focus:outline-none"
+          className="mt-2 h-10 w-full border border-borde bg-hundido px-2 font-sans text-[14px] normal-case tracking-normal text-tinta focus:border-marca-500 focus:outline-none"
         >
           {nichos.map((n) => (
             <option key={n.slug} value={n.slug}>
@@ -550,10 +550,10 @@ function Formulario({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mt-4 border border-dashed border-carbon-700 p-4">
-      <p className="rotulo text-[10px] text-marca-400">{titulo}</p>
+    <div className="mt-4 border border-dashed border-borde p-4">
+      <p className="rotulo text-[10px] text-acento-texto">{titulo}</p>
       <div className="mt-3 grid items-end gap-4 sm:grid-cols-[2fr_2fr_auto]">{children}</div>
-      {mensaje && <p className="mt-3 text-[12px] text-carbon-300">{mensaje}</p>}
+      {mensaje && <p className="mt-3 text-[12px] text-tinta-media">{mensaje}</p>}
     </div>
   );
 }
@@ -583,7 +583,7 @@ function BotonEditar({
       type="button"
       onClick={() => alCambiar(!abierto)}
       aria-expanded={abierto}
-      className="shrink-0 border border-carbon-700 px-3 py-2 rotulo text-[10px] text-carbon-300 transition-colors hover:border-marca-500 hover:text-marca-400"
+      className="shrink-0 border border-borde px-3 py-2 rotulo text-[10px] text-tinta-media transition-colors hover:border-marca-500 hover:text-acento-texto"
     >
       {abierto ? "Cerrar" : "Editar"}
     </button>

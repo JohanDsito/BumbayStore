@@ -161,3 +161,20 @@ function normalizar(texto: string | null): string {
     .replace(/[̀-ͯ]/g, "")
     .toLowerCase();
 }
+
+/**
+ * La foto que representa una categoría en la fila de categorías: la del primer
+ * producto con foto, prefiriendo uno disponible y destacado. Con la miniatura
+ * si existe, que es lo que la fila muestra. Null si ninguno tiene foto.
+ */
+export function fotoDeCategoria(
+  categoriaSlug: string,
+  productos: readonly Product[],
+): string | null {
+  const propios = productos.filter(
+    (p) => p.categoriaSlug === categoriaSlug && (p.imagenMini ?? p.imagen),
+  );
+  const peso = (p: Product) => (p.agotado ? 0 : 2) + (p.destacado ? 1 : 0);
+  const elegido = [...propios].sort((a, b) => peso(b) - peso(a))[0];
+  return elegido ? (elegido.imagenMini ?? elegido.imagen) : null;
+}
